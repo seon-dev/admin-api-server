@@ -1,0 +1,67 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'server.admin'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+dependencies {
+	implementation "org.springframework.boot:spring-boot-gradle-plugin:2.6.2"
+	implementation "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+}
+
+allprojects {
+	group = "server.admin"
+	version = "0.0.1-SNAPSHOT"
+	java.sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		compileOnly 'org.projectlombok:lombok'
+		runtimeOnly 'org.postgresql:postgresql'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		implementation 'io.springfox:springfox-swagger-ui:2.0.2'
+		implementation 'io.springfox:springfox-swagger2:2.9.2'
+
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+project(':application') {
+	dependencies {
+		implementation(project(":domain"))
+		compileOnly(project(":domain"))
+	}
+}
+
+project(':domain') {
+
+}
+
+repositories {
+	mavenCentral()
+}
