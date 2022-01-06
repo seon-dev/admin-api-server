@@ -1,4 +1,4 @@
-package domain.base;
+package server.admin.common;
 
 import lombok.Getter;
 

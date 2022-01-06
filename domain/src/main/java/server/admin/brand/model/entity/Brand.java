@@ -1,8 +1,7 @@
-package domain.brand.model.entity;
+package server.admin.brand.model.entity;
 
-import domain.base.BaseTimeEntity;
-import domain.brand.model.dto.BrandCreateDto;
-import lombok.Data;
+import server.admin.common.BaseTimeEntity;
+import server.admin.brand.model.dto.BrandCreateDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

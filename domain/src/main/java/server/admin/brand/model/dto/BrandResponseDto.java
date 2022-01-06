@@ -1,6 +1,6 @@
-package domain.brand.model.dto;
+package server.admin.brand.model.dto;
 
-import domain.brand.model.entity.Brand;
+import server.admin.brand.model.entity.Brand;
 import lombok.Data;
 
 @Data

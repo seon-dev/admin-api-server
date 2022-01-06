@@ -1,11 +1,11 @@
-package domain.brand.model.service;
+package server.admin.brand.model.service;
 
-import domain.base.BasicMessage;
-import domain.brand.model.dto.BrandCreateDto;
-import domain.brand.model.dto.BrandResponseDto;
-import domain.brand.model.dto.BrandUpdateDto;
-import domain.brand.model.entity.Brand;
-import domain.brand.model.repository.BrandRepository;
+import server.admin.brand.model.dto.BrandCreateDto;
+import server.admin.brand.model.repository.BrandRepository;
+import server.admin.common.BasicMessage;
+import server.admin.brand.model.dto.BrandResponseDto;
+import server.admin.brand.model.dto.BrandUpdateDto;
+import server.admin.brand.model.entity.Brand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

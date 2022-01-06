@@ -1,9 +1,9 @@
 package server.admin.brand.controller;
 
-import domain.base.BasicMessage;
-import domain.brand.model.dto.BrandCreateDto;
-import domain.brand.model.dto.BrandResponseDto;
-import domain.brand.model.service.BrandService;
+import server.admin.common.BasicMessage;
+import server.admin.brand.model.dto.BrandCreateDto;
+import server.admin.brand.model.dto.BrandResponseDto;
+import server.admin.brand.model.service.BrandService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

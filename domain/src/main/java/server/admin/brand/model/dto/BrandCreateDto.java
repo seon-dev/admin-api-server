@@ -1,4 +1,4 @@
-package domain.brand.model.dto;
+package server.admin.brand.model.dto;
 
 import lombok.Getter;
 
