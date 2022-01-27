@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@Table(name = "user_following")
 @DynamicInsert
 @DynamicUpdate
 public class UserFollowing extends BaseTimeEntity implements Serializable {

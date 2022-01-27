@@ -1,13 +1,27 @@
 package server.admin.user.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import server.admin.common.BaseTimeEntity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.Serializable;
 
-public class UserPolicyAgreement {
+@Entity
+@Getter
+@Setter
+@Table(name = "user_policy_agreement")
+@DynamicInsert
+@DynamicUpdate
+public class UserPolicyAgreement extends BaseTimeEntity implements Serializable {
     @Column(name = "personal_info_agreement", nullable = false)
     private Boolean personalInfoAgreement;
 

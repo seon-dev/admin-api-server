@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Entity
 @Setter
 @Getter
+@Table(name = "user_styling_comment")
 @DynamicUpdate
 @DynamicInsert
 public class UserStylingComment extends BaseTimeEntity implements Serializable {

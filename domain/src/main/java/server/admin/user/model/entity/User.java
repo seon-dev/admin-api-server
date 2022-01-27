@@ -1,19 +1,14 @@
 package server.admin.user.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 import server.admin.common.BaseTimeEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 
 
 @Entity

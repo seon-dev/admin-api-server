@@ -3,6 +3,8 @@ package server.admin.asset.model.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import server.admin.common.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @Table(name = "asset_category")
+@DynamicUpdate
+@DynamicInsert
 public class AssetCategory extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;

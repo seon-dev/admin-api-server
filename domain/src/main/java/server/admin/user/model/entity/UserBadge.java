@@ -3,10 +3,8 @@ package server.admin.user.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 import server.admin.badge.model.entity.Badge;
 import server.admin.common.BaseTimeEntity;
 
