@@ -1,26 +1,35 @@
 package server.admin.brand.model.entity;
 
+import com.sun.istack.NotNull;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import server.admin.common.BaseTimeEntity;
 import server.admin.brand.model.dto.BrandCreateDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Entity
-@NoArgsConstructor
-@Setter
 @Getter
-public class Brand extends BaseTimeEntity {
+@Setter
+@Table(name = "brand")
+@DynamicInsert
+@DynamicUpdate
+public class Brand extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
     @Column
+    @NotBlank
     private String name;
     @Column(name = "original_name")
+    @NotBlank
     private String originalName;
     @Column
+    @NotBlank
     private String description;
     @Column
     private String recommendation;
@@ -35,19 +44,20 @@ public class Brand extends BaseTimeEntity {
     @Column
     private String color;
     @Column(name = "is_enabled")
+    @NotNull
     private Boolean isEnabled;
 
-    public Brand(BrandCreateDto brandCreateDto){
-        this.description = brandCreateDto.getDescription();
-        this.resource = brandCreateDto.getResource();
-        this.name = brandCreateDto.getName();
-        this.originalName = brandCreateDto.getOriginalName();
-        this.color = brandCreateDto.getColor();
-        this.likes = brandCreateDto.getLikes();
-        this.resourceWallpaper = brandCreateDto.getResourceWallpaper();
-        this.resourceCard = brandCreateDto.getResourceCard();
-        this.isEnabled = true;
-        this.recommendation = brandCreateDto.getRecommendation();
-        this.id = brandCreateDto.getId();
+
+    public static Brand toEntity(final BrandCreateDto brandCreateDto){
+        final Brand entity = new Brand();
+        entity.setColor(brandCreateDto.getColor());
+        entity.setDescription(brandCreateDto.getDescription());
+        entity.setIsEnabled(true);
+        entity.setName(brandCreateDto.getName());
+        entity.setResourceCard(brandCreateDto.getResourceCard());
+        entity.setResource(brandCreateDto.getResource());
+        entity.setResourceWallpaper(brandCreateDto.getResourceWallpaper());
+        entity.setOriginalName(brandCreateDto.getOriginalName());
+        return entity;
     }
 }

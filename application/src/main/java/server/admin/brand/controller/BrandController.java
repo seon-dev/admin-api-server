@@ -1,5 +1,8 @@
 package server.admin.brand.controller;
 
+import org.springframework.data.domain.PageRequest;
+import server.admin.brand.model.dto.BrandUpdateDto;
+import server.admin.brand.model.entity.Brand;
 import server.admin.common.BasicMessage;
 import server.admin.brand.model.dto.BrandCreateDto;
 import server.admin.brand.model.dto.BrandResponseDto;
@@ -8,21 +11,21 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import server.admin.common.cursor.CursorResult;
 
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/brand")
+@RequestMapping("/admin/brand")
 public class BrandController {
     private final BrandService brandService;
+    private static final int DEFAULT_SIZE = 10;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 전체 조회", notes = "브랜드 전체 정보를 조회합니다.")
-    public List<BrandResponseDto> getAllBrand() {
-        return this.brandService.getAllBrand();
+    public CursorResult<BrandResponseDto> getAllBrand(@RequestParam("page") Long cursorId) {
+        return this.brandService.getAllBrand(cursorId, PageRequest.of(0,DEFAULT_SIZE));
     }
 
     @GetMapping("/{brandId}")
@@ -47,5 +50,13 @@ public class BrandController {
         return basicMessage.getMessage();
     }
 
-    //브랜드 수정로직
+    @PutMapping("/{brandId}/brand")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "브랜드 업데이트", notes = "브랜드 정보를 업데이트 합니다.")
+    public BrandResponseDto updateBrand(
+            @PathVariable("brandId") Long brandId,
+            @RequestBody BrandUpdateDto brand
+    ){
+        return this.brandService.updateBrand(brandId,brand);
+    }
 }

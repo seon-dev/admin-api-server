@@ -1,9 +1,13 @@
 package server.admin.brand.model.dto;
 
-import server.admin.brand.model.entity.Brand;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import server.admin.brand.model.entity.Brand;
 
 @Data
+@Builder
 public class BrandResponseDto {
     private Long id;
     private String name;
@@ -16,16 +20,19 @@ public class BrandResponseDto {
     private String resourceCard;
     private String color;
 
-    public BrandResponseDto(Brand brand){
-        this.id = brand.getId();
-        this.name = brand.getName();
-        this.originalName = brand.getOriginalName();
-        this.description = brand.getDescription();
-        this.recommendation = brand.getRecommendation();;
-        this.likes = brand.getLikes();
-        this.resource = brand.getResource();
-        this.resourceWallpaper = brand.getResourceWallpaper();
-        this.resourceCard = brand.getResourceCard();
-        this.color = brand.getColor();
+
+    public static BrandResponseDto ofResponse(Brand entity){
+        return BrandResponseDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .originalName(entity.getOriginalName())
+                .description(entity.getDescription())
+                .recommendation(entity.getRecommendation())
+                .likes(entity.getLikes())
+                .resource(entity.getResource())
+                .resourceWallpaper(entity.getResourceWallpaper())
+                .resourceCard(entity.getResourceCard())
+                .color(entity.getColor())
+                .build();
     }
 }
