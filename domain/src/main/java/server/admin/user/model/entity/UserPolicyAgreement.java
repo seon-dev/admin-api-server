@@ -9,10 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import server.admin.common.BaseTimeEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -22,6 +19,9 @@ import java.io.Serializable;
 @DynamicInsert
 @DynamicUpdate
 public class UserPolicyAgreement extends BaseTimeEntity implements Serializable {
+    @Id @GeneratedValue
+    private Long id;
+    
     @Column(name = "personal_info_agreement", nullable = false)
     private Boolean personalInfoAgreement;
 
@@ -34,12 +34,4 @@ public class UserPolicyAgreement extends BaseTimeEntity implements Serializable 
     @Transient
     @JsonIgnore
     private User user;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private java.sql.Timestamp createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private java.sql.Timestamp updatedAt;
 }

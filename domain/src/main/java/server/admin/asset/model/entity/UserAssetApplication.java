@@ -24,18 +24,18 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "asset_prototype_id")
+    @JoinColumn(name = "asset_prototype_id")
     @JsonIgnore
     private AssetPrototype assetPrototype;
 
     // 희망하는 에셋 형태 (퀼리티 등)
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "asset_id", nullable = true)
+    @JoinColumn(name = "asset_id", nullable = true)
     @JsonIgnore
     private Asset asset;
 
