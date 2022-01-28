@@ -4,9 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import server.admin.badge.model.dto.BadgeCreateUpdateDto;
-import server.admin.badge.model.dto.BadgeResponseDto;
-import server.admin.badge.model.service.BadgeService;
+import server.admin.model.badge.dto.BadgeCreateUpdateDto;
+import server.admin.model.badge.dto.BadgeResponseDto;
+import server.admin.service.badge.BadgeService;
 
 import java.util.List;
 

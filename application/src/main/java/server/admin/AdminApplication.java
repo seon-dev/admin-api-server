@@ -13,9 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaAuditing
 @SpringBootApplication
 @EntityScan({"domain.*", "server.admin.*"})
-@EnableJpaRepositories({"domain.*","server.admin.*"})
+@EnableJpaRepositories({"server.admin"})
 @ComponentScan({
-		"domain.*",
 		"server.admin.*"
 })
 public class AdminApplication {

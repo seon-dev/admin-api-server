@@ -1,17 +1,16 @@
 package server.admin.brand.controller;
 
 import org.springframework.data.domain.PageRequest;
-import server.admin.brand.model.dto.BrandUpdateDto;
-import server.admin.brand.model.entity.Brand;
-import server.admin.common.BasicMessage;
-import server.admin.brand.model.dto.BrandCreateDto;
-import server.admin.brand.model.dto.BrandResponseDto;
-import server.admin.brand.model.service.BrandService;
+import server.admin.model.brand.dto.BrandUpdateDto;
+import server.admin.model.common.BasicMessage;
+import server.admin.model.brand.dto.BrandCreateDto;
+import server.admin.model.brand.dto.BrandResponseDto;
+import server.admin.service.brand.BrandService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import server.admin.common.cursor.CursorResult;
+import server.admin.model.common.cursor.CursorResult;
 
 
 @RestController
@@ -50,7 +49,7 @@ public class BrandController {
         return basicMessage.getMessage();
     }
 
-    @PutMapping("/{brandId}/brand")
+    @PutMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 업데이트", notes = "브랜드 정보를 업데이트 합니다.")
     public BrandResponseDto updateBrand(
