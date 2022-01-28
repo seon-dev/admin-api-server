@@ -23,7 +23,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("server.admin.brand.controller"))
+                .apis(RequestHandlerSelectors.basePackage("server.admin"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
