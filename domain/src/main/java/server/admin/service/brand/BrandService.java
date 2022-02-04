@@ -36,8 +36,8 @@ public class BrandService {
     @Transactional(readOnly = true)
     public CursorResult<BrandResponseDto> getAllBrand(Long cursorId, Pageable pageable){
         final Page<Brand> allWithPagination = this.getBrands(cursorId, pageable);
-        final Page<BrandResponseDto> allDtoWithPagination = new PageImpl<BrandResponseDto>(allWithPagination
-                .map(brand -> { return BrandResponseDto.ofResponse(brand);})
+        final Page<BrandResponseDto> allDtoWithPagination = new PageImpl<>(allWithPagination
+                .map(BrandResponseDto::ofResponse)
                 .toList());
         final List<Brand> brandList = allWithPagination.getContent();
         final Long lastIdOfList = allWithPagination.isEmpty()? null: brandList.get(allWithPagination.getSize()-1).getId();

@@ -1,14 +1,14 @@
 package server.admin.model.brand.dto;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.Getter;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class BrandCreateDto {
-    @NotNull
+    @NotBlank
     private String name;
-    @NotNull
+    @NotBlank
     private String originalName;
     private String description;
     private String resource;

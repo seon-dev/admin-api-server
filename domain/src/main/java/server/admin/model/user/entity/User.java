@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import server.admin.model.common.BaseTimeEntity;
+import server.admin.model.user.role.UserRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -62,6 +63,8 @@ public class User extends BaseTimeEntity implements Serializable {
     @Column(name = "login_verification_expired_at")
     private java.sql.Timestamp loginVerificationExpiredAt;
 
+    @Column
+    private UserRole role;
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 //    @JsonIgnore
 //    private List<UserBadgeEntity> userBadges;

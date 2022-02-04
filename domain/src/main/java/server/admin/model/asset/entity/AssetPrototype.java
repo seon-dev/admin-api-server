@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import server.admin.model.asset.dto.request.AssetPrototypeUpdateRequest;
 import server.admin.model.brand.entity.Brand;
 import server.admin.model.common.BaseTimeEntity;
 
@@ -64,19 +65,19 @@ public class AssetPrototype extends BaseTimeEntity implements Serializable {
     //TODO double type은 부동 소수점으로 오차가 존재. long type으로 고려
     //ref: https://ktko.tistory.com/entry/Effective-Java-48-%EC%A0%95%ED%99%95%ED%95%9C-%EB%8B%B5%EC%9D%B4-%ED%95%84%EC%9A%94%ED%95%98%EB%8B%A4%EB%A9%B4-float%EC%99%80-double%EC%9D%80-%ED%94%BC%ED%95%98%EB%9D%BC
     @Column(name = "release_price", precision = 17, scale = 17)
-    private Double releasePrice;
+    private long releasePrice;
 
     @Column(name = "current_price", precision = 17, scale = 17)
-    private Double currentPrice;
+    private long currentPrice;
 
     @Column(name = "past_price", precision = 17, scale = 17)
-    private Double pastPrice;
+    private long pastPrice;
 
     @Column(name = "latest_bidding_price", precision = 17, scale = 17)
-    private Double latestBiddingPrice;
+    private long latestBiddingPrice;
 
     @Column(name = "yesterday_price", precision = 17, scale = 17)
-    private Double yesterdayPrice;
+    private long yesterdayPrice;
 
     @Column
     private Integer trendy;
@@ -101,4 +102,19 @@ public class AssetPrototype extends BaseTimeEntity implements Serializable {
 
     @Column(name = "is_enabled")
     private Boolean isEnabled = true;
+
+    public static AssetPrototype setBasicEntity(AssetPrototype entity, AssetPrototypeUpdateRequest request){
+        entity.setName(request.getName());
+        entity.setDecorator(request.getDecorator());
+        entity.setAdditional(request.getAdditional());
+        entity.setReleasePrice(request.getReleasePrice());
+        entity.setCurrentPrice(request.getCurrentPrice());
+        entity.setPastPrice(request.getPastPrice());
+        entity.setLatestBiddingPrice(request.getLatestBiddingPrice());
+        entity.setYesterdayPrice(request.getYesterdayPrice());
+        entity.setTrendy(request.getTrendy());
+        entity.setLikes(request.getLikes());
+        entity.setResourceAdditional(request.getResourceAdditional());
+        return entity;
+    }
 }

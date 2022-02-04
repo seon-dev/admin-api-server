@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.common.cursor.CursorResult;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class BrandController {
     @ApiOperation(value = "브랜드 조회", notes = "브랜드 정보를 커서 페이징 베이스로 조회합니다.")
     public CursorResult<BrandResponseDto> getAllBrand(@RequestParam("page") Long cursorId) {
         return this.brandService.getAllBrand(cursorId, PageRequest.of(0,DEFAULT_SIZE));
-    }
+    }//get api 테스트 해보기
 
     @GetMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)
@@ -37,7 +39,7 @@ public class BrandController {
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 생성", notes = "브랜드 정보를 생성합니다.")
-    public BrandResponseDto createBrand(@RequestBody BrandCreateDto brand){
+    public BrandResponseDto createBrand(@RequestBody @Valid BrandCreateDto brand){
         return this.brandService.createBrand(brand);
     }
 
@@ -54,7 +56,7 @@ public class BrandController {
     @ApiOperation(value = "브랜드 업데이트", notes = "브랜드 정보를 업데이트 합니다.")
     public BrandResponseDto updateBrand(
             @PathVariable("brandId") Long brandId,
-            @RequestBody BrandUpdateDto brand
+            @RequestBody @Valid BrandUpdateDto brand
     ){
         return this.brandService.updateBrand(brandId,brand);
     }
