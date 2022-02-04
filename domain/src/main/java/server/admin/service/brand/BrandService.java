@@ -25,12 +25,12 @@ public class BrandService {
     private final BrandRepository brandRepository;
 
     private Page<Brand> getBrands(Long cursorId, Pageable pageable){
-        return cursorId == null ? this.brandRepository.findAllByOrderByIdDesc(pageable): this.brandRepository.findByIdLessThanOrderByIdDesc(cursorId,pageable);
+        return cursorId == null ? brandRepository.findAllByOrderByIdAsc(pageable): brandRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId,pageable);
     }
 
     private Boolean hasNext(Long cursordId) {
         if (cursordId == null) return false;
-        return brandRepository.existsByIdLessThan(cursordId);
+        return brandRepository.existsByIdGreaterThanEqual(cursordId);
     }
 
     @Transactional(readOnly = true)
@@ -40,7 +40,7 @@ public class BrandService {
                 .map(BrandResponseDto::ofResponse)
                 .toList());
         final List<Brand> brandList = allWithPagination.getContent();
-        final Long lastIdOfList = allWithPagination.isEmpty()? null: brandList.get(allWithPagination.getSize()-1).getId();
+        final Long lastIdOfList = allWithPagination.isEmpty()? null: brandList.get(brandList.size()-1).getId();
         return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
     }
 

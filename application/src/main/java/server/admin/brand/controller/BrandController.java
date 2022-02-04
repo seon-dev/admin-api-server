@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/admin/brand")
 public class BrandController {
     private final BrandService brandService;
-    private static final int DEFAULT_SIZE = 10;
+    private static final int DEFAULT_SIZE = 5;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

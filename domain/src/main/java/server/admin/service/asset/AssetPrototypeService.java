@@ -1,7 +1,6 @@
 package server.admin.service.asset;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import server.admin.model.asset.dto.request.AssetPrototypeCreateRequest;
 import server.admin.model.asset.dto.request.AssetPrototypeUpdateRequest;
@@ -15,6 +14,11 @@ import server.admin.model.brand.repository.BrandRepository;
 
 import java.util.Optional;
 
+import static server.admin.model.asset.exception.AssetBrandCategoryException.*;
+import static server.admin.model.asset.exception.AssetCollectionException.*;
+import static server.admin.model.asset.exception.AssetLineException.*;
+import static server.admin.model.brand.exception.BrandException.*;
+
 @Service
 @RequiredArgsConstructor
 public class AssetPrototypeService {
@@ -26,27 +30,27 @@ public class AssetPrototypeService {
     private final AssetBrandCategoryRepository assetBrandCategoryRepository;
 
     private AssetLine findAssetLine(Long assetId){
-        return assetId != null ? assetLineRepository.findById(assetId).orElseThrow(() -> new AssetLineException.AssetLineNotExistException()) : null;
+        return assetId != null ? assetLineRepository.findById(assetId).orElseThrow(AssetLineNotExistException::new) : null;
     }
     private AssetCollection findAssetCollection(Long assetCollectionId){
-        return assetCollectionId != null ? assetCollectionRepository.findById(assetCollectionId).orElseThrow(() -> new AssetCollectionException.AssetCollectionNotExistException()) : null;
+        return assetCollectionId != null ? assetCollectionRepository.findById(assetCollectionId).orElseThrow(AssetCollectionNotExistException::new) : null;
     }
     private AssetSeason findAssetSeason(Long assetSeasonId){
-        return assetSeasonId != null ? assetSeasonRepository.findById(assetSeasonId).orElseThrow(() -> new AssetLineException.AssetLineNotExistException()) : null;
+        return assetSeasonId != null ? assetSeasonRepository.findById(assetSeasonId).orElseThrow(AssetLineNotExistException::new) : null;
     }
     private AssetBrandCategory findAssetBrandCategory(Long assetBrandCateogryId){
-        return assetBrandCateogryId != null ? assetBrandCategoryRepository.findById(assetBrandCateogryId).orElseThrow(() -> new AssetBrandCategoryException.AssetBrandCategoryNotExistException()) : null;
+        return assetBrandCateogryId != null ? assetBrandCategoryRepository.findById(assetBrandCateogryId).orElseThrow(AssetBrandCategoryNotExistException::new) : null;
     }
     private Brand findBrand(Long BrandId){
-        return BrandId != null ? brandRepository.findById(BrandId).orElseThrow(() -> new BrandException.BrandNotExistException()) : null;
+        return BrandId != null ? brandRepository.findById(BrandId).orElseThrow(BrandNotExistException::new) : null;
     }
 
     public AssetPrototypeResponse createAssetPrototype(AssetPrototypeCreateRequest request){
         AssetPrototype assetPrototype = AssetPrototypeCreateRequest.toEntity(request);
-        assetPrototype.setBrand(brandRepository.findById(request.getBrandId()).orElseThrow(()-> new BrandException.BrandNotExistException()));
-        assetPrototype.setCollection(assetCollectionRepository.findById(request.getAssetCollectionId()).orElseThrow(()-> new AssetCollectionException.AssetCollectionNotExistException()));
-        assetPrototype.setSeason(assetSeasonRepository.findById(request.getAssetSeasonId()).orElseThrow(() -> new AssetSeasonException.AssetSeasonNotExistException()));
-        assetPrototype.setLine(assetLineRepository.findById(request.getAssetLineId()).orElseThrow(()-> new AssetLineException.AssetLineNotExistException()));
+        assetPrototype.setBrand(findBrand(request.getBrandId()));
+        assetPrototype.setCollection(findAssetCollection(request.getAssetCollectionId()));
+        assetPrototype.setSeason(findAssetSeason(request.getAssetSeasonId()));
+        assetPrototype.setLine(findAssetLine(request.getAssetLineId()));
         return AssetPrototypeResponse.toResponse(assetPrototypeRepository.save(assetPrototype));
     }
 
@@ -76,7 +80,7 @@ public class AssetPrototypeService {
     public void deleteAssetPrototype(Long assetId){
         Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findById(assetId);
         optionalAssetPrototype.ifPresentOrElse(
-                assetPrototype -> assetPrototypeRepository.delete(assetPrototype),
+                assetPrototypeRepository::delete,
                 () -> { throw new AssetPrototypeException.AssetPrototypeNotExistException(); }
         );
     }

@@ -27,7 +27,6 @@ public class AssetPrototypeCreateRequest {
     private String resourceRear;
     private String resourceSide;
     private String resourceAdditional;
-    @NotNull
     private Long brandId;
     private Long assetLineId;
     private Long assetSeasonId;

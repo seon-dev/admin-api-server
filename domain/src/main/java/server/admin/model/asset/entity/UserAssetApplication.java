@@ -3,6 +3,7 @@ package server.admin.model.asset.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import server.admin.model.common.BaseTimeEntity;
@@ -26,7 +27,7 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
-    private User userId;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asset_prototype_id")
@@ -73,6 +74,7 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     @Column(name = "verifier_comment", length = 100)
     private String verifierComment;
 
+    @CreationTimestamp
     @Column(name = "verified_at")
     private Timestamp verifiedAt;
 

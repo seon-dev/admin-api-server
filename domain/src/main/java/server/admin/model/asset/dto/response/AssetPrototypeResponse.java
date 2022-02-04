@@ -10,7 +10,7 @@ import server.admin.model.brand.entity.Brand;
 @Getter
 @Setter
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)//null인 경우 반환할지말지 태훈님이랑 얘기해보기
+//@JsonInclude(JsonInclude.Include.NON_NULL)//null인 경우 반환할지말지 태훈님이랑 얘기해보기
 public class AssetPrototypeResponse {
     private String name;
     private String decorator;

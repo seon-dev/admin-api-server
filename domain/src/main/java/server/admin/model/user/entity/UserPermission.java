@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import server.admin.model.common.BaseTimeEntity;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @DynamicInsert
 @DynamicUpdate
-public class UserPermission {
+public class UserPermission extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long permissionId;
     @ManyToOne(fetch = FetchType.LAZY)
