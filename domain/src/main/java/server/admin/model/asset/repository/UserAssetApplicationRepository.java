@@ -9,4 +9,5 @@ public interface UserAssetApplicationRepository extends JpaRepository<UserAssetA
     Page<UserAssetApplication> findByIdGreaterThanEqualOrderByIdAsc(Long id, Pageable pageable);
     Page<UserAssetApplication> findAllByOrderByIdAsc(Pageable pageable);
     Boolean existsByIdGreaterThan(Long id);
+
 }

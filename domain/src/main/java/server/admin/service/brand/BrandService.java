@@ -24,8 +24,8 @@ import static server.admin.model.brand.exception.BrandException.*;
 public class BrandService {
     private final BrandRepository brandRepository;
 
-    private Page<Brand> getBrandsWithPage(Long cursorId, Pageable pageable){
-        return cursorId == null ? brandRepository.findAllByOrderByIdAsc(pageable): brandRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId,pageable);
+    private List<Brand> getBrandsWithPage(Long cursorId, Pageable pageable){
+        return cursorId == null ? brandRepository.findAllByIsEnabledEqualsOrderByIdAsc(true): brandRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId,true);
     }
 
     private Boolean hasNext(Long lastId) {
@@ -35,13 +35,13 @@ public class BrandService {
 
     @Transactional(readOnly = true)
     public CursorResult<BrandResponse> getAllBrand(Long cursorId, Pageable pageable){
-        final Page<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable);
-        final Page<BrandResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
-                .map(BrandResponse::toResponse)
-                .toList());
+        final List<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable).stream().limit(5).toList();
+        final List<BrandResponse> allDtoWithPagination = allWithPagination
+                .stream().map(BrandResponse::toResponse)
+                .toList();
 
-        final List<Brand> brandList = allWithPagination.getContent();
-        final Long lastIdOfList = !allWithPagination.isEmpty() ? brandList.get(brandList.size()-1).getId() : null;
+//        final List<Brand> brandList = allWithPagination.getContent();
+        final Long lastIdOfList = !allWithPagination.isEmpty() ? allDtoWithPagination.get(allDtoWithPagination.size()-1).getId() : null;
 
         return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
     }

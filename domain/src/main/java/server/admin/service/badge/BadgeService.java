@@ -31,18 +31,18 @@ public class BadgeService {
         return badgeRepository.existsByIdGreaterThan(lastId);
     }
 
-    @Transactional(readOnly = true)
-    public CursorResult<BadgeResponse> getAllBadge(Long cursorId, Pageable pageable){
-        final Page<Badge> allWithPagination = this.getBadgesWithPage(cursorId, pageable);
-        final Page<BadgeResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
-                .map(BadgeResponse::toResponse)
-                .toList());
-
-        final List<Badge> badgeList = allWithPagination.getContent();
-        final Long lastIdOfList = !allWithPagination.isEmpty() ? badgeList.get(badgeList.size()-1).getId() : null;
-
-        return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
-    }
+//    @Transactional(readOnly = true)
+//    public CursorResult<BadgeResponse> getAllBadge(Long cursorId, Pageable pageable){
+//        final Page<Badge> allWithPagination = this.getBadgesWithPage(cursorId, pageable);
+//        final Page<BadgeResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
+//                .map(BadgeResponse::toResponse)
+//                .toList());
+//
+//        final List<Badge> badgeList = allWithPagination.getContent();
+//        final Long lastIdOfList = !allWithPagination.isEmpty() ? badgeList.get(badgeList.size()-1).getId() : null;
+//
+//        return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
+//    }
 
     @Transactional(readOnly = true)
     public BadgeResponse getBadge(Long badgeId){

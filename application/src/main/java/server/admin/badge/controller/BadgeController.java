@@ -19,15 +19,15 @@ public class BadgeController {
     private final BadgeService badgeService;
     private final String DEFAULT_SIZE = "5";
 
-    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation("뱃지 전체 항목 조회")
-    public CursorResult<BadgeResponse> getBadges(
-            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
-            @RequestParam("cursorId") Long cursorId
-    ) {
-        return this.badgeService.getAllBadge(cursorId, PageRequest.of(0, size));
-    }
+//    @GetMapping()
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation("뱃지 전체 항목 조회")
+//    public CursorResult<BadgeResponse> getBadges(
+//            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
+//            @RequestParam("cursorId") Long cursorId
+//    ) {
+//        return this.badgeService.getAllBadge(cursorId, PageRequest.of(0, size));
+//    }
 
     @GetMapping("/{badgeId}")
     @ResponseStatus(HttpStatus.OK)

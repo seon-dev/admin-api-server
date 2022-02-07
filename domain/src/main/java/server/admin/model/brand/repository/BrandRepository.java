@@ -6,9 +6,11 @@ import server.admin.model.brand.entity.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
-    Page<Brand> findAllByOrderByIdAsc(Pageable pageable);
-    Page<Brand> findByIdGreaterThanEqualOrderByIdAsc(Long id, Pageable pageable);
+    List<Brand> findAllByIsEnabledEqualsOrderByIdAsc(Boolean isEnabled);
+    List<Brand> findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(Long id, Boolean isEnabled);
     Boolean existsByIdGreaterThan(Long id);
 }

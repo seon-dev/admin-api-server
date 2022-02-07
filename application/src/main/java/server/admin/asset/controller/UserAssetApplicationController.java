@@ -26,13 +26,13 @@ public class UserAssetApplicationController {
         return userAssetApplicationService.getUserAssetApplication(userAssetApplicationId);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "유저 에셋 신청 정보 조회", notes = "커서 페이지네이션에 맞는 유저 에셋 신청 정보를 조회합니다.")
-    public CursorResult<UserAssetApplicationResponse> getAllUserAssetApplication(
-            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
-            @RequestParam("cursorId") Long cursorId
-    ){
-        return userAssetApplicationService.getAllUserAssetApplication(cursorId, PageRequest.of(0, size));
-    }
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "유저 에셋 신청 정보 조회", notes = "커서 페이지네이션에 맞는 유저 에셋 신청 정보를 조회합니다.")
+//    public CursorResult<UserAssetApplicationResponse> getAllUserAssetApplication(
+//            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
+//            @RequestParam("cursorId") Long cursorId
+//    ){
+//        return userAssetApplicationService.getAllUserAssetApplication(cursorId, PageRequest.of(0, size));
+//    }
 }

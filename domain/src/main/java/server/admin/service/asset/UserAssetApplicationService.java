@@ -37,18 +37,18 @@ public class UserAssetApplicationService {
         return UserAssetApplicationResponse.toResponse(optionalUserAssetApplication.get());
     }
 
-    @Transactional(readOnly = true)
-    public CursorResult<UserAssetApplicationResponse> getAllUserAssetApplication(Long cursorId, Pageable pageable){
-        final Page<UserAssetApplication> allWithPagination = this.getUserAssetApplicationsWithPage(cursorId, pageable);
-        final Page<UserAssetApplicationResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
-                .map(UserAssetApplicationResponse::toResponse)
-                .toList());
-
-        final List<UserAssetApplication> userAssetApplicationList = allWithPagination.getContent();
-        final Long lastIdOfList = !allWithPagination.isEmpty() ? userAssetApplicationList.get(userAssetApplicationList.size()-1).getId() : null;
-
-        return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
-    }
+//    @Transactional(readOnly = true)
+//    public CursorResult<UserAssetApplicationResponse> getAllUserAssetApplication(Long cursorId, Pageable pageable){
+//        final Page<UserAssetApplication> allWithPagination = this.getUserAssetApplicationsWithPage(cursorId, pageable);
+//        final Page<UserAssetApplicationResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
+//                .map(UserAssetApplicationResponse::toResponse)
+//                .toList());
+//
+//        final List<UserAssetApplication> userAssetApplicationList = allWithPagination.getContent();
+//        final Long lastIdOfList = !allWithPagination.isEmpty() ? userAssetApplicationList.get(userAssetApplicationList.size()-1).getId() : null;
+//
+//        return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
+//    }
 
 
 
