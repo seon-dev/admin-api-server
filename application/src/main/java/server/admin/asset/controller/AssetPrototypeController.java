@@ -42,8 +42,8 @@ public class AssetPrototypeController {
     @GetMapping("/{assetPrototypeId}")
     @ApiOperation(value= "단일 에셋 프로토타입 조회", notes = "해당하는 에셋 프로토타입을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
-    public AssetPrototypeResponse getAssetPrototype(@RequestParam("assetPrototypeId") Long assetPrototypeId){
-        return assetPrototypeService.getAssetPrototype(assetPrototypeId);
+    public AssetPrototypeResponse getAssetPrototype(@PathVariable("assetPrototypeId") Long assetPrototypeId){
+        return assetPrototypeService.getAssetPrototype(assetPrototypeId);//페치조인으로 Get하는걸로 수정하기
     }
 
     @PutMapping("/{assetPrototypeId}")

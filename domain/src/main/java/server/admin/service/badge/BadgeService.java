@@ -23,7 +23,7 @@ public class BadgeService {
     private final BadgeRepository badgeRepository;
 
     private Page<Badge> getBadgesWithPage(Long cursorId, Pageable pageable){
-        return cursorId == null ? badgeRepository.findAllByIsEnabledEqualsOrderByIdAsc(pageable): badgeRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId, pageable);
+        return cursorId == null ? badgeRepository.findAllByOrderByIdAsc(pageable,true): badgeRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId, pageable,true);
     }
 
     private Boolean hasNext(Long lastId) {
@@ -72,7 +72,7 @@ public class BadgeService {
         Optional<Badge> optionalBadge = badgeRepository.findById(badgeId);
         optionalBadge.orElseThrow(BadgeNotExistException::new);
         optionalBadge.ifPresentOrElse(
-                badge -> { badge.setIsEnabled(false);},
+                badge -> { badgeRepository.delete(badge); },
                 () -> {
                     throw new BadgeNotExistException();
                 }

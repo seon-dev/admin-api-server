@@ -1,5 +1,6 @@
 package server.admin.model.asset.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,9 @@ import java.util.Date;
 @Builder
 public class UserAssetApplicationResponse {
     private Integer offer;
+    @JsonIgnore
     private User user;
+
     private AssetPrototype assetPrototype;
     private Asset asset;
     private String resourceRear;

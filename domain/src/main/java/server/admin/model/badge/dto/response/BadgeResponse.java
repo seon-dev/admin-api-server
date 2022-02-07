@@ -1,7 +1,11 @@
 package server.admin.model.badge.dto.response;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import server.admin.model.badge.entity.Badge;
+@Getter
+@Setter
 @Builder
 public class BadgeResponse {
 

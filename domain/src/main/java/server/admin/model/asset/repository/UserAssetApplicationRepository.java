@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import server.admin.model.asset.entity.UserAssetApplication;
 
 public interface UserAssetApplicationRepository extends JpaRepository<UserAssetApplication, Long> {
-    Page<UserAssetApplication> findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(Long id, Pageable pageable);
-    Page<UserAssetApplication> findAllByIsEnabledEqualsOrderByIdAsc(Pageable pageable);
+    Page<UserAssetApplication> findByIdGreaterThanEqualOrderByIdAsc(Long id, Pageable pageable);
+    Page<UserAssetApplication> findAllByOrderByIdAsc(Pageable pageable);
     Boolean existsByIdGreaterThan(Long id);
 
 }

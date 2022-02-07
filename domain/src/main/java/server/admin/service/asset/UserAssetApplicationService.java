@@ -21,7 +21,7 @@ public class UserAssetApplicationService {
     private final UserAssetApplicationRepository userAssetApplicationRepository;
 
     private Page<UserAssetApplication> getUserAssetApplicationsWithPage(Long cursorId, Pageable pageable){
-        return cursorId == null ? userAssetApplicationRepository.findAllByIsEnabledEqualsOrderByIdAsc(pageable): userAssetApplicationRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId, pageable);
+        return cursorId == null ? userAssetApplicationRepository.findAllByOrderByIdAsc(pageable): userAssetApplicationRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId, pageable);
     }
 
     private Boolean hasNext(Long lastId) {
@@ -32,6 +32,7 @@ public class UserAssetApplicationService {
     @Transactional(readOnly = true)
     public UserAssetApplicationResponse getUserAssetApplication(Long userAssetApplicationId){
         Optional<UserAssetApplication> optionalUserAssetApplication = userAssetApplicationRepository.findById(userAssetApplicationId);
+        //이부분 페치조인사용해서 가져오기로 수정하기
         optionalUserAssetApplication.orElseThrow(BrandException.BrandNotExistException::new);
         return UserAssetApplicationResponse.toResponse(optionalUserAssetApplication.get());
     }
