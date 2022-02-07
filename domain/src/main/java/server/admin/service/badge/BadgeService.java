@@ -23,7 +23,7 @@ public class BadgeService {
     private final BadgeRepository badgeRepository;
 
     private Page<Badge> getBadgesWithPage(Long cursorId, Pageable pageable){
-        return cursorId == null ? badgeRepository.findAllByOrderByIdAsc(pageable): badgeRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId, pageable);
+        return cursorId == null ? badgeRepository.findAllByIsEnabledEqualsOrderByIdAsc(pageable): badgeRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId, pageable);
     }
 
     private Boolean hasNext(Long lastId) {

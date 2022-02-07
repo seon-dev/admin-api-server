@@ -8,7 +8,7 @@ import server.admin.model.badge.entity.Badge;
 
 @Repository
 public interface BadgeRepository extends JpaRepository<Badge, Long> {
-    Page<Badge> findAllByOrderByIdAsc(Pageable pageable);
-    Page<Badge> findByIdGreaterThanEqualOrderByIdAsc(Long id, Pageable pageable);
+    Page<Badge> findAllByIsEnabledEqualsOrderByIdAsc(Pageable pageable);
+    Page<Badge> findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(Long id, Pageable pageable);
     Boolean existsByIdGreaterThan(Long id);
 }

@@ -12,7 +12,6 @@ import server.admin.model.asset.repository.UserAssetApplicationRepository;
 import server.admin.model.brand.exception.BrandException;
 import server.admin.model.common.cursor.CursorResult;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +21,7 @@ public class UserAssetApplicationService {
     private final UserAssetApplicationRepository userAssetApplicationRepository;
 
     private Page<UserAssetApplication> getUserAssetApplicationsWithPage(Long cursorId, Pageable pageable){
-        return cursorId == null ? userAssetApplicationRepository.findAllByOrderByIdAsc(pageable): userAssetApplicationRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId, pageable);
+        return cursorId == null ? userAssetApplicationRepository.findAllByIsEnabledEqualsOrderByIdAsc(pageable): userAssetApplicationRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId, pageable);
     }
 
     private Boolean hasNext(Long lastId) {
