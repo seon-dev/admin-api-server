@@ -2,10 +2,12 @@ package server.admin.badge.controller;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.badge.dto.BadgeCreateUpdateDto;
 import server.admin.model.badge.dto.BadgeResponseDto;
+import server.admin.model.common.cursor.CursorResult;
 import server.admin.service.badge.BadgeService;
 
 import java.util.List;
@@ -15,12 +17,13 @@ import java.util.List;
 @RequestMapping("/admin/badge")
 public class BadgeController {
     private final BadgeService badgeService;
-
+    private final String DEFAULT_SIZE = "5";
+    
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("뱃지 전체 항목 조회")
-    public List<BadgeResponseDto> getBadges(){
-        return this.badgeService.getAllBadge();
+    public CursorResult<BadgeResponseDto> getBadges(@RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size, @RequestParam("cursorId") Long cursorId){
+        return this.badgeService.getAllBadge(cursorId, PageRequest.of(0, size));
     }
 
     @GetMapping("/{badgeId}")

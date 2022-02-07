@@ -17,7 +17,7 @@ public class AssetPrototypeHandler {
     @Getter
     @RequiredArgsConstructor
     public enum AssetPrototypeErrorCode {
-        ASSET_PROTOTYPE_NOT_EXIST_CODE("asset_prototype_404", "해당하는 에셋 라인이 존재하지 않습니다.");
+        ASSET_PROTOTYPE_NOT_EXIST_CODE("asset_prototype_404", "해당하는 에셋 에셋프로토타입이 존재하지 않습니다.");
 
         private final String statusCode;
         private final String description;

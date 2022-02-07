@@ -37,7 +37,7 @@ public class BrandService {
     public CursorResult<BrandResponseDto> getAllBrand(Long cursorId, Pageable pageable){
         final Page<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable);
         final Page<BrandResponseDto> allDtoWithPagination = new PageImpl<>(allWithPagination
-                .map(BrandResponseDto::ofResponse)
+                .map(BrandResponseDto::toResponse)
                 .toList());
 
         final List<Brand> brandList = allWithPagination.getContent();
@@ -48,14 +48,14 @@ public class BrandService {
 
     public BrandResponseDto createBrand(BrandCreateDto brandCreateDto){
         Brand brand = this.brandRepository.save(Brand.toEntity(brandCreateDto));
-        return BrandResponseDto.ofResponse(brand);
+        return BrandResponseDto.toResponse(brand);
     }
 
     @Transactional(readOnly = true)
     public BrandResponseDto getBrand(Long brandId) {
         Optional<Brand> brand = this.brandRepository.findById(brandId);
         brand.orElseThrow(()-> new NoSuchElementException("해당되는 브랜드가 존재하지 않습니다."));
-        return BrandResponseDto.ofResponse(brand.get());
+        return BrandResponseDto.toResponse(brand.get());
     }
 
     public BasicMessage deleteBrand(Long brandId) {
@@ -78,7 +78,7 @@ public class BrandService {
             brand.setResource(brandUpdateDto.getResource());
             brand.setResourceCard(brandUpdateDto.getResourceCard());
             brand.setResourceWallpaper(brandUpdateDto.getResourceWallpaper());
-            return BrandResponseDto.ofResponse(brand);
+            return BrandResponseDto.toResponse(brand);
 
     }
 

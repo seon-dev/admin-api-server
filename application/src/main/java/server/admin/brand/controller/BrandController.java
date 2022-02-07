@@ -20,12 +20,12 @@ import javax.validation.Valid;
 @RequestMapping("/admin/brand")
 public class BrandController {
     private final BrandService brandService;
-    private static final int DEFAULT_SIZE = 5;
+    private final String DEFAULT_SIZE = "5";
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 조회", notes = "브랜드 정보를 커서 페이징 베이스로 조회합니다.")
-    public CursorResult<BrandResponseDto> getAllBrand(@RequestParam(value = "size", defaultValue = "5") Integer size, @RequestParam("cursorId") Long cursorId) {
+    public CursorResult<BrandResponseDto> getAllBrand(@RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size, @RequestParam("cursorId") Long cursorId) {
         return this.brandService.getAllBrand(cursorId, PageRequest.of(0,size));
     }
 

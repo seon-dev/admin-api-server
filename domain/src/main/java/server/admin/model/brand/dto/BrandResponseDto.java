@@ -19,7 +19,7 @@ public class BrandResponseDto {
     private String color;
 
 
-    public static BrandResponseDto ofResponse(Brand entity){
+    public static BrandResponseDto toResponse(Brand entity){
         return BrandResponseDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
