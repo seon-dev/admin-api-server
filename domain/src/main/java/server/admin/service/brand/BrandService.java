@@ -7,6 +7,7 @@ import server.admin.model.brand.dto.BrandCreateDto;
 import server.admin.model.brand.dto.BrandResponseDto;
 import server.admin.model.brand.dto.BrandUpdateDto;
 import server.admin.model.brand.entity.Brand;
+import server.admin.model.brand.exception.BrandException;
 import server.admin.model.brand.repository.BrandRepository;
 import server.admin.model.common.BasicMessage;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import server.admin.model.common.cursor.CursorResult;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static server.admin.model.brand.exception.BrandException.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,13 +57,13 @@ public class BrandService {
     @Transactional(readOnly = true)
     public BrandResponseDto getBrand(Long brandId) {
         Optional<Brand> brand = this.brandRepository.findById(brandId);
-        brand.orElseThrow(()-> new NoSuchElementException("해당되는 브랜드가 존재하지 않습니다."));
+        brand.orElseThrow(BrandNotExistException::new);
         return BrandResponseDto.toResponse(brand.get());
     }
 
     public BasicMessage deleteBrand(Long brandId) {
         Optional<Brand> brand = this.brandRepository.findById(brandId);
-        brand.orElseThrow(()-> new NoSuchElementException("해당되는 브랜드가 존재하지 않습니다."));
+        brand.orElseThrow(BrandNotExistException::new);
         brandRepository.delete(brand.get());
         return new BasicMessage("브랜드가 성공적으로 삭제되었습니다.");
 
@@ -68,7 +71,7 @@ public class BrandService {
 
     public BrandResponseDto updateBrand(Long brandId, BrandUpdateDto brandUpdateDto){
         Optional<Brand> optionalBrand = this.brandRepository.findById(brandId);
-        optionalBrand.orElseThrow(()->new NoSuchElementException("해당하는 브랜드가 존재하지 않습니다."));
+        optionalBrand.orElseThrow(BrandNotExistException::new);
             Brand brand = optionalBrand.get();
             brand.setColor(brandUpdateDto.getColor());
             brand.setName(brandUpdateDto.getName());
