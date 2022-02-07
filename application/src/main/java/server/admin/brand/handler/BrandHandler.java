@@ -11,6 +11,8 @@ import server.admin.model.brand.exception.BrandException;
 
 import java.time.LocalDateTime;
 
+import static server.admin.model.brand.exception.BrandException.*;
+
 public class BrandHandler {
     @Getter
     @RequiredArgsConstructor
@@ -20,8 +22,8 @@ public class BrandHandler {
         private final String description;
     }
 
-    @ExceptionHandler(BrandException.BrandNotExistException.class)
-    public ErrorResponse BrandNotExistHandler(BrandException.BrandNotExistException exception){
+    @ExceptionHandler(BrandNotExistException.class)
+    public ErrorResponse BrandNotExistHandler(BrandNotExistException exception){
         return new ErrorResponse(LocalDateTime.now(), BrandErrorCode.BRAND_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

@@ -46,9 +46,8 @@ public class BrandController {
     @DeleteMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 삭제", notes = "브랜드 정보를 삭제합니다.")
-    public String deleteBrand(@PathVariable("brandId") Long brandId){
-        BasicMessage basicMessage =  this.brandService.deleteBrand(brandId);
-        return basicMessage.getMessage();
+    public void deleteBrand(@PathVariable("brandId") Long brandId){
+        this.brandService.deleteBrand(brandId);
     }
 
     @PutMapping("/{brandId}")

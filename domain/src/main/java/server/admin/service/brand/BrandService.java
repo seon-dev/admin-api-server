@@ -3,6 +3,7 @@ package server.admin.service.brand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import server.admin.model.asset.exception.AssetPrototypeException;
 import server.admin.model.brand.dto.BrandCreateDto;
 import server.admin.model.brand.dto.BrandResponseDto;
 import server.admin.model.brand.dto.BrandUpdateDto;
@@ -61,12 +62,14 @@ public class BrandService {
         return BrandResponseDto.toResponse(brand.get());
     }
 
-    public BasicMessage deleteBrand(Long brandId) {
-        Optional<Brand> brand = this.brandRepository.findById(brandId);
-        brand.orElseThrow(BrandNotExistException::new);
-        brandRepository.delete(brand.get());
-        return new BasicMessage("브랜드가 성공적으로 삭제되었습니다.");
-
+    public void deleteBrand(Long brandId) {
+        Optional<Brand> brand = brandRepository.findById(brandId);
+        brand.ifPresentOrElse(
+                singleBrand -> { singleBrand.setIsEnabled(false);},
+                () -> {
+                    throw new BrandNotExistException();
+                }
+        );
     }
 
     public BrandResponseDto updateBrand(Long brandId, BrandUpdateDto brandUpdateDto){

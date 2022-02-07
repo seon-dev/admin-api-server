@@ -17,6 +17,7 @@ import java.util.Optional;
 import static server.admin.model.asset.exception.AssetBrandCategoryException.*;
 import static server.admin.model.asset.exception.AssetCollectionException.*;
 import static server.admin.model.asset.exception.AssetLineException.*;
+import static server.admin.model.asset.exception.AssetPrototypeException.*;
 import static server.admin.model.brand.exception.BrandException.*;
 
 @Service
@@ -80,8 +81,10 @@ public class AssetPrototypeService {
     public void deleteAssetPrototype(Long assetId){
         Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findById(assetId);
         optionalAssetPrototype.ifPresentOrElse(
-                assetPrototypeRepository::delete,
-                () -> { throw new AssetPrototypeException.AssetPrototypeNotExistException(); }
+                assetPrototype -> { assetPrototype.setIsEnabled(false);},
+                () -> {
+                    throw new AssetPrototypeNotExistException();
+                }
         );
     }
 }

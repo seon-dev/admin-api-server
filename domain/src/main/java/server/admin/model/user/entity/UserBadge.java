@@ -36,4 +36,7 @@ public class UserBadge extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "badge_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @JsonIgnore
     private Badge badge;
+
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 }

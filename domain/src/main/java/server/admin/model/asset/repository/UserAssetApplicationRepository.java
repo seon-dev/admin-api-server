@@ -8,5 +8,5 @@ import server.admin.model.asset.entity.UserAssetApplication;
 public interface UserAssetApplicationRepository extends JpaRepository<UserAssetApplication, Long> {
     Page<UserAssetApplication> findByIdGreaterThanEqualOrderByIdAsc(Long id, Pageable pageable);
     Page<UserAssetApplication> findAllByOrderByIdAsc(Pageable pageable);
-    Boolean existsByIdGreaterThanEqual(Long id);
+    Boolean existsByIdGreaterThan(Long id);
 }

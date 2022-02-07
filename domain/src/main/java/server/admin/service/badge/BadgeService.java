@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.badge.dto.BadgeResponseDto;
 import server.admin.model.badge.dto.BadgeCreateUpdateDto;
 import server.admin.model.badge.entity.Badge;
+import server.admin.model.badge.exception.BadgeException;
 import server.admin.model.badge.repository.BadgeRepository;
 import server.admin.model.brand.dto.BrandResponseDto;
 import server.admin.model.brand.entity.Brand;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static server.admin.model.badge.exception.BadgeException.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,16 +49,17 @@ public class BadgeService {
         return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
     }
 
+    @Transactional(readOnly = true)
     public BadgeResponseDto getBadge(Long badgeId){
         Optional<Badge> optionalBadge = badgeRepository.findById(badgeId);
-        optionalBadge.orElseThrow(()->new NoSuchElementException("해당하는 뱃지가 존재하지 않습니다."));
+        optionalBadge.orElseThrow(BadgeNotExistException::new);
         return BadgeResponseDto.toResponse(optionalBadge.get());
     }
 
     public BadgeResponseDto updateBadge(Long badgeId, BadgeCreateUpdateDto dto){
          Optional<Badge> optionalBadge=badgeRepository.findById(badgeId);
 
-         optionalBadge.orElseThrow(()->new NoSuchElementException("해당하는 뱃지가 존재하지 않습니다."));
+         optionalBadge.orElseThrow(BadgeNotExistException::new);
 
          Badge badge = optionalBadge.get();
          badge.setName(dto.getName());
@@ -71,10 +75,13 @@ public class BadgeService {
 
     public void deleteBadge(Long badgeId){
         Optional<Badge> optionalBadge = badgeRepository.findById(badgeId);
-
-        optionalBadge.orElseThrow(()-> new NoSuchElementException("해당하는 뱃지가 존재하지 않습니다."));
-
-        badgeRepository.delete(optionalBadge.get());
+        optionalBadge.orElseThrow(BadgeNotExistException::new);
+        optionalBadge.ifPresentOrElse(
+                badge -> { badge.setIsEnabled(false);},
+                () -> {
+                    throw new BadgeNotExistException();
+                }
+        );
     }
 
 }

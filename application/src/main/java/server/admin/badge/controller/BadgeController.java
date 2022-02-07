@@ -18,7 +18,7 @@ import java.util.List;
 public class BadgeController {
     private final BadgeService badgeService;
     private final String DEFAULT_SIZE = "5";
-    
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("뱃지 전체 항목 조회")
@@ -50,5 +50,11 @@ public class BadgeController {
         return this.badgeService.saveBadge(dto);
     }
 
+    @DeleteMapping ("/{badgeId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "뱃지 삭제", notes = "해당 뱃지 항목을 영구 삭제합니다.")
+    public void deleteBadge(@RequestParam("badgeId") Long badgeId){
+        this.badgeService.deleteBadge(badgeId);
+    }
 
 }
