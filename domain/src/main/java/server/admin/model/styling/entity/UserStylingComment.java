@@ -20,7 +20,7 @@ public class UserStylingComment extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = true;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

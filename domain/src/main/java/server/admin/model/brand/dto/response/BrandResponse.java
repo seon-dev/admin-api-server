@@ -1,4 +1,4 @@
-package server.admin.model.brand.dto;
+package server.admin.model.brand.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,7 +6,7 @@ import server.admin.model.brand.entity.Brand;
 
 @Data
 @Builder
-public class BrandResponseDto {
+public class BrandResponse {
     private Long id;
     private String name;
     private String originalName;
@@ -19,8 +19,8 @@ public class BrandResponseDto {
     private String color;
 
 
-    public static BrandResponseDto toResponse(Brand entity){
-        return BrandResponseDto.builder()
+    public static BrandResponse toResponse(Brand entity){
+        return BrandResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .originalName(entity.getOriginalName())

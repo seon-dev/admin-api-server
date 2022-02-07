@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
 import server.admin.model.asset.entity.UserAssetApplication;
 import server.admin.model.asset.repository.UserAssetApplicationRepository;
-import server.admin.model.brand.dto.BrandResponseDto;
-import server.admin.model.brand.entity.Brand;
 import server.admin.model.brand.exception.BrandException;
 import server.admin.model.common.cursor.CursorResult;
 

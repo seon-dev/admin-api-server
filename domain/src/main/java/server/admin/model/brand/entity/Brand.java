@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import server.admin.model.common.BaseTimeEntity;
-import server.admin.model.brand.dto.BrandCreateDto;
+import server.admin.model.brand.dto.request.BrandCreateRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -45,10 +45,10 @@ public class Brand extends BaseTimeEntity implements Serializable {
     private String color;
     @Column(name = "is_enabled")
     @NotNull
-    private Boolean isEnabled;
+    private Boolean isEnabled = true;
 
 
-    public static Brand toEntity(final BrandCreateDto brandCreateDto){
+    public static Brand toEntity(final BrandCreateRequest brandCreateDto){
         final Brand entity = new Brand();
         entity.setColor(brandCreateDto.getColor());
         entity.setDescription(brandCreateDto.getDescription());

@@ -22,9 +22,6 @@ public class UserAsset extends BaseTimeEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column
-    private Boolean isEnabled;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asset_id")
     @JsonIgnore
@@ -44,4 +41,7 @@ public class UserAsset extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "asset_application_id")
     @JsonIgnore
     private UserAssetApplication userAssetApplication;
+
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 }

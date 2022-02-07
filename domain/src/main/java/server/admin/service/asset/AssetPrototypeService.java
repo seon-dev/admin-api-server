@@ -55,9 +55,11 @@ public class AssetPrototypeService {
         return AssetPrototypeResponse.toResponse(assetPrototypeRepository.save(assetPrototype));
     }
 
-//    public Page<AssetPrototypeResponse> getAssetPrototype(){
-//
-//    }
+    public AssetPrototypeResponse getAssetPrototype(Long assetPrototypeId){
+        Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findById(assetPrototypeId);
+        optionalAssetPrototype.orElseThrow(AssetPrototypeNotExistException::new);
+        return AssetPrototypeResponse.toResponse(optionalAssetPrototype.get());
+    }
 
     public AssetPrototypeResponse updateAssetPrototype(Long id, AssetPrototypeUpdateRequest request){
         Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findById(id);

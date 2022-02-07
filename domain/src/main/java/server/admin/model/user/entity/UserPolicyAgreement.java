@@ -32,4 +32,7 @@ public class UserPolicyAgreement extends BaseTimeEntity implements Serializable 
     @Transient
     @JsonIgnore
     private User user;
+
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 }

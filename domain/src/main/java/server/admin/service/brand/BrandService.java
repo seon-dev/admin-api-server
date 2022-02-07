@@ -3,21 +3,17 @@ package server.admin.service.brand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import server.admin.model.asset.exception.AssetPrototypeException;
-import server.admin.model.brand.dto.BrandCreateDto;
-import server.admin.model.brand.dto.BrandResponseDto;
-import server.admin.model.brand.dto.BrandUpdateDto;
+import server.admin.model.brand.dto.request.BrandCreateRequest;
+import server.admin.model.brand.dto.response.BrandResponse;
+import server.admin.model.brand.dto.request.BrandUpdateRequest;
 import server.admin.model.brand.entity.Brand;
-import server.admin.model.brand.exception.BrandException;
 import server.admin.model.brand.repository.BrandRepository;
-import server.admin.model.common.BasicMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.common.cursor.CursorResult;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static server.admin.model.brand.exception.BrandException.*;
@@ -38,10 +34,10 @@ public class BrandService {
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<BrandResponseDto> getAllBrand(Long cursorId, Pageable pageable){
+    public CursorResult<BrandResponse> getAllBrand(Long cursorId, Pageable pageable){
         final Page<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable);
-        final Page<BrandResponseDto> allDtoWithPagination = new PageImpl<>(allWithPagination
-                .map(BrandResponseDto::toResponse)
+        final Page<BrandResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
+                .map(BrandResponse::toResponse)
                 .toList());
 
         final List<Brand> brandList = allWithPagination.getContent();
@@ -50,16 +46,16 @@ public class BrandService {
         return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
     }
 
-    public BrandResponseDto createBrand(BrandCreateDto brandCreateDto){
+    public BrandResponse createBrand(BrandCreateRequest brandCreateDto){
         Brand brand = this.brandRepository.save(Brand.toEntity(brandCreateDto));
-        return BrandResponseDto.toResponse(brand);
+        return BrandResponse.toResponse(brand);
     }
 
     @Transactional(readOnly = true)
-    public BrandResponseDto getBrand(Long brandId) {
+    public BrandResponse getBrand(Long brandId) {
         Optional<Brand> brand = this.brandRepository.findById(brandId);
         brand.orElseThrow(BrandNotExistException::new);
-        return BrandResponseDto.toResponse(brand.get());
+        return BrandResponse.toResponse(brand.get());
     }
 
     public void deleteBrand(Long brandId) {
@@ -72,7 +68,7 @@ public class BrandService {
         );
     }
 
-    public BrandResponseDto updateBrand(Long brandId, BrandUpdateDto brandUpdateDto){
+    public BrandResponse updateBrand(Long brandId, BrandUpdateRequest brandUpdateDto){
         Optional<Brand> optionalBrand = this.brandRepository.findById(brandId);
         optionalBrand.orElseThrow(BrandNotExistException::new);
             Brand brand = optionalBrand.get();
@@ -84,7 +80,7 @@ public class BrandService {
             brand.setResource(brandUpdateDto.getResource());
             brand.setResourceCard(brandUpdateDto.getResourceCard());
             brand.setResourceWallpaper(brandUpdateDto.getResourceWallpaper());
-            return BrandResponseDto.toResponse(brand);
+            return BrandResponse.toResponse(brand);
 
     }
 

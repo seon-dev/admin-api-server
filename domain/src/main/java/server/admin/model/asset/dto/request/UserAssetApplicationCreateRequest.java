@@ -7,7 +7,6 @@ import server.admin.model.asset.entity.AssetPrototype;
 import server.admin.model.user.entity.User;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter

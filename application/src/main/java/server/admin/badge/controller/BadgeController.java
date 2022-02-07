@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import server.admin.model.badge.dto.BadgeCreateUpdateDto;
-import server.admin.model.badge.dto.BadgeResponseDto;
+import server.admin.model.badge.dto.request.BadgeCreateUpdateRequest;
+import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.common.cursor.CursorResult;
 import server.admin.service.badge.BadgeService;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,23 +22,26 @@ public class BadgeController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("뱃지 전체 항목 조회")
-    public CursorResult<BadgeResponseDto> getBadges(@RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size, @RequestParam("cursorId") Long cursorId){
+    public CursorResult<BadgeResponse> getBadges(
+            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
+            @RequestParam("cursorId") Long cursorId
+    ) {
         return this.badgeService.getAllBadge(cursorId, PageRequest.of(0, size));
     }
 
     @GetMapping("/{badgeId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("뱃지 단일 항목 조회")
-    public BadgeResponseDto getBadge(@PathVariable("badgeId") Long badgeId){
+    public BadgeResponse getBadge(@PathVariable("badgeId") Long badgeId){
         return this.badgeService.getBadge(badgeId);
     }
 
     @PutMapping("/{badgeId}/badge")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("뱃지 업데이트")
-    public BadgeResponseDto updateBadge(
+    public BadgeResponse updateBadge(
             @PathVariable("badgeId") Long badgeId,
-            @RequestBody BadgeCreateUpdateDto dto
+            @RequestBody @Valid BadgeCreateUpdateRequest dto
     ){
         return this.badgeService.updateBadge(badgeId,dto);
     }
@@ -46,7 +49,9 @@ public class BadgeController {
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("뱃지 생성")
-    public BadgeResponseDto saveBadge(@RequestBody BadgeCreateUpdateDto dto){
+    public BadgeResponse createBadge(
+            @RequestBody @Valid BadgeCreateUpdateRequest dto
+    ){
         return this.badgeService.saveBadge(dto);
     }
 

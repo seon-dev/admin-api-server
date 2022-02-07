@@ -28,7 +28,7 @@ public class UserFollowing extends BaseTimeEntity implements Serializable {
     private User followingUser;
 
     @Column(name="is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = true;
 
 
 

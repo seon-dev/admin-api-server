@@ -1,12 +1,11 @@
-package server.admin.model.badge.dto;
+package server.admin.model.badge.dto.request;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BadgeCreateUpdateDto {
+public class BadgeCreateUpdateRequest {
 
     private String name;
 

@@ -20,7 +20,7 @@ public class Like extends BaseTimeEntity implements Serializable {
     private Long id;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

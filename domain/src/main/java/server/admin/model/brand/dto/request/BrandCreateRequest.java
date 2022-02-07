@@ -1,11 +1,11 @@
-package server.admin.model.brand.dto;
+package server.admin.model.brand.dto.request;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class BrandCreateDto {
+public class BrandCreateRequest {
     @NotBlank
     private String name;
     @NotBlank

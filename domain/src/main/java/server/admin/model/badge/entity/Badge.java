@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import server.admin.model.badge.dto.BadgeCreateUpdateDto;
+import server.admin.model.badge.dto.request.BadgeCreateUpdateRequest;
 import server.admin.model.common.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -32,7 +32,7 @@ public class Badge extends BaseTimeEntity implements Serializable {
 //    @JsonIgnore
 //    private List<UserBadgeEntity> userBadges;
 
-    public static Badge toEntity(BadgeCreateUpdateDto dto){
+    public static Badge toEntity(BadgeCreateUpdateRequest dto){
         final Badge entity = new Badge();
         entity.setResource(dto.getResource());
         entity.setName(dto.getName());

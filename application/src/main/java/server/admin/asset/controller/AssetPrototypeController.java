@@ -3,6 +3,7 @@ package server.admin.asset.controller;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.asset.dto.request.AssetPrototypeCreateRequest;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AssetPrototypeController {
     private final AssetPrototypeService assetPrototypeService;
+    private final String DEFAULT_SIZE = "5";
 
     @PostMapping()
     @ApiOperation(value= "에셋 프로토타입 생성", notes = "에셋 프로토타입을 생성합니다.")
@@ -30,9 +32,19 @@ public class AssetPrototypeController {
 //    @GetMapping()
 //    @ApiOperation(value= "에셋 프로토타입 조회", notes = "페이지네이션에 맞는 에셋 프로토타입을 조회합니다.")
 //    @ResponseStatus(HttpStatus.OK)
-//    public Page<AssetPrototypeResponse> getAssetPrototype(){
-//
+//    public Page<AssetPrototypeResponse> getAllAssetPrototype(
+//            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
+//            @RequestParam("cursorId") Long cursorId
+//    ){
+//        return assetPrototypeService.getAllAssetPrototype(cursorId, PageRequest.of(0, size));
 //    }
+
+    @GetMapping("/{assetPrototypeId}")
+    @ApiOperation(value= "단일 에셋 프로토타입 조회", notes = "해당하는 에셋 프로토타입을 조회합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public AssetPrototypeResponse getAssetPrototype(@RequestParam("assetPrototypeId") Long assetPrototypeId){
+        return assetPrototypeService.getAssetPrototype(assetPrototypeId);
+    }
 
     @PutMapping("/{assetPrototypeId}")
     @ApiOperation(value = "에셋 프로토타입 업데이트", notes = "에셋 프로토타입을 업데이트합니다.")

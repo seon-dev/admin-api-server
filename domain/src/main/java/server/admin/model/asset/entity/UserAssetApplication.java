@@ -78,4 +78,7 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     @Column(name = "verified_at")
     private Timestamp verifiedAt;
 
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = false;
+
 }

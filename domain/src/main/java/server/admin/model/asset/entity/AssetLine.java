@@ -35,6 +35,6 @@ public class AssetLine extends BaseTimeEntity implements Serializable {
     @JsonIgnore
     private AssetBrandCategory brandCategory;
 
-    @Column
-    private Boolean isEnabled;
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 }

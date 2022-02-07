@@ -29,4 +29,7 @@ public class Asset extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "asset_quality_id")
     @JsonIgnore
     private AssetQuality assetQuality;
+
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 }

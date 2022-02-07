@@ -6,18 +6,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.admin.model.badge.dto.BadgeResponseDto;
-import server.admin.model.badge.dto.BadgeCreateUpdateDto;
+import server.admin.model.badge.dto.response.BadgeResponse;
+import server.admin.model.badge.dto.request.BadgeCreateUpdateRequest;
 import server.admin.model.badge.entity.Badge;
-import server.admin.model.badge.exception.BadgeException;
 import server.admin.model.badge.repository.BadgeRepository;
-import server.admin.model.brand.dto.BrandResponseDto;
-import server.admin.model.brand.entity.Brand;
 import server.admin.model.common.cursor.CursorResult;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static server.admin.model.badge.exception.BadgeException.*;
@@ -37,10 +32,10 @@ public class BadgeService {
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<BadgeResponseDto> getAllBadge(Long cursorId, Pageable pageable){
+    public CursorResult<BadgeResponse> getAllBadge(Long cursorId, Pageable pageable){
         final Page<Badge> allWithPagination = this.getBadgesWithPage(cursorId, pageable);
-        final Page<BadgeResponseDto> allDtoWithPagination = new PageImpl<>(allWithPagination
-                .map(BadgeResponseDto::toResponse)
+        final Page<BadgeResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
+                .map(BadgeResponse::toResponse)
                 .toList());
 
         final List<Badge> badgeList = allWithPagination.getContent();
@@ -50,13 +45,13 @@ public class BadgeService {
     }
 
     @Transactional(readOnly = true)
-    public BadgeResponseDto getBadge(Long badgeId){
+    public BadgeResponse getBadge(Long badgeId){
         Optional<Badge> optionalBadge = badgeRepository.findById(badgeId);
         optionalBadge.orElseThrow(BadgeNotExistException::new);
-        return BadgeResponseDto.toResponse(optionalBadge.get());
+        return BadgeResponse.toResponse(optionalBadge.get());
     }
 
-    public BadgeResponseDto updateBadge(Long badgeId, BadgeCreateUpdateDto dto){
+    public BadgeResponse updateBadge(Long badgeId, BadgeCreateUpdateRequest dto){
          Optional<Badge> optionalBadge=badgeRepository.findById(badgeId);
 
          optionalBadge.orElseThrow(BadgeNotExistException::new);
@@ -66,11 +61,11 @@ public class BadgeService {
          badge.setDescription(dto.getDescription());
          badge.setResource(dto.getResource());
 
-         return BadgeResponseDto.toResponse(badge);
+         return BadgeResponse.toResponse(badge);
     }
 
-    public BadgeResponseDto saveBadge(BadgeCreateUpdateDto dto){
-        return BadgeResponseDto.toResponse(badgeRepository.save(Badge.toEntity(dto)));
+    public BadgeResponse saveBadge(BadgeCreateUpdateRequest dto){
+        return BadgeResponse.toResponse(badgeRepository.save(Badge.toEntity(dto)));
     }
 
     public void deleteBadge(Long badgeId){

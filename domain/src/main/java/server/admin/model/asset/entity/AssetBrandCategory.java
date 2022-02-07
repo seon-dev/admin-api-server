@@ -31,8 +31,8 @@ public class AssetBrandCategory extends BaseTimeEntity implements Serializable {
     @JsonIgnore
     private AssetCategory category;
 
-    @Column
-    private Boolean isEnabled;
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "brandCategory")
 //    @JsonIgnore

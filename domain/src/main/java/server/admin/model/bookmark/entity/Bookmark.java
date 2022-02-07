@@ -35,7 +35,7 @@ public class Bookmark extends BaseTimeEntity implements Serializable {
     private Long targetId;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = true;
 
     public enum TargetType{
         ASSET_PROTOTYPE,

@@ -20,7 +20,7 @@ public class UserStylingResource extends BaseTimeEntity implements Serializable 
     private Long id;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = true;
 
     @Column(length = 200)
     private String resource;

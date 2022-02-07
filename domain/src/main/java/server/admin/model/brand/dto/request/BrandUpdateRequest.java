@@ -1,10 +1,10 @@
-package server.admin.model.brand.dto;
+package server.admin.model.brand.dto.request;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
 
 @Getter
-public class BrandUpdateDto {
+public class BrandUpdateRequest {
     @NotNull
     private String name;
     @NotNull

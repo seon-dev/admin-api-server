@@ -30,7 +30,7 @@ public class UserStyling extends BaseTimeEntity implements Serializable {
     @Column
     private int comments;
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private Boolean isEnabled = true;
     @Column(name= "is_archived")
     private Boolean isArchived;
 }

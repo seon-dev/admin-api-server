@@ -23,4 +23,6 @@ public class UserPermission extends BaseTimeEntity {
     private String section;
     @Column
     private int level;
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 }
