@@ -10,6 +10,7 @@ import server.admin.model.asset.repository.UserAssetApplicationRepository;
 import server.admin.model.brand.entity.Brand;
 import server.admin.model.common.cursor.CursorResult;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,18 +24,20 @@ public class UserAssetApplicationService {
                 UserAssetApplicationResponse.toResponse(optionalUserAssetApplication.get()) : null;
     }
 
-//    public CursorResult<UserAssetApplicationResponse> getAllUserAssetApplication(){
-//
+//    public CursorResult<UserAssetApplicationResponse> getAllUserAssetApplication(Long cursorId, Pageable pageable){
+//        final Page<UserAssetApplication> allWithPagination = getUserAssetApplicationsWithPage(cursorId, pageable);
+//        final List<UserAssetApplication> userAssetApplicationList =
 //    }
 
-    private Page<UserAssetApplication> getUserAssetApplications(Long cursorId, Pageable pageable){
-        return cursorId == null ?
-                userAssetApplicationRepository.findAllByOrderByIdAsc(pageable) : userAssetApplicationRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId,pageable);
+    private Page<UserAssetApplication> getUserAssetApplicationsWithPage(Long cursorId, Pageable pageable){
+        return cursorId == null ? userAssetApplicationRepository.findAllByOrderByIdAsc(pageable) : userAssetApplicationRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId, pageable);
     }
 
     private Boolean hasNext(Long cursordId) {
         if (cursordId == null) return false;
         return userAssetApplicationRepository.existsByIdGreaterThanEqual(cursordId);
     }
+
+
 
 }

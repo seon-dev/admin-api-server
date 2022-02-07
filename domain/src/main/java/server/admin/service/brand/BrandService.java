@@ -24,23 +24,25 @@ import java.util.Optional;
 public class BrandService {
     private final BrandRepository brandRepository;
 
-    private Page<Brand> getBrands(Long cursorId, Pageable pageable){
+    private Page<Brand> getBrandsWithPage(Long cursorId, Pageable pageable){
         return cursorId == null ? brandRepository.findAllByOrderByIdAsc(pageable): brandRepository.findByIdGreaterThanEqualOrderByIdAsc(cursorId,pageable);
     }
 
-    private Boolean hasNext(Long cursordId) {
-        if (cursordId == null) return false;
-        return brandRepository.existsByIdGreaterThanEqual(cursordId);
+    private Boolean hasNext(Long lastId) {
+        if (lastId == null) return false;
+        return brandRepository.existsByIdGreaterThan(lastId);
     }
 
     @Transactional(readOnly = true)
     public CursorResult<BrandResponseDto> getAllBrand(Long cursorId, Pageable pageable){
-        final Page<Brand> allWithPagination = this.getBrands(cursorId, pageable);
+        final Page<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable);
         final Page<BrandResponseDto> allDtoWithPagination = new PageImpl<>(allWithPagination
                 .map(BrandResponseDto::ofResponse)
                 .toList());
+
         final List<Brand> brandList = allWithPagination.getContent();
-        final Long lastIdOfList = allWithPagination.isEmpty()? null: brandList.get(brandList.size()-1).getId();
+        final Long lastIdOfList = !allWithPagination.isEmpty() ? brandList.get(brandList.size()-1).getId() : null;
+
         return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
     }
 

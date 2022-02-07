@@ -25,9 +25,9 @@ public class BrandController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 조회", notes = "브랜드 정보를 커서 페이징 베이스로 조회합니다.")
-    public CursorResult<BrandResponseDto> getAllBrand(@RequestParam("page") Long cursorId) {
-        return this.brandService.getAllBrand(cursorId, PageRequest.of(0,DEFAULT_SIZE));
-    }//get api 테스트 해보기
+    public CursorResult<BrandResponseDto> getAllBrand(@RequestParam(value = "size", defaultValue = "5") Integer size, @RequestParam("cursorId") Long cursorId) {
+        return this.brandService.getAllBrand(cursorId, PageRequest.of(0,size));
+    }
 
     @GetMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)

@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface BrandRepository extends JpaRepository<Brand, Long> {
     public Page<Brand> findAllByOrderByIdAsc(Pageable pageable);
     public Page<Brand> findByIdGreaterThanEqualOrderByIdAsc(Long id, Pageable pageable);
-    public Boolean existsByIdGreaterThanEqual(Long id);
+    public Boolean existsByIdGreaterThan(Long id);
 }
