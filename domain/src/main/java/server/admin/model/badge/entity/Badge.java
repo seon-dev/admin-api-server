@@ -26,9 +26,6 @@ public class Badge extends BaseTimeEntity implements Serializable {
     private String description;
     @Column(length = 200)
     private String resource;
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "badge")
-//    @JsonIgnore
-//    private List<UserBadgeEntity> userBadges;
 
     public static Badge toEntity(BadgeCreateUpdateRequest dto){
         final Badge entity = new Badge();
