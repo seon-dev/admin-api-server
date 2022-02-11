@@ -2,12 +2,10 @@ package server.admin.badge.controller;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.badge.dto.request.BadgeCreateUpdateRequest;
 import server.admin.model.badge.dto.response.BadgeResponse;
-import server.admin.model.common.cursor.CursorResult;
 import server.admin.service.badge.BadgeService;
 
 import javax.validation.Valid;

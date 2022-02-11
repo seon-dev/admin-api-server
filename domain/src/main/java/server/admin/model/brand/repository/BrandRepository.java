@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
-    List<Brand> findAllByIsEnabledEqualsOrderByIdAsc(Boolean isEnabled);
-    List<Brand> findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(Long id, Boolean isEnabled);
+    Page<Brand> findAllByIsEnabledEqualsOrderByIdAsc(Boolean isEnabled, Pageable pageable);
+    Page<Brand> findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(Long id, Boolean isEnabled, Pageable pageable);
     Boolean existsByIdGreaterThan(Long id);
 }

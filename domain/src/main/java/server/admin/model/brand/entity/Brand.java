@@ -17,6 +17,7 @@ import java.io.Serializable;
 @Table(name = "brand")
 @DynamicInsert
 @DynamicUpdate
+@NoArgsConstructor
 public class Brand extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

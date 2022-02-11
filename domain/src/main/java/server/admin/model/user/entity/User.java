@@ -63,8 +63,8 @@ public class User extends BaseTimeEntity implements Serializable {
     @Column(name = "login_verification_expired_at")
     private java.sql.Timestamp loginVerificationExpiredAt;
 
-    @Column
-    private UserRole role;
+//    @Column
+//    private UserRole role;
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 //    @JsonIgnore
 //    private List<UserBadgeEntity> userBadges;

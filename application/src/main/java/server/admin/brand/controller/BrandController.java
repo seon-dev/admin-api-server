@@ -1,6 +1,5 @@
 package server.admin.brand.controller;
 
-import org.springframework.data.domain.PageRequest;
 import server.admin.model.brand.dto.request.BrandUpdateRequest;
 import server.admin.model.brand.dto.request.BrandCreateRequest;
 import server.admin.model.brand.dto.response.BrandResponse;
@@ -9,7 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import server.admin.model.common.cursor.CursorResult;
 
 import javax.validation.Valid;
 
@@ -21,12 +19,12 @@ public class BrandController {
     private final BrandService brandService;
     private final String DEFAULT_SIZE = "5";
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "브랜드 조회", notes = "브랜드 정보를 커서 페이징 베이스로 조회합니다.")
-    public CursorResult<BrandResponse> getAllBrand(@RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size, @RequestParam("cursorId") Long cursorId) {
-        return this.brandService.getAllBrand(cursorId, PageRequest.of(0,size));
-    }
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "브랜드 조회", notes = "브랜드 정보를 커서 페이징 베이스로 조회합니다.")
+//    public CursorResult<BrandResponse> getAllBrand(@RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size, @RequestParam("cursorId") Long cursorId) {
+//        return this.brandService.getAllBrand(cursorId, PageRequest.of(0,size));
+//    }
 
     @GetMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)

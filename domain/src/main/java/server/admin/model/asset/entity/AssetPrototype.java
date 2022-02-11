@@ -2,6 +2,7 @@ package server.admin.model.asset.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Table(name = "asset_prototype")
 @DynamicUpdate
 @DynamicInsert
+@NoArgsConstructor
 public class AssetPrototype extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
@@ -65,19 +67,19 @@ public class AssetPrototype extends BaseTimeEntity implements Serializable {
     //TODO double type은 부동 소수점으로 오차가 존재. long type으로 고려
     //ref: https://ktko.tistory.com/entry/Effective-Java-48-%EC%A0%95%ED%99%95%ED%95%9C-%EB%8B%B5%EC%9D%B4-%ED%95%84%EC%9A%94%ED%95%98%EB%8B%A4%EB%A9%B4-float%EC%99%80-double%EC%9D%80-%ED%94%BC%ED%95%98%EB%9D%BC
     @Column(name = "release_price", precision = 17, scale = 17)
-    private long releasePrice;
+    private Long releasePrice;
 
     @Column(name = "current_price", precision = 17, scale = 17)
-    private long currentPrice;
+    private Long currentPrice;
 
     @Column(name = "past_price", precision = 17, scale = 17)
-    private long pastPrice;
+    private Long pastPrice;
 
     @Column(name = "latest_bidding_price", precision = 17, scale = 17)
-    private long latestBiddingPrice;
+    private Long latestBiddingPrice;
 
     @Column(name = "yesterday_price", precision = 17, scale = 17)
-    private long yesterdayPrice;
+    private Long yesterdayPrice;
 
     @Column
     private Integer trendy;

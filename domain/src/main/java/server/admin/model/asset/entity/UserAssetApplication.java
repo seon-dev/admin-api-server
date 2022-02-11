@@ -6,12 +6,14 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
 import server.admin.model.common.BaseTimeEntity;
 import server.admin.model.user.entity.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -53,7 +55,7 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     private String resourceReceipt;
 
     @Column(name = "purchase_date")
-    private Date purchaseDate;
+    private Timestamp purchaseDate;
 
     // 희망 판매가
     @Column(name = "offer")
@@ -74,8 +76,15 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     @Column(name = "verifier_comment", length = 100)
     private String verifierComment;
 
-    @CreationTimestamp
     @Column(name = "verified_at")
     private Timestamp verifiedAt;
 
+    public UserAssetApplication setBasicEntity(UserAssetApplicationUpdateRequest request){
+        isVerified = request.getIsVerified();
+        verifierId = request.getVerifierId();
+        verifiedAssetId = request.getVerifiedAssetId();
+        verifierComment = request.getVerifierComment();
+        verifiedAt = request.getVerifiedAt();
+        return this;
+    }
 }

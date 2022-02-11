@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class AssetPrototypeController {
     private final AssetPrototypeService assetPrototypeService;
     private final String DEFAULT_SIZE = "5";
-
+//1. response에 id넣기
     @PostMapping()
     @ApiOperation(value= "에셋 프로토타입 생성", notes = "에셋 프로토타입을 생성합니다.")
     @ResponseStatus(HttpStatus.OK)

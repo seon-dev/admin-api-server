@@ -1,7 +1,6 @@
 package server.admin.service.brand;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import server.admin.model.brand.dto.request.BrandCreateRequest;
 import server.admin.model.brand.dto.response.BrandResponse;
@@ -11,9 +10,7 @@ import server.admin.model.brand.repository.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.admin.model.common.cursor.CursorResult;
 
-import java.util.List;
 import java.util.Optional;
 
 import static server.admin.model.brand.exception.BrandException.*;
@@ -24,8 +21,8 @@ import static server.admin.model.brand.exception.BrandException.*;
 public class BrandService {
     private final BrandRepository brandRepository;
 
-    private List<Brand> getBrandsWithPage(Long cursorId, Pageable pageable){
-        return cursorId == null ? brandRepository.findAllByIsEnabledEqualsOrderByIdAsc(true): brandRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId,true);
+    private Page<Brand> getBrandsWithPage(Long cursorId, Pageable pageable){
+        return cursorId == null ? brandRepository.findAllByIsEnabledEqualsOrderByIdAsc(true, pageable): brandRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId,true, pageable);
     }
 
     private Boolean hasNext(Long lastId) {
@@ -33,18 +30,18 @@ public class BrandService {
         return brandRepository.existsByIdGreaterThan(lastId);
     }
 
-    @Transactional(readOnly = true)
-    public CursorResult<BrandResponse> getAllBrand(Long cursorId, Pageable pageable){
-        final List<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable).stream().limit(5).toList();
-        final List<BrandResponse> allDtoWithPagination = allWithPagination
-                .stream().map(BrandResponse::toResponse)
-                .toList();
-
+//    @Transactional(readOnly = true)
+//    public CursorResult<BrandResponse> getAllBrand(Long cursorId, Pageable pageable){
+//        final Page<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable);
+//        final Page<BrandResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
+//                .map(BrandResponse::toResponse)
+//                .toList());
+//
 //        final List<Brand> brandList = allWithPagination.getContent();
-        final Long lastIdOfList = !allWithPagination.isEmpty() ? allDtoWithPagination.get(allDtoWithPagination.size()-1).getId() : null;
-
-        return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
-    }
+//        final Long lastIdOfList = !allWithPagination.isEmpty() ? brandList.get(brandList.size()-1).getId() : null;
+//
+//        return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
+//    }
 
     public BrandResponse createBrand(BrandCreateRequest brandCreateDto){
         Brand brand = this.brandRepository.save(Brand.toEntity(brandCreateDto));

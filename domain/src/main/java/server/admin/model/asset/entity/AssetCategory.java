@@ -1,5 +1,6 @@
 package server.admin.model.asset.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @Table(name = "asset_category")
 @DynamicUpdate
 @DynamicInsert
+@AllArgsConstructor
 public class AssetCategory extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;

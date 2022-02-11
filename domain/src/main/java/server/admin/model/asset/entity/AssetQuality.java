@@ -1,6 +1,7 @@
 package server.admin.model.asset.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Table(name = "asset_quality")
 @DynamicUpdate
 @DynamicInsert
+@NoArgsConstructor
 public class AssetQuality extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
