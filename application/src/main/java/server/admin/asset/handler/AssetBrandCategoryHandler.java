@@ -21,6 +21,6 @@ public class AssetBrandCategoryHandler {
 
     @ExceptionHandler(AssetBrandCategoryException.AssetBrandCategoryNotExistException.class)
     public ErrorResponse assetBrandCategoryNotExistHandler(AssetBrandCategoryException.AssetBrandCategoryNotExistException exception){
-        return new ErrorResponse(LocalDateTime.now(), AssetBrandCategoryErrorCode.ASSET_BRAND_CATEGORY_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ErrorResponse(AssetBrandCategoryErrorCode.ASSET_BRAND_CATEGORY_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

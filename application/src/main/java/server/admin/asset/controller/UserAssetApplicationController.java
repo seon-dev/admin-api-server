@@ -44,7 +44,8 @@ public class UserAssetApplicationController {
     public RestResponse<CursorResult<List<UserAssetApplicationResponse>>> getAllUserAssetApplication(
             @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
             @RequestParam(value = "cursor", required = false) String encodedCursor,
-            @RequestParam(value = "verified", required = false) Boolean isVerified
+            @RequestParam(value = "verified", required = false) Boolean isVerified,
+            @RequestParam(value = "sort", required = false, defaultValue = "id") String orderBy
     ){
         return RestSuccessResponse.newInstance(
                 userAssetApplicationService.getAllUserAssetApplication(decodeCursor(encodedCursor), size, isVerified)

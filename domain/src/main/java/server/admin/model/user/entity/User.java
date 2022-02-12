@@ -1,6 +1,8 @@
 package server.admin.model.user.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -18,6 +20,8 @@ import java.sql.Date;
 @Table(name = "`user`")
 @DynamicUpdate
 @DynamicInsert
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;

@@ -24,6 +24,6 @@ public class BrandHandler {
 
     @ExceptionHandler(BrandNotExistException.class)
     public ErrorResponse BrandNotExistHandler(BrandNotExistException exception){
-        return new ErrorResponse(LocalDateTime.now(), BrandErrorCode.BRAND_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ErrorResponse(BrandErrorCode.BRAND_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

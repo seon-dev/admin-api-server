@@ -21,6 +21,6 @@ public class AssetLineHandler {
 
     @ExceptionHandler(AssetLineException.AssetLineNotExistException.class)
     public ErrorResponse assetLineNotExistHandler(AssetLineException.AssetLineNotExistException exception){
-        return new ErrorResponse(LocalDateTime.now(), AssetLineErrorCode.ASSET_LINE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ErrorResponse(AssetLineErrorCode.ASSET_LINE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

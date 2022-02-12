@@ -6,13 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import server.admin.model.common.page.CustomPageResult;
+import server.admin.model.common.page.PageResult;
+import server.admin.model.user.dto.request.UserCreateRequest;
 import server.admin.model.user.dto.response.UserProfileResponse;
 import server.admin.service.user.UserService;
 import server.admin.utils.rest.RestResponse;
 import server.admin.utils.rest.RestSuccessResponse;
 
-import javax.crypto.spec.PSource;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/admin/user")
@@ -23,7 +24,7 @@ public class UserController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "유저 정보 조회",notes = "오프셋 페이지네이션에 맞는 유저 정보를 조회합니다.")
-    public RestResponse<CustomPageResult<UserProfileResponse.Minified>> getAllUser(
+    public RestResponse<PageResult<UserProfileResponse.Minified>> getAllUser(
             @PageableDefault(size = 25, page = 0, sort = "id") final Pageable pageable,
             @RequestParam(value = "enabled", required = false) Boolean isEnabled
     ){
@@ -36,7 +37,7 @@ public class UserController {
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "유저 정보 검색",notes = "오프셋 페이지네이션에 맞는 유저 정보를 닉네임으로 검색합니다.")
-    public RestResponse<CustomPageResult<UserProfileResponse.Minified>> searchUser(
+    public RestResponse<PageResult<UserProfileResponse.Minified>> searchUser(
             @PageableDefault(size = 25, page = 0, sort = "id") final Pageable pageable,
             @RequestParam(value = "enabled", required = false) Boolean isEnabled,
             @RequestParam("nickname") String nickname
@@ -45,5 +46,28 @@ public class UserController {
                 userService.searchUser(pageable, nickname, isEnabled)
         );
 
+    }
+
+//여기부터 api 테스트해보기
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "유저 정보 검색",notes = "해당 유저 정보를 닉네임으로 검색합니다.")
+    public RestResponse<UserProfileResponse> getUser(
+            @PathVariable("userId") Long userId
+    ){
+        return RestSuccessResponse.newInstance(
+                userService.getUser(userId)
+        );
+    }
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "유저 정보 등록",notes = "새로운 유저 정보를 등록합니다.")
+    public RestResponse<UserProfileResponse> createUser(
+        @RequestBody @NotNull UserCreateRequest request
+    ){
+        return RestSuccessResponse.newInstance(
+                userService.createUser(request)
+        );
     }
 }

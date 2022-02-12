@@ -3,12 +3,9 @@ package server.admin.model.user.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import server.admin.model.badge.entity.Badge;
+import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.user.entity.User;
-import server.admin.model.user.entity.UserBadge;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -27,12 +24,24 @@ public class UserProfileResponse {
     private String phoneNumber;
 //    private String profileLink;
     private String resource;
-    private List<Badge> badges;// List<BadgeResponse.Minified>
+    private List<BadgeResponse> badges;// List<BadgeResponse.Minified>
+
+    public static UserProfileResponse toResponseWithoutBadge(User entity){
+        return UserProfileResponse.builder()
+                .id(entity.getId())
+                .username(entity.getName())
+                .birthday(entity.getBirthday())
+                .instagram(entity.getInstagram())
+                .introduce(entity.getIntroduce())
+                .nickname(entity.getNickname())
+                .phoneNumber(entity.getPhoneNumber())
+                .resource(entity.getResource())
+                .build();
+    }
 
     @Data
     @Builder
     @AllArgsConstructor
-    @NoArgsConstructor
     public static class Minified{
         private Long id;
         private String nickname;

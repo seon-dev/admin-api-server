@@ -21,6 +21,6 @@ public class AssetCollectionHandler {
 
     @ExceptionHandler(AssetCollectionException.AssetCollectionNotExistException.class)
     public ErrorResponse assetCollectionNotExistHandler(AssetCollectionException.AssetCollectionNotExistException exception){
-        return new ErrorResponse(LocalDateTime.now(), AssetCollectionErrorCode.ASSET_COLLECTION_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ErrorResponse(AssetCollectionErrorCode.ASSET_COLLECTION_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

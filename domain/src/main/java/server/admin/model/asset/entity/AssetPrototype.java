@@ -1,6 +1,7 @@
 package server.admin.model.asset.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Table(name = "asset_prototype")
 @DynamicUpdate
 @DynamicInsert
+@AllArgsConstructor
 @NoArgsConstructor
 public class AssetPrototype extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue

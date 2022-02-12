@@ -69,6 +69,16 @@ public class UserAssetApplicationRepositoryImpl
         return isVerified != null ? userAssetApplication.isVerified.eq(isVerified) : null;
     }
 
+//    private OrderSpecifier<Long> OrderByAsc(String orderBy){
+//        //정렬조건을 동적으로 가능하게 하기
+//        if(Objects.equals(orderBy, "id")) return userAssetApplication.id.asc();
+//        if(Objects.equals(orderBy, "asset")) return userAssetApplication.asset.id.asc();
+//        ...
+//
+//
+////        return orderBy == "" ?  userAssetApplication.id.desc() : ;
+//    }
+
     private ConstructorExpression<AssetResponse> projectAssetResponse(){
         return Projections.constructor(AssetResponse.class,
                 QAsset.asset.id, QAsset.asset.assetQuality.id,

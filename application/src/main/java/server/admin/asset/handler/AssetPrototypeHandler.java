@@ -25,8 +25,6 @@ public class AssetPrototypeHandler {
 
     @ExceptionHandler(AssetPrototypeException.AssetPrototypeNotExistException.class)
     public ErrorResponse assetPrototypeNotExistHandler(AssetPrototypeException.AssetPrototypeNotExistException exception){
-        return new ErrorResponse(LocalDateTime.now(), AssetPrototypeErrorCode.ASSET_PROTOTYPE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ErrorResponse(AssetPrototypeErrorCode.ASSET_PROTOTYPE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
-
-
 }
