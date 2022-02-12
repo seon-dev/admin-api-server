@@ -1,6 +1,7 @@
 package server.admin.service.asset;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
@@ -36,11 +37,12 @@ public class UserAssetApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<List<UserAssetApplicationResponse>> getAllUserAssetApplication(Long cursorId, Integer size, Boolean isVerified){
-        final List<UserAssetApplicationResponse> userAssetApplicationResponseList = userAssetApplicationRepository.getUserAssetApplications(cursorId, size, isVerified);
+    public CursorResult<List<UserAssetApplicationResponse>> getAllUserAssetApplication(Long cursorId, Integer size, Boolean isVerified, Sort sort){
+        final List<UserAssetApplicationResponse> userAssetApplicationResponseList = userAssetApplicationRepository.getUserAssetApplications(cursorId, size, isVerified, sort);
         if (userAssetApplicationResponseList.isEmpty()) throw new UserAssetApplicationNotExistException();
         final int sizeOfPage  = userAssetApplicationResponseList.size();
         final Long lastIdOfList = userAssetApplicationResponseList.get(userAssetApplicationResponseList.size()-1).getId();
+
         return new CursorResult<>(userAssetApplicationResponseList, hasNext(lastIdOfList), lastIdOfList, sizeOfPage);
     }
 

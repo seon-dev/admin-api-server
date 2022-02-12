@@ -3,6 +3,8 @@ package server.admin.asset.controller;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
@@ -45,10 +47,14 @@ public class UserAssetApplicationController {
             @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
             @RequestParam(value = "cursor", required = false) String encodedCursor,
             @RequestParam(value = "verified", required = false) Boolean isVerified,
-            @RequestParam(value = "sort", required = false, defaultValue = "id") String orderBy
+            @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
+            @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc
     ){
-        return RestSuccessResponse.newInstance(
-                userAssetApplicationService.getAllUserAssetApplication(decodeCursor(encodedCursor), size, isVerified)
+//localhost:8080/admin/user-asset-application?size=5&cursor=MzM=&verified=false&desc=true
+          return RestSuccessResponse.newInstance(
+                userAssetApplicationService.getAllUserAssetApplication(
+                        decodeCursor(encodedCursor), size, isVerified, checkOrderBy(desc, sortBy)
+                )
         );
     }
 
@@ -60,13 +66,18 @@ public class UserAssetApplicationController {
             @RequestBody @NotNull UserAssetApplicationUpdateRequest request
             ){
         return RestSuccessResponse.newInstance(
-                userAssetApplicationService.updateUserAssetApplication(userAssetApplicationId, request)
+                userAssetApplicationService.updateUserAssetApplication(
+                        userAssetApplicationId, request
+                )
         );
     }
 
     private Long decodeCursor(String encodedCursor){
         byte[] decodedCursor = Base64.getDecoder().decode(encodedCursor);
-        Long cursorId = Long.parseLong(new String(decodedCursor));
-        return cursorId;
+        return Long.parseLong(new String(decodedCursor));
+    }
+
+    private Sort checkOrderBy(Boolean desc, String sortBy ){
+        return desc ? Sort.by(Sort.Direction.DESC, sortBy) : Sort.by(Sort.Direction.ASC, sortBy) ;
     }
 }

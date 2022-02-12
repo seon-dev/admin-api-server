@@ -1,9 +1,11 @@
 package server.admin.model.common.cursor;
 
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 
 @Getter
 public class CursorResult<T> {

@@ -15,5 +15,4 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
     Page<Badge> findAllByOrderByIdAsc(Pageable pageable,Boolean isEnabled);
     Page<Badge> findByIdGreaterThanEqualOrderByIdAsc(Long id, Pageable pageable, Boolean isEnabled);
     Boolean existsByIdGreaterThan(Long id);
-    Optional<List<BadgeResponse>> findByUserId(Long userId);
 }

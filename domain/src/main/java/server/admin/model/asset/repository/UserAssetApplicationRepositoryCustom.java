@@ -1,5 +1,6 @@
 package server.admin.model.asset.repository;
 
+import org.springframework.data.domain.Sort;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
 import server.admin.model.asset.entity.UserAsset;
 import server.admin.model.asset.entity.UserAssetApplication;
@@ -9,5 +10,5 @@ import java.util.Optional;
 
 public interface UserAssetApplicationRepositoryCustom {
     Optional<UserAssetApplicationResponse> findResponseById(Long id);
-    List<UserAssetApplicationResponse> getUserAssetApplications(Long cursorId, Integer size, Boolean isVerified);
+    List<UserAssetApplicationResponse> getUserAssetApplications(Long cursorId, Integer size, Boolean isVerified, Sort sort);
 }

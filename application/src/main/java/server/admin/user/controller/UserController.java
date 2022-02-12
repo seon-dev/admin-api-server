@@ -49,25 +49,25 @@ public class UserController {
     }
 
 //여기부터 api 테스트해보기
-    @GetMapping("/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "유저 정보 검색",notes = "해당 유저 정보를 닉네임으로 검색합니다.")
-    public RestResponse<UserProfileResponse> getUser(
-            @PathVariable("userId") Long userId
-    ){
-        return RestSuccessResponse.newInstance(
-                userService.getUser(userId)
-        );
-    }
+//    @GetMapping("/{userId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "유저 정보 검색",notes = "해당 유저 정보를 닉네임으로 검색합니다.")
+//    public RestResponse<UserProfileResponse> getUser(
+//            @PathVariable("userId") Long userId
+//    ){
+//        return RestSuccessResponse.newInstance(
+//                userService.getUser(userId)
+//        );
+//    }
 
-    @PostMapping()
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "유저 정보 등록",notes = "새로운 유저 정보를 등록합니다.")
-    public RestResponse<UserProfileResponse> createUser(
-        @RequestBody @NotNull UserCreateRequest request
-    ){
-        return RestSuccessResponse.newInstance(
-                userService.createUser(request)
-        );
-    }
+//    @PostMapping()
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "유저 정보 등록",notes = "새로운 유저 정보를 등록합니다.")
+//    public RestResponse<UserProfileResponse> createUser(
+//        @RequestBody @NotNull UserCreateRequest request
+//    ){
+//        return RestSuccessResponse.newInstance(
+//                userService.createUser(request)
+//        );
+//    }
 }

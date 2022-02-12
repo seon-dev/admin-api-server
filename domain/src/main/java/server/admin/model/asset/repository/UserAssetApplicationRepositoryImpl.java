@@ -3,7 +3,9 @@ package server.admin.model.asset.repository;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import server.admin.model.asset.dto.response.AssetPrototypeResponse;
 import server.admin.model.asset.dto.response.AssetResponse;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
@@ -18,6 +20,7 @@ import server.admin.model.user.entity.QUser;
 import javax.persistence.EntityManager;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static server.admin.model.asset.entity.QUserAssetApplication.*;
@@ -45,20 +48,24 @@ public class UserAssetApplicationRepositoryImpl
     }
 
     @Override
-    public List<UserAssetApplicationResponse> getUserAssetApplications(Long cursorId, Integer size, Boolean isVerified){
-            return queryFactory.from(userAssetApplication)
-                    .where(
-                            checkIsVerified(isVerified),
-                            checkCursor(cursorId)
-                    )
-                    .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
-                    .leftJoin(userAssetApplication.user, QUser.user)
-                    .leftJoin(userAssetApplication.asset, QAsset.asset)
-                    .leftJoin(userAssetApplication.assetPrototype.brand, QBrand.brand)
-                    .limit(size)
-                    .orderBy(userAssetApplication.id.desc())
-                    .select(projectUserAssetApplication())
-                    .fetch();
+    public List<UserAssetApplicationResponse> getUserAssetApplications(Long cursorId, Integer size, Boolean isVerified, Sort sort){
+        JPAQuery<?> query = queryFactory.from(userAssetApplication)
+                .where(
+                        checkIsVerified(isVerified),
+                        checkCursor(cursorId)
+                )
+                .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
+                .leftJoin(userAssetApplication.user, QUser.user)
+                .leftJoin(userAssetApplication.asset, QAsset.asset)
+                .leftJoin(userAssetApplication.assetPrototype.brand, QBrand.brand)
+                .limit(size);
+
+        List<UserAssetApplicationResponse> userAssetApplicationResponses = Objects.requireNonNull(getQuerydsl())
+                .applySorting(sort, query)
+                .select(projectUserAssetApplication())
+                .fetch();
+
+        return userAssetApplicationResponses;
     }
 
     private BooleanExpression checkCursor(Long cursorId){
