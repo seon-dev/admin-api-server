@@ -1,11 +1,11 @@
-package server.admin.model.auth.entity;
+package server.admin.model.admin.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import server.admin.model.common.BaseTimeEntity;
-import server.admin.model.auth.role.AdminRole;
+import server.admin.model.admin.role.AdminRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -40,5 +40,6 @@ public class Admin extends BaseTimeEntity implements Serializable {
 
     @Column
     private AdminRole role;
-    //AdminRole == enum타입
+    //AdminRole == enum타입{ ADMIN, MODERATOR }
+
 }

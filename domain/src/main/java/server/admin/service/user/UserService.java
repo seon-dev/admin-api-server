@@ -33,7 +33,7 @@ public class UserService {
 //    public UserProfileResponse getUser(Long userId){
 //        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
 //        UserProfileResponse userProfileResponse = UserProfileResponse.toResponseWithoutBadge(user);
-//        userProfileResponse.setBadges(userBadgeRepository.findByUser(user.getId()).orElseThrow(BadgeNotExistException::new));
+//        userProfileResponse.setBadges(userBadgeRepository.findByUser(user).orElseThrow(BadgeNotExistException::new));
 //        return userProfileResponse;
 //    }
 

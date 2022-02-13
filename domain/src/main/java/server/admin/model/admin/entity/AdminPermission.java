@@ -1,10 +1,11 @@
-package server.admin.model.user.entity;
+package server.admin.model.admin.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import server.admin.model.common.BaseTimeEntity;
+import server.admin.model.user.entity.User;
 
 import javax.persistence.*;
 
@@ -13,12 +14,12 @@ import javax.persistence.*;
 @Setter
 @DynamicInsert
 @DynamicUpdate
-public class UserPermission extends BaseTimeEntity {
+public class AdminPermission extends BaseTimeEntity {
     @Id @GeneratedValue
-    private Long permissionId;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User userId;
+    @JoinColumn(name = "admin_id")
+    private User admin;
     @Column
     private String section;
     @Column

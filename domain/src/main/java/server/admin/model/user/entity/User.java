@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import server.admin.model.common.BaseTimeEntity;
-import server.admin.model.user.role.UserRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
