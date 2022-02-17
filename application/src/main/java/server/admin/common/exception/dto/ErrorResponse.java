@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 @Getter
 public class ErrorResponse {
     private final Timestamp timestamp;
-    private final String statusCode;
+    private final int statusCode;//reason으로 고치기
     private final String description;
     private final HttpStatus status;
 
-    public ErrorResponse(String statusCode, String description, HttpStatus status) {
+    public ErrorResponse(int statusCode, String description, HttpStatus status) {
         this.timestamp = new Timestamp(System.currentTimeMillis());
-        this.statusCode = statusCode;
+        this.statusCode = status.value();
         this.description = description;
         this.status = status;
     }

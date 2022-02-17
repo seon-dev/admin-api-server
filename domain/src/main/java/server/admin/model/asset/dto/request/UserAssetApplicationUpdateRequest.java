@@ -24,12 +24,15 @@ public class UserAssetApplicationUpdateRequest {
 //    private String resourceCertification;
 //    private String resourceReceipt;
 //    private Timestamp purchaseDate;
+
     private Long verifierId;
+    @NotNull
     private Long verifiedAssetId;
 //    private String userComment;
     private String verifierComment;
     @NotNull
     private Boolean isVerified;
+    @NotNull
     private Timestamp verifiedAt;
 
 //    @NotNull

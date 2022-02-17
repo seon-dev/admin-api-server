@@ -1,4 +1,4 @@
-package server.admin.model.common.cursor;
+package server.admin.utils.cursor;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

@@ -17,8 +17,8 @@ public class BrandHandler {
     @Getter
     @RequiredArgsConstructor
     public enum BrandErrorCode{
-        BRAND_NOT_EXIST_CODE("brand_404", "해당하는 브랜드가 존재하지 않습니다.");
-        private final String statusCode;
+        BRAND_NOT_EXIST_CODE(404, "해당하는 브랜드가 존재하지 않습니다.");
+        private final int statusCode;
         private final String description;
     }
 

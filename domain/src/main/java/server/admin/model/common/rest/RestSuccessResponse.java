@@ -1,4 +1,4 @@
-package server.admin.utils.rest;
+package server.admin.model.common.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

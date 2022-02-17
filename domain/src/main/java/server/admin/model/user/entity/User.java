@@ -6,11 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import server.admin.model.common.BaseTimeEntity;
+import server.admin.model.user.role.UserRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Collection;
 
 
 @Entity
@@ -21,7 +25,7 @@ import java.sql.Date;
 @DynamicInsert
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseTimeEntity implements Serializable {
+public class User extends BaseTimeEntity implements Serializable, UserDetails {
     @Id @GeneratedValue
     private Long id;
 
@@ -66,10 +70,52 @@ public class User extends BaseTimeEntity implements Serializable {
     @Column(name = "login_verification_expired_at")
     private java.sql.Timestamp loginVerificationExpiredAt;
 
-//    @Column
-//    private UserRole role;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 //    @JsonIgnore
 //    private List<UserBadgeEntity> userBadges;
+
 
 }

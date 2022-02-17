@@ -1,23 +1,18 @@
 package server.admin.asset.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
-import server.admin.model.common.cursor.CursorResult;
+import server.admin.utils.cursor.CursorResult;
 import server.admin.service.asset.UserAssetApplicationService;
-import server.admin.utils.rest.RestResponse;
-import server.admin.utils.rest.RestSuccessResponse;
+import server.admin.model.common.rest.RestResponse;
+import server.admin.model.common.rest.RestSuccessResponse;
 
 import javax.validation.constraints.NotNull;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -50,7 +45,7 @@ public class UserAssetApplicationController {
             @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
             @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc
     ){
-//localhost:8080/admin/user-asset-application?size=5&cursor=MzM=&verified=false&desc=true
+//localhost:8080/admin/user-asset-application?size=5&cursor=MzM=&verified=false&sortBy=id&desc=true
           return RestSuccessResponse.newInstance(
                 userAssetApplicationService.getAllUserAssetApplication(
                         decodeCursor(encodedCursor), size, isVerified, checkOrderBy(desc, sortBy)

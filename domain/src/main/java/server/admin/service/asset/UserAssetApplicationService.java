@@ -7,15 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
 import server.admin.model.asset.entity.UserAssetApplication;
-import server.admin.model.asset.exception.UserAssetApplicationException;
 import server.admin.model.asset.repository.UserAssetApplicationRepository;
-import server.admin.model.brand.exception.BrandException;
-import server.admin.model.common.cursor.CursorResult;
+import server.admin.utils.cursor.CursorResult;
 
 import java.util.List;
 import java.util.Optional;
 
-import static server.admin.model.asset.exception.AssetPrototypeException.*;
 import static server.admin.model.asset.exception.UserAssetApplicationException.*;
 
 @Service

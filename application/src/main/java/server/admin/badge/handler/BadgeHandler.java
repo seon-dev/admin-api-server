@@ -15,9 +15,9 @@ public class BadgeHandler {
     @Getter
     @RequiredArgsConstructor
     public enum BadgeErrorCode{
-        BADGE_NOT_EXIST_CODE("badge_404", "해당하는 뱃지가 존재하지 않습니다.");
+        BADGE_NOT_EXIST_CODE(404, "해당하는 뱃지가 존재하지 않습니다.");
 
-        private final String statusCode;
+        private final int statusCode;
         private final String description;
     }
 

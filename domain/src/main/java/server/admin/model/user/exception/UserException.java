@@ -10,7 +10,7 @@ public class UserException {
 
     public static class UserDuplicatedException extends RuntimeException{
         public UserDuplicatedException(){
-            super("해당 유저가 존재합니다.");
+            super("해당 유저가 이미 존재합니다.");
         }
     }
 }

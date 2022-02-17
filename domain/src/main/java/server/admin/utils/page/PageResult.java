@@ -1,4 +1,4 @@
-package server.admin.model.common.page;
+package server.admin.utils.page;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

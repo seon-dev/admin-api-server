@@ -14,8 +14,8 @@ public class AssetLineHandler {
     @Getter
     @RequiredArgsConstructor
     public enum AssetLineErrorCode{
-        ASSET_LINE_NOT_EXIST_CODE("asset_line_404", "해당하는 에셋 라인이 존재하지 않습니다.");
-        private final String statusCode;
+        ASSET_LINE_NOT_EXIST_CODE(404, "해당하는 에셋 라인이 존재하지 않습니다.");
+        private final int statusCode;
         private final String description;
     }
 

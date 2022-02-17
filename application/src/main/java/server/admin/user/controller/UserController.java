@@ -6,14 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import server.admin.model.common.page.PageResult;
-import server.admin.model.user.dto.request.UserCreateRequest;
+import server.admin.utils.page.PageResult;
 import server.admin.model.user.dto.response.UserProfileResponse;
 import server.admin.service.user.UserService;
-import server.admin.utils.rest.RestResponse;
-import server.admin.utils.rest.RestSuccessResponse;
-
-import javax.validation.constraints.NotNull;
+import server.admin.model.common.rest.RestResponse;
+import server.admin.model.common.rest.RestSuccessResponse;
 
 @RestController
 @RequestMapping("/admin/user")
@@ -49,16 +46,16 @@ public class UserController {
     }
 
 //여기부터 api 테스트해보기
-    @GetMapping("/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "유저 정보 검색",notes = "해당 유저 정보를 닉네임으로 검색합니다.")
-    public RestResponse<UserProfileResponse> getUser(
-            @PathVariable("userId") Long userId
-    ){
-        return RestSuccessResponse.newInstance(
-                userService.getUser(userId)
-        );
-    }
+//    @GetMapping("/{userId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    @ApiOperation(value = "유저 정보 검색",notes = "해당 유저 정보를 닉네임으로 검색합니다.")
+//    public RestResponse<UserProfileResponse> getUser(
+//            @PathVariable("userId") Long userId
+//    ){
+//        return RestSuccessResponse.newInstance(
+//                userService.getUser(userId)
+//        );
+//    }
 
 //    @PostMapping()
 //    @ResponseStatus(HttpStatus.OK)
