@@ -2,23 +2,24 @@ package server.admin.model.user.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import server.admin.model.user.entity.User;
+import server.admin.model.user.role.UserRole;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
 public class UserUpdateRequest {
-    @NotNull
-    private String nickname;
-    private Date birthday;
-    @NotNull
     private String phoneNumber;
-    private String introduce;
-    private String instagram;
-    private List<Integer> badges;
-    private String resourceUplaoded;
-    private String resourceExtension;
-//이거 넣어야될꺼같음, 물어보기
-//    private Boolean isEnabled;
+    private List<Long> badges;
+    private UserRole role;
+
+    public User setEntityExceptBadge(User user){
+        user.setPhoneNumber(phoneNumber);
+        user.setRole(role);
+        return user;
+    }
+
 }

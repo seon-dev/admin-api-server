@@ -36,7 +36,7 @@ public class User extends BaseTimeEntity implements Serializable, UserDetails {
     private String nickname;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled = true;
+    private Boolean isEnabled;
 
     private Integer following;
     private Integer follower;
@@ -89,7 +89,7 @@ public class User extends BaseTimeEntity implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.nickname;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class User extends BaseTimeEntity implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return this.isEnabled;
     }
 
 

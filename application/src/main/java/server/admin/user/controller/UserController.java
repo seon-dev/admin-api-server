@@ -1,11 +1,15 @@
 package server.admin.user.controller;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import server.admin.model.user.dto.request.UserUpdateRequest;
+import server.admin.model.user.entity.User;
 import server.admin.utils.page.PageResult;
 import server.admin.model.user.dto.response.UserProfileResponse;
 import server.admin.service.user.UserService;
@@ -20,7 +24,7 @@ public class UserController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "유저 정보 조회",notes = "오프셋 페이지네이션에 맞는 유저 정보를 조회합니다.")
+    @ApiOperation(value = "유저 조회",notes = "오프셋 페이지네이션에 맞는 유저 미리보기 정보를 조회합니다.")
     public RestResponse<PageResult<UserProfileResponse.Minified>> getAllUser(
             @PageableDefault(size = 25, page = 0, sort = "id") final Pageable pageable,
             @RequestParam(value = "enabled", required = false) Boolean isEnabled
@@ -33,7 +37,7 @@ public class UserController {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "유저 정보 검색",notes = "오프셋 페이지네이션에 맞는 유저 정보를 닉네임으로 검색합니다.")
+    @ApiOperation(value = "유저 검색",notes = "오프셋 페이지네이션에 맞는 유저 미리보기 정보를 닉네임으로 검색합니다.")
     public RestResponse<PageResult<UserProfileResponse.Minified>> searchUser(
             @PageableDefault(size = 25, page = 0, sort = "id") final Pageable pageable,
             @RequestParam(value = "enabled", required = false) Boolean isEnabled,
@@ -46,25 +50,41 @@ public class UserController {
     }
 
 //여기부터 api 테스트해보기
-//    @GetMapping("/{userId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    @ApiOperation(value = "유저 정보 검색",notes = "해당 유저 정보를 닉네임으로 검색합니다.")
-//    public RestResponse<UserProfileResponse> getUser(
-//            @PathVariable("userId") Long userId
-//    ){
-//        return RestSuccessResponse.newInstance(
-//                userService.getUser(userId)
-//        );
-//    }
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "유저 프로필 조회",notes = "해당 유저 프로필을 조회합니다.")
+    public RestResponse<UserProfileResponse> getUser(
+            @PathVariable("userId") Long userId
+    ){
+        return RestSuccessResponse.newInstance(
+                userService.getUser(userId)
+        );
+    }
 
-//    @PostMapping()
-//    @ResponseStatus(HttpStatus.OK)
-//    @ApiOperation(value = "유저 정보 등록",notes = "새로운 유저 정보를 등록합니다.")
-//    public RestResponse<UserProfileResponse> createUser(
-//        @RequestBody @NotNull UserCreateRequest request
-//    ){
-//        return RestSuccessResponse.newInstance(
-//                userService.createUser(request)
-//        );
-//    }
+//user profile update,delete authentication = admin
+    @PutMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "유저 프로필 업데이트", notes = "해당 유저 프로필을 업데이트합니다.")
+    public RestResponse<UserProfileResponse> updateUser(
+            @RequestBody UserUpdateRequest request,
+            @PathVariable("userId") Long userId
+            ){
+        return RestSuccessResponse.newInstance(
+                userService.updateUser(userId, request)
+        );
+    }
+
+    @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "유저 삭제", notes = "해당 유저 프로필을 삭제합니다.")
+    public RestResponse<String> deleteUser(
+            @PathVariable("userId") Long userId
+    ){
+
+        return RestSuccessResponse.newInstance(
+                userService.deleteUser(userId)
+        );
+    }
+
+
 }

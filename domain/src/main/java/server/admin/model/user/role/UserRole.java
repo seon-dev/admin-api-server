@@ -1,5 +1,5 @@
 package server.admin.model.user.role;
 
 public enum UserRole {
-    USER, ADMIN, MODERATOR
+    ROLE_USER, ROLE_ADMIN, ROLE_MODERATOR
 }

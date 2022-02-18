@@ -26,6 +26,8 @@ public class Badge extends BaseTimeEntity implements Serializable {
     private String description;
     @Column(length = 200)
     private String resource;
+    @Column(name = "is_enabled")
+    private Boolean isEnabled = true;
 
     public static Badge toEntity(BadgeCreateUpdateRequest dto){
         final Badge entity = new Badge();

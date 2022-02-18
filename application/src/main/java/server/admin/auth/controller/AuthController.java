@@ -25,7 +25,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-//1
+//1//TODO: 회원가입부분 createUser로 네이밍변경 후 UserController로 이동하기
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "관리자 가입", notes = "관리자에 가입합니다.")
@@ -46,7 +46,6 @@ public class AuthController {
             @RequestBody @Valid VerifyRequest request
     ) {
         return authService.verifyingPhoneNumber(request.getPhoneNumber());
-        //여기에 statuscode에 따라서 다르게 반환
     }
 //3
     @PostMapping("/sign-in")

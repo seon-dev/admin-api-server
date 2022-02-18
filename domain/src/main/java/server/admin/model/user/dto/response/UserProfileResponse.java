@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.user.entity.User;
+import server.admin.model.user.entity.UserPolicyAgreement;
 
 import java.util.Date;
 import java.util.List;
@@ -24,9 +25,11 @@ public class UserProfileResponse {
     private String phoneNumber;
 //    private String profileLink;
     private String resource;
-    private List<BadgeResponse> badges;// List<BadgeResponse.Minified>
+    private List<BadgeResponse> badges;
+    private UserPolicyAgreement policyAgreement;
+    private Boolean isEnabled;
 
-    public static UserProfileResponse toResponseWithoutBadge(User entity){
+    public static UserProfileResponse toBasicResponse(User entity){
         return UserProfileResponse.builder()
                 .id(entity.getId())
                 .username(entity.getName())
@@ -36,6 +39,7 @@ public class UserProfileResponse {
                 .nickname(entity.getNickname())
                 .phoneNumber(entity.getPhoneNumber())
                 .resource(entity.getResource())
+                .isEnabled(entity.isEnabled())
                 .build();
     }
 
