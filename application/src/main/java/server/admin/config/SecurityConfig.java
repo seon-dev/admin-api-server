@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .mvcMatchers(HttpMethod.GET,"/admin/auth/refresh-token").permitAll()
                 .mvcMatchers(HttpMethod.POST,"/admin/auth/sign-up").hasAnyRole("ADMIN","MODERATOR")//유저생성: 어드민,모더레이터만 가능
                 .mvcMatchers(HttpMethod.PUT, "/admin/user/**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.DELETE,"/admin/user/**").hasRole("MODERATOR")//update,delete: 어드민만 가능
+                .mvcMatchers(HttpMethod.DELETE,"/admin/user/**").hasRole("ADMIN")//update,delete: 어드민만 가능
                 .anyRequest().authenticated();
 //
         //authenticated exception 권한예외처리
