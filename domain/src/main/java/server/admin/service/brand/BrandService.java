@@ -10,6 +10,7 @@ import server.admin.model.brand.repository.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.admin.utils.page.PageResult;
 
 import java.util.Optional;
 
@@ -21,38 +22,21 @@ import static server.admin.model.brand.exception.BrandException.*;
 public class BrandService {
     private final BrandRepository brandRepository;
 
-    private Page<Brand> getBrandsWithPage(Long cursorId, Pageable pageable){
-        return cursorId == null ? brandRepository.findAllByIsEnabledEqualsOrderByIdAsc(true, pageable): brandRepository.findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(cursorId,true, pageable);
+    @Transactional(readOnly = true)
+    public PageResult<BrandResponse.Minified> getAllBrand(Pageable pageable, Boolean isEnabled){
+        return new PageResult<>(brandRepository.getAllBrand(pageable,isEnabled));
     }
-
-    private Boolean hasNext(Long lastId) {
-        if (lastId == null) return false;
-        return brandRepository.existsByIdGreaterThan(lastId);
-    }
-
-//    @Transactional(readOnly = true)
-//    public CursorResult<BrandResponse> getAllBrand(Long cursorId, Pageable pageable){
-//        final Page<Brand> allWithPagination = this.getBrandsWithPage(cursorId, pageable);
-//        final Page<BrandResponse> allDtoWithPagination = new PageImpl<>(allWithPagination
-//                .map(BrandResponse::toResponse)
-//                .toList());
-//
-//        final List<Brand> brandList = allWithPagination.getContent();
-//        final Long lastIdOfList = !allWithPagination.isEmpty() ? brandList.get(brandList.size()-1).getId() : null;
-//
-//        return new CursorResult<>(allDtoWithPagination, hasNext(lastIdOfList));
-//    }
 
     public BrandResponse createBrand(BrandCreateRequest brandCreateDto){
         Brand brand = this.brandRepository.save(Brand.toEntity(brandCreateDto));
-        return BrandResponse.toResponse(brand);
+        return BrandResponse.toResponseWithoutBrandCategory(brand);
     }
 
     @Transactional(readOnly = true)
     public BrandResponse getBrand(Long brandId) {
         Optional<Brand> brand = this.brandRepository.findById(brandId);
         brand.orElseThrow(BrandNotExistException::new);
-        return BrandResponse.toResponse(brand.get());
+        return BrandResponse.toResponseWithoutBrandCategory(brand.get());
     }
 
     public void deleteBrand(Long brandId) {
@@ -77,7 +61,7 @@ public class BrandService {
             brand.setResource(brandUpdateDto.getResource());
             brand.setResourceCard(brandUpdateDto.getResourceCard());
             brand.setResourceWallpaper(brandUpdateDto.getResourceWallpaper());
-            return BrandResponse.toResponse(brand);
+            return BrandResponse.toResponseWithoutBrandCategory(brand);
 
     }
 

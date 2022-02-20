@@ -3,6 +3,12 @@ package server.admin.service.auth;
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,14 +24,19 @@ import server.admin.model.common.rest.RestSuccessResponse;
 import server.admin.model.user.entity.User;
 import server.admin.model.user.exception.UserException;
 import server.admin.model.user.repository.UserRepository;
+import server.admin.model.user.role.UserRole;
 import server.admin.utils.JwtTokenProvider;
 import server.admin.utils.TextMessageProvider;
 
 import javax.mail.MessagingException;
+import javax.naming.AuthenticationNotSupportedException;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static server.admin.model.admin.exception.AdminException.*;
 import static server.admin.model.auth.exception.AuthException.*;
@@ -39,6 +50,7 @@ public class AuthService implements UserDetailsService {
 //    private final EmailSender emailSender;
     private final JwtTokenProvider jwtTokenProvider;
     private final TextMessageProvider textMessageProvider;
+//    private final AuthenticationManager authenticationManager;
 
     private void validateNameAndPassword(String name,String password){
         String namePattern = "^[ㄱ-ㅎ|가-힣]+$";//한글만 가능
@@ -51,7 +63,18 @@ public class AuthService implements UserDetailsService {
         Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
         return optionalUser.isPresent();
     }
+    private Authentication toAuthentication(Long userId, UserRole role){
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(role.toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
 
+        System.out.println(authorities.toString());
+        UserDetails principal = new org.springframework.security.core.userdetails.User(userId.toString(), "plavcorp", authorities);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, "plavcorp", authorities);
+//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        return authenticationToken;
+    }
 
 //    public VerificationResponse sendVerificationCode(String email) throws MessagingException {
 //        final Timestamp currentTime = new Timestamp(System.currentTimeMillis());
@@ -136,7 +159,6 @@ public class AuthService implements UserDetailsService {
             return RestFailResponse.newInstance(
                     HttpStatus.OK,
                     "발급된 인증번호를 입력해주세요."
-//                    expiredAt
             );
         }
 
@@ -160,44 +182,7 @@ public class AuthService implements UserDetailsService {
                     message
             );
         }
-
-
-//        if(duplicateAdmin(request.getName(), request.getEmail())) {
-//            validateNameAndPassword(request.getName(), request.getPassword());
-//            Optional<Admin> optionalAdmin = adminRepository.findByEmail(request.getEmail());
-//            final Integer emailVerificationCode = optionalAdmin.orElseThrow(InvalidEmailAddressException::new).getEmailVerificationCode();
-//            final Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-//
-//            Admin admin = optionalAdmin.get();
-//            if (currentTime.before(admin.getEmailVerifiedExpiredAt())) {
-//                return VerificationResponse.newInstance(
-//                        HttpStatus.UNAUTHORIZED, "만료된 인증번호입니다. 이메일을 재인증 해주세요."
-//                );
-//            } else {
-//                if (emailVerificationCode.equals(request.getEmailVerificationCode())) {
-//                    admin.setIsVerified(true);
-//                    admin.setName(request.getName());
-//                    admin.setIsEnabled(true);
-//                    admin.setPassword(request.getPassword());
-//                    return VerificationResponse.newInstance(
-//                            HttpStatus.OK, "회원가입이 완료되었습니다."
-//                    );
-//                } else throw new InvalidEmailVerificationCodeException();
-//            }
-//        } else throw new DuplicateAdminException();
     }
-
-//    public SignInResponse signIn(SignInRequest request){
-//        Optional<Admin> optionalAdmin = adminRepository.findByEmail(request.getEmail());
-//        Admin admin = optionalAdmin.orElseThrow(AdminNotExistException::new);
-//        if( request.getPassword().equals(admin.getPassword())){
-//            String accessToken = jwtTokenProvider.createToken(admin.getEmail(), admin.getName());
-//            String refreshToken = jwtTokenProvider.createRefreshToken(admin.getEmail(), admin.getName());
-//
-//            admin.setRefreshToken(refreshToken);
-//            return new SignInResponse(accessToken, refreshToken);
-//        } else throw new SignInFailException();
-//    }
 
     public SignInResponse signIn(
             final String phoneNumber,
@@ -208,9 +193,10 @@ public class AuthService implements UserDetailsService {
                 verificationCode,
                 new Timestamp(System.currentTimeMillis())
         );
-        User user = optionalUser.orElseThrow(UserNotExistException::new);
-        String accessToken = jwtTokenProvider.createToken(user.getId(), user.getNickname(), user.getRole());
-        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), user.getNickname(), user.getRole());
+        User user = optionalUser.orElseThrow(RuntimeException::new);
+
+        String accessToken = jwtTokenProvider.createToken(user.getId(), user.getNickname(), toAuthentication(user.getId(), user.getRole()));
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), user.getNickname(), toAuthentication(user.getId(), user.getRole()));
         user.setRefreshToken(refreshToken);
         return new SignInResponse(accessToken, refreshToken);
     }
@@ -220,7 +206,6 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         return userRepository.findByIdAndIsEnabledTrue(Long.valueOf(userId))
                 .orElseThrow(() -> new UsernameNotFoundException(userId));
-//        AdminDetails adminDetails = new AdminDetails(admin.getEmail(), admin.getPassword(), admin.getName(),null,true);
     }
 
     public User loadUserByNickname(String nickname, Long userId){
@@ -228,8 +213,8 @@ public class AuthService implements UserDetailsService {
     }
 
     public RefreshTokenResponse regenerateToken(User user){
-        final String accessToken = jwtTokenProvider.createToken(user.getId(),user.getNickname(), user.getRole());
-        final String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(),user.getNickname(), user.getRole());
+        final String accessToken = jwtTokenProvider.createToken(user.getId(),user.getNickname(), toAuthentication(user.getId(), user.getRole()));
+        final String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(),user.getNickname(), toAuthentication(user.getId(), user.getRole()));
         Optional<User> optionalAdmin = userRepository.findById(user.getId());
         optionalAdmin.orElseThrow(AdminNotExistException::new).setRefreshToken(refreshToken);
         return new RefreshTokenResponse(accessToken, refreshToken);

@@ -1,13 +1,18 @@
 package server.admin.brand.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import server.admin.model.brand.dto.request.BrandUpdateRequest;
 import server.admin.model.brand.dto.request.BrandCreateRequest;
 import server.admin.model.brand.dto.response.BrandResponse;
+import server.admin.model.common.rest.RestResponse;
+import server.admin.model.common.rest.RestSuccessResponse;
 import server.admin.service.brand.BrandService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import server.admin.utils.page.PageResult;
 
 import javax.validation.Valid;
 
@@ -17,14 +22,19 @@ import javax.validation.Valid;
 @RequestMapping("/admin/brand")
 public class BrandController {
     private final BrandService brandService;
-    private final String DEFAULT_SIZE = "5";
+    private final int DEFAULT_SIZE = 25;
 
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    @ApiOperation(value = "브랜드 조회", notes = "브랜드 정보를 커서 페이징 베이스로 조회합니다.")
-//    public CursorResult<BrandResponse> getAllBrand(@RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size, @RequestParam("cursorId") Long cursorId) {
-//        return this.brandService.getAllBrand(cursorId, PageRequest.of(0,size));
-//    }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "브랜드 조회", notes = "오프셋 페이지네이션에 맞게, 브랜드 미리보기 정보를 조회합니다. 디폴트 사이즈:25 디폴트 정렬기준:id,asc 디폴트 페이지:첫번째(0) enabled 디폴트:전체조회")
+    public RestResponse<PageResult<BrandResponse.Minified>> getAllBrand(
+            @PageableDefault(size = DEFAULT_SIZE, page = 0, sort = "id") final Pageable pageable,
+            @RequestParam(value = "enabled", required = false) Boolean isEnabled
+    ) {
+        return RestSuccessResponse.newInstance(
+                this.brandService.getAllBrand(pageable, isEnabled)
+        );
+    }
 
     @GetMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)

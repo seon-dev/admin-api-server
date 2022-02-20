@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BrandRepository extends JpaRepository<Brand, Long> {
+public interface BrandRepository extends JpaRepository<Brand, Long>, BrandRepositoryCustom {
     Page<Brand> findAllByIsEnabledEqualsOrderByIdAsc(Boolean isEnabled, Pageable pageable);
     Page<Brand> findByIdGreaterThanEqualAndIsEnabledEqualsOrderByIdAsc(Long id, Boolean isEnabled, Pageable pageable);
     Boolean existsByIdGreaterThan(Long id);

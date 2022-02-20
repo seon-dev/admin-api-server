@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import server.admin.model.common.BaseTimeEntity;
 import server.admin.model.user.role.UserRole;
@@ -81,7 +84,6 @@ public class User extends BaseTimeEntity implements Serializable, UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
-
     @Override
     public String getPassword() {
         return null;
@@ -94,28 +96,23 @@ public class User extends BaseTimeEntity implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
         return this.isEnabled;
     }
-
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-//    @JsonIgnore
-//    private List<UserBadgeEntity> userBadges;
 
 
 }

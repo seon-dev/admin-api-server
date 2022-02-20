@@ -3,6 +3,7 @@ package server.admin.model.user.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,16 +25,24 @@ public class UserRepositoryImpl extends QueryDslSupport implements UserRepositor
         super(User.class, entityManager);
     }
     @Override
-    public Page<UserProfileResponse.Minified> getAllUser(Pageable pageable, Boolean isVerified) {
+    public Page<UserProfileResponse.Minified> getAllUser(Pageable pageable, Boolean isEnabled) {
         JPAQuery<?> query = queryFactory.selectFrom(user)
                 .where(
-                        checkVerified(isVerified)
+                        checkEnabled(isEnabled)
                 );
 
-        final Long count = queryFactory.select(user.count())
+        List<Long> fetch = queryFactory.select(user.count())
                 .from(user)
                 .where(
-                        checkVerified(isVerified)
+                        checkEnabled(isEnabled)
+                )
+                .fetch();
+        System.out.println(fetch);
+
+        Long count = queryFactory.select(user.count())
+                .from(user)
+                .where(
+                        checkEnabled(isEnabled)
                 )
                 .fetchOne();
 
@@ -51,11 +60,11 @@ public class UserRepositoryImpl extends QueryDslSupport implements UserRepositor
     }
 
     @Override
-    public Page<UserProfileResponse.Minified> searchUser(Pageable pageable, String nickname, Boolean isVerified){
+    public Page<UserProfileResponse.Minified> searchUser(Pageable pageable, String nickname, Boolean isEnabled){
         JPAQuery<?> query = queryFactory.from(user)
                 .where(
                         user.nickname.containsIgnoreCase(nickname),
-                        checkVerified(isVerified)
+                        checkEnabled(isEnabled)
                 );
         final Long count = query.select(user.count()).fetchOne();
 
@@ -72,7 +81,7 @@ public class UserRepositoryImpl extends QueryDslSupport implements UserRepositor
     }
 
 
-    private BooleanExpression checkVerified(Boolean isVerified){
-        return isVerified != null ? user.isEnabled.eq(isVerified) : null;
+    private BooleanExpression checkEnabled(Boolean isEnabled){
+        return isEnabled != null ? user.isEnabled.eq(isEnabled) : null;
     }
 }

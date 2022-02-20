@@ -1,6 +1,7 @@
 package server.admin.service.user;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,12 +34,12 @@ public class UserService {
     private final UserPolicyAgreementRepository userPolicyAgreementRepository;
     private final BadgeRepository badgeRepository;
 
-    public PageResult<UserProfileResponse.Minified> getAllUser(Pageable pageable, Boolean isVerified){
-        return new PageResult<>(userRepository.getAllUser(pageable, isVerified), pageable);
+    public PageResult<UserProfileResponse.Minified> getAllUser(Pageable pageable, Boolean isEnabled){
+        return new PageResult<>(userRepository.getAllUser(pageable, isEnabled));
     }
 
-    public PageResult<UserProfileResponse.Minified> searchUser(Pageable pageable, String nickname, Boolean isVerified){
-        return new PageResult<>(userRepository.searchUser(pageable, nickname, isVerified), pageable);
+    public PageResult<UserProfileResponse.Minified> searchUser(Pageable pageable, String nickname, Boolean isEnabled){
+        return new PageResult<>(userRepository.searchUser(pageable, nickname, isEnabled));
     }
 
     public UserProfileResponse getUser(Long userId){
@@ -55,7 +56,7 @@ public class UserService {
         User singleUser = request.setEntityExceptBadge(optionalUser.orElseThrow(UserNotExistException::new));
         //badge정보 업데이트하기
         request.getBadges().forEach(badgeId -> {
-            Badge badge = badgeRepository.findById(badgeId).get();
+            Badge badge = badgeRepository.findBadgeById(badgeId);
             Optional<UserBadge> userBadgeOptional = userBadgeRepository.findByBadge(badge);
             if(userBadgeOptional.isEmpty() ){
                 UserBadge userBadge = new UserBadge();

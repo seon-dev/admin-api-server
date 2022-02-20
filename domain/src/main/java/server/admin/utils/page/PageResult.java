@@ -16,7 +16,7 @@ public class PageResult<T> {
     private int size;
     private int page;
 
-    public PageResult(Page<T> result, Pageable pageable){
+    public PageResult(Page<T> result){
         this.content = result.getContent();
         this.totalElements = result.getTotalElements();
         this.totalPages = result.getTotalPages();
@@ -24,6 +24,7 @@ public class PageResult<T> {
         this.numberOfElements = result.getNumberOfElements();
         this.first = result.isFirst();
         this.size = result.getContent().size();
-        this.page = pageable.getPageNumber();
+        this.page = result.getPageable().getPageNumber();
+
     }
 }

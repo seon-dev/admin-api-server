@@ -4,17 +4,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.http11.filters.IdentityOutputFilter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import server.admin.model.auth.dto.JwtIdentityDto;
-import server.admin.model.user.entity.User;
 import server.admin.model.user.role.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Component
 public class JwtTokenProvider {
+
     @Value("${jwt.secret-key}")
     private String secretKey;
     @Value("${jwt.token-valid-time}")
@@ -24,27 +37,30 @@ public class JwtTokenProvider {
 
     private final String TOKEN_HEADER_NAME = "X-AUTH-TOKEN";
     private final String REFRESHTOKEN_HEADER_NAME = "REFRESH-TOKEN";
+    private static final String AUTHORITIES_KEY = "role";
 
-    public String createToken(Long userId, String nickname, UserRole role) {
-        return generateToken(userId,nickname, role,tokenValidTime);
+    public String createToken(Long userId, String nickname, Authentication authentication) {
+        return generateToken(userId,nickname, authentication,tokenValidTime);
     }
-    public String createRefreshToken(Long userId, String nickname, UserRole role){
-        return generateToken(userId, nickname, role, refreshTokenValidTime);
+
+    public String createRefreshToken(Long userId, String nickname, Authentication authentication){
+        return generateToken(userId, nickname, authentication, refreshTokenValidTime);
     }
-    public String generateToken(Long userId, String nickname, UserRole role, long expireTime){
-        Claims identityClaims = Jwts.claims();
-        identityClaims.put("userId",userId.toString());
-        identityClaims.put("nickname",nickname);
-        identityClaims.put("role",role);
 
+    public String generateToken(Long userId, String nickname, Authentication authentication, long expireTime){
+        System.out.println(authentication.getCredentials());
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
-
+        System.out.println(authorities);
         Date now = new Date();
 
         return Jwts.builder()
-                .setClaims(identityClaims)
-//                .claim("identity", identityClaims)
-                .setExpiration(new Date(now.getTime() + expireTime))//유닉스타임으ㄹ ㅗ변경
+                .setSubject(userId.toString())
+                .claim(AUTHORITIES_KEY,authorities)
+                .claim("nickname", nickname)
+                .setExpiration(new Date(now.getTime() + expireTime))//유닉스타임으로 변경
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 
@@ -60,14 +76,30 @@ public class JwtTokenProvider {
 
 
     public String getUserId(String token){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("userId").toString();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String getNickname(String token){
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("nickname").toString();
     }
-    public String getRole(String token){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("role").toString();
+
+    //토큰 안에 있는 authorities를 가져온 뒤, "new UserDetails(userId, authorities)" 객체를 만들고, 이 두개로 UsernamepasswordAuthenticationToken(Authentication객체)을 만듦.
+    public Authentication getAuthentication(String token){
+
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+
+        if(claims.get(AUTHORITIES_KEY) == null){
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+        // 클레임에서 권한 정보 가져오기
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        // UserDetails 객체를 만들어서 Authentication 리턴
+        UserDetails principal = new User(claims.getSubject(), "plavcorp", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, "plavcorp", authorities);
     }
 
     public String resolveToken(HttpServletRequest request) {
@@ -84,7 +116,7 @@ public class JwtTokenProvider {
         return request.getHeader(REFRESHTOKEN_HEADER_NAME);
     }
 
-    public boolean isTokenExpired(String jwtToken) {
+    public boolean isTokenNonExpired(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
@@ -109,8 +141,8 @@ public class JwtTokenProvider {
         }
     }
 
-    public boolean validateToken(String token, User user) throws JsonProcessingException {
+    public boolean validateToken(String token, server.admin.model.user.entity.User user) {
         final String tokenUserId = getUserId(token);
-        return (tokenUserId.equals(user.getId().toString()) && isTokenExpired(token));
+        return (tokenUserId.equals(user.getId().toString()) && isTokenNonExpired(token));
     }
 }
