@@ -1,6 +1,5 @@
 package server.admin.service.brand;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import server.admin.model.brand.dto.request.BrandCreateRequest;
 import server.admin.model.brand.dto.response.BrandResponse;
