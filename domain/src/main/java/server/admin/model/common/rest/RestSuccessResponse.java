@@ -12,6 +12,9 @@ public class RestSuccessResponse<T> extends RestResponse<T> {
         this.code = 200;
         this.result = result;
     }
+    public RestSuccessResponse(){ this.code = 200; }
 
     public static <T> RestSuccessResponse<T> newInstance(T result) { return new RestSuccessResponse<>(result); }
+
+    public static <T> RestSuccessResponse<T> empty() { return new RestSuccessResponse<>(); }
 }
