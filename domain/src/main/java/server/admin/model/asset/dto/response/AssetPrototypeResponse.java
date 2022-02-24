@@ -104,6 +104,7 @@ public class AssetPrototypeResponse {
         private Integer trendy;
         private Integer likes;
         private Boolean isEnabled;
+        private String resource;
 
         public static Minified of(AssetPrototype entity){
             return Minified.builder()
@@ -115,6 +116,7 @@ public class AssetPrototypeResponse {
                     .trendy(entity.getTrendy())
                     .likes(entity.getLikes())
                     .isEnabled(entity.getIsEnabled())
+                    .resource(entity.getResourceFront())
                     .build();
         }
     }
