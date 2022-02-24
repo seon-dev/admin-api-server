@@ -1,5 +1,7 @@
 REPOSITORY=/home/ec2-user/app/git
 
+sudo service codedeploy-agent restart
+
 cd $REPOSITORY/admin-api-server/
 
 echo "> Git Pull"
