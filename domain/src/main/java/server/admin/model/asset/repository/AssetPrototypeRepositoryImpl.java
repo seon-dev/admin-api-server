@@ -52,8 +52,6 @@ public class AssetPrototypeRepositoryImpl
                 .leftJoin(assetPrototype.brand, QBrand.brand)
                 .leftJoin(assetPrototype.line, QAssetLine.assetLine)
                 .leftJoin(assetPrototype.brandCategory, QAssetBrandCategory.assetBrandCategory)
-                .leftJoin(assetPrototype.line.brand, QBrand.brand)
-                .leftJoin(assetPrototype.line.brandCategory,QAssetBrandCategory.assetBrandCategory)
                 .leftJoin(assetPrototype.season, QAssetSeason.assetSeason);
 
         List<AssetPrototype> fetch = queryFactory.selectFrom(assetPrototype)
@@ -159,8 +157,8 @@ public class AssetPrototypeRepositoryImpl
     private ConstructorExpression<AssetLineResponse.Minified> projectAssetLine(){
         ConstructorExpression<AssetLineResponse.Minified> constructor = Projections.constructor(AssetLineResponse.Minified.class,
                 assetPrototype.line.id,
-                QAssetLine.assetLine.brand.id,
-                QAssetLine.assetLine.brandCategory.id,
+                assetPrototype.brand.id,
+                assetPrototype.brandCategory.id,
                 assetPrototype.line.name,
                 assetPrototype.line.resource,
                 assetPrototype.line.isEnabled
