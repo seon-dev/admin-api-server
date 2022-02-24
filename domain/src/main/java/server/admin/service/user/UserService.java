@@ -1,7 +1,6 @@
 package server.admin.service.user;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,6 @@ import server.admin.model.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static server.admin.model.user.exception.UserException.*;
 import static server.admin.model.user.exception.UserPolicyAgreementException.*;
