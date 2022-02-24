@@ -5,7 +5,7 @@ plugins {
 	id 'application'
 }
 
-bootJar	{
+application	{
 	mainClass = 'server.admin.AdminApplication'
 }
 group = 'server.admin'
