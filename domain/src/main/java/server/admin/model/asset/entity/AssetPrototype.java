@@ -36,10 +36,10 @@ public class AssetPrototype extends BaseTimeEntity implements Serializable {
     @JsonIgnore
     private AssetSeason season;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "collection_id")
-    @JsonIgnore
-    private AssetCollection collection;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "collection_id")
+//    @JsonIgnore
+//    private AssetCollection collection;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_category_id")
@@ -106,19 +106,4 @@ public class AssetPrototype extends BaseTimeEntity implements Serializable {
 
     @Column(name = "is_enabled")
     private Boolean isEnabled = true;
-
-    public static AssetPrototype setBasicEntity(AssetPrototype entity, AssetPrototypeUpdateRequest request){
-        entity.setName(request.getName());
-        entity.setDecorator(request.getDecorator());
-        entity.setAdditional(request.getAdditional());
-        entity.setReleasePrice(request.getReleasePrice());
-        entity.setCurrentPrice(request.getCurrentPrice());
-        entity.setPastPrice(request.getPastPrice());
-        entity.setLatestBiddingPrice(request.getLatestBiddingPrice());
-        entity.setYesterdayPrice(request.getYesterdayPrice());
-        entity.setTrendy(request.getTrendy());
-        entity.setLikes(request.getLikes());
-        entity.setResourceAdditional(request.getResourceAdditional());
-        return entity;
-    }
 }

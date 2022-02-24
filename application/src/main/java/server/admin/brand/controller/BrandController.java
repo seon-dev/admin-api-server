@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import server.admin.utils.page.PageResult;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 
 @RestController
@@ -39,15 +40,17 @@ public class BrandController {
     @GetMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 정보 조회", notes = "브랜드 단건 정보를 조회합니다.")
-    public BrandResponse getBrand(@PathVariable("brandId") Long brandId){
-        return brandService.getBrand(brandId);
+    public RestResponse<BrandResponse> getBrand(@PathVariable("brandId") Long brandId){
+        return RestSuccessResponse.newInstance(
+                brandService.getBrand(brandId)
+        );
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 생성", notes = "브랜드 정보를 생성합니다.")
-    public BrandResponse createBrand(@RequestBody @Valid BrandCreateRequest brand){
-        return this.brandService.createBrand(brand);
+    public void createBrand(@Valid BrandCreateRequest request) throws IOException {
+            brandService.createBrand(request);
     }
 
     @DeleteMapping("/{brandId}")
@@ -57,13 +60,16 @@ public class BrandController {
         this.brandService.deleteBrand(brandId);
     }
 
-    @PutMapping("/{brandId}")
+    @PatchMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 업데이트", notes = "브랜드 정보를 업데이트 합니다.")
-    public BrandResponse updateBrand(
+    public RestResponse<BrandResponse> updateBrand(
             @PathVariable("brandId") Long brandId,
-            @RequestBody @Valid BrandUpdateRequest brand
-    ){
-        return this.brandService.updateBrand(brandId,brand);
+            @Valid BrandUpdateRequest brand
+    ) throws IOException {
+
+        return RestSuccessResponse.newInstance(
+                this.brandService.updateBrand(brandId,brand)
+        );
     }
 }

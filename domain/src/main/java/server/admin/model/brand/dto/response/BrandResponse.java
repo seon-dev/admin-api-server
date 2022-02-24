@@ -1,8 +1,7 @@
 package server.admin.model.brand.dto.response;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
+import server.admin.model.asset.dto.response.AssetBrandCategoryResponse;
 import server.admin.model.asset.entity.AssetBrandCategory;
 import server.admin.model.brand.entity.Brand;
 
@@ -10,6 +9,8 @@ import java.util.List;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BrandResponse {
     private Long id;
     private String name;
@@ -21,7 +22,7 @@ public class BrandResponse {
     private String resourceWallpaper;
     private String resourceCard;
     private String color;
-//    private List<AssetBrandCategory.Minified> brandCategories;
+    private List<AssetBrandCategoryResponse.Minified> brandCategories;
     private Boolean isEnabled;
 
 
@@ -43,6 +44,7 @@ public class BrandResponse {
 
     @Getter
     @Builder
+    @AllArgsConstructor
     public static class Minified{
         private Long id;
         private String name;

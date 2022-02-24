@@ -45,7 +45,7 @@ public class UserAssetApplicationController {
             @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
             @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc
     ){
-//localhost:8080/admin/user-asset-application?size=5&cursor=MzM=&verified=false&sortBy=id&desc=true
+
           return RestSuccessResponse.newInstance(
                 userAssetApplicationService.getAllUserAssetApplication(
                         decodeCursor(encodedCursor), size, isVerified, checkOrderBy(desc, sortBy)
@@ -68,8 +68,10 @@ public class UserAssetApplicationController {
     }
 
     private Long decodeCursor(String encodedCursor){
-        byte[] decodedCursor = Base64.getDecoder().decode(encodedCursor);
-        return Long.parseLong(new String(decodedCursor));
+        if(encodedCursor != null){
+            byte[] decodedCursor = Base64.getDecoder().decode(encodedCursor);
+            return Long.parseLong(new String(decodedCursor));
+        } else return null;
     }
 
     private Sort checkOrderBy(Boolean desc, String sortBy ){

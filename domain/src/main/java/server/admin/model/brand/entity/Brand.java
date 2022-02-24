@@ -49,17 +49,4 @@ public class Brand extends BaseTimeEntity implements Serializable {
     @NotNull
     private Boolean isEnabled = true;
 
-
-    public static Brand toEntity(final BrandCreateRequest brandCreateDto){
-        final Brand entity = new Brand();
-        entity.setColor(brandCreateDto.getColor());
-        entity.setDescription(brandCreateDto.getDescription());
-        entity.setIsEnabled(true);
-        entity.setName(brandCreateDto.getName());
-        entity.setResourceCard(brandCreateDto.getResourceCard());
-        entity.setResource(brandCreateDto.getResource());
-        entity.setResourceWallpaper(brandCreateDto.getResourceWallpaper());
-        entity.setOriginalName(brandCreateDto.getOriginalName());
-        return entity;
-    }
 }

@@ -2,8 +2,11 @@ package server.admin.model.asset.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import server.admin.model.asset.entity.*;
+import server.admin.model.brand.dto.response.BrandResponse;
 import server.admin.model.brand.entity.Brand;
 
 @Getter
@@ -13,22 +16,18 @@ import server.admin.model.brand.entity.Brand;
 @NoArgsConstructor
 public class AssetPrototypeResponse {
     private Long id;
-    private Long brandId; //brandminified로 변경하기
-    private Long assetLineId;
-    private Long assetSeasonId;
-    //    private AssetCollection assetCollection; 삭제한다고함
-    private Long assetBrandCategoryId;
+    private BrandResponse.Minified brand;
+    private AssetLineResponse.Minified line;
+    private AssetSeasonResponse season;
+    private AssetBrandCategoryResponse.Minified category;
     private String name;
     private String decorator;
     private String code;
     private String description;
-    private long releasePrice;
-//    private long currentPrice;
-//    private long pastPrice;
-//    private long latestBiddingPrice;
-//    private long yesterdayPrice;
+    private Long releasePrice;
     private String additional;
     private Integer trendy;
+    private Integer likes;
     private String keywords;
     private String resourceFront;
     private String resourceAdditional;
@@ -37,11 +36,38 @@ public class AssetPrototypeResponse {
     private Boolean isEnabled;
 
 
-    public static AssetPrototypeResponse toResponse(AssetPrototype entity){
-        final Long assetLineId = entity.getLine() != null? entity.getLine().getId() : null;
-        final Long brandId = entity.getBrand() != null? entity.getBrand().getId() : null;
-        final Long assetSeasonId = entity.getSeason() != null? entity.getSeason().getId() : null;
-        final Long assetBrandCategoryId = entity.getBrandCategory() != null? entity.getBrandCategory().getId() : null;
+//    @QueryProjection
+//    public AssetPrototypeResponse(Long id,BrandResponse.Minified brand, AssetLineResponse.Minified line, AssetSeasonResponse season, AssetBrandCategoryResponse.Minified category,String name,
+//                                  String decorator,String code, String description, Long releasePrice, String additional, Integer trendy, Integer likes,
+//                                  String keywords, String resourceFront, String resourceAdditional, String resourceRear, String resourceSide,
+//                                  Boolean isEnabled
+//    ){
+//        this.id= id;
+//        this.brand = brand;
+//        this.line = line;
+//        this.season = season;
+//        this.category = category;
+//        this.name = name;
+//        this.decorator = decorator;
+//        this.code = code;
+//        this.description = description;
+//        this.releasePrice = releasePrice;
+//        this.additional = additional;
+//        this.trendy = trendy;
+//        this.likes = likes;
+//        this.keywords = keywords;
+//        this.resourceFront = resourceFront;
+//        this.resourceAdditional = resourceAdditional;
+//        this.resourceRear = resourceRear;
+//        this.resourceSide = resourceSide;
+//        this.isEnabled = isEnabled;
+//    }
+
+    public static AssetPrototypeResponse toResponse(AssetPrototype entity) {
+        final BrandResponse.Minified brand = entity.getBrand() != null ? BrandResponse.Minified.of(entity.getBrand()) : null;
+        final AssetLineResponse.Minified assetLine = entity.getLine() != null ? AssetLineResponse.Minified.of(entity.getLine()) : null;
+        final AssetSeasonResponse assetSeason = entity.getSeason() != null ? AssetSeasonResponse.toResponse(entity.getSeason()) : null;
+        final AssetBrandCategoryResponse.Minified brandCategory = entity.getBrandCategory() != null ? AssetBrandCategoryResponse.Minified.of(entity.getBrandCategory()) : null;
         return AssetPrototypeResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -50,24 +76,49 @@ public class AssetPrototypeResponse {
                 .description(entity.getDescription())
                 .description(entity.getDescription())
                 .releasePrice(entity.getReleasePrice())
-//                .currentPrice(entity.getCurrentPrice())
-//                .pastPrice(entity.getPastPrice())
-//                .latestBiddingPrice(entity.getLatestBiddingPrice())
-//                .yesterdayPrice(entity.getYesterdayPrice())
                 .additional(entity.getAdditional())
                 .trendy(entity.getTrendy())
                 .keywords(entity.getKeywords())
-                .brandId(brandId)
-                .assetLineId(assetLineId)
-                .assetSeasonId(assetSeasonId)
-                .assetBrandCategoryId(assetBrandCategoryId)
+                .brand(brand)
+                .line(assetLine)
+                .season(assetSeason)
+                .category(brandCategory)
                 .resourceFront(entity.getResourceFront())
                 .resourceAdditional(entity.getResourceAdditional())
                 .resourceRear(entity.getResourceRear())
                 .resourceSide(entity.getResourceSide())
                 .isEnabled(entity.getIsEnabled())
-//                .assetCollection(entity.getCollection())
-        .build();
+                .likes(entity.getLikes())
+                .build();
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class Minified{
+        private Long id;
+        private String name;
+        private String code;
+        private BrandResponse.Minified brand;
+        private Long releasePrice;
+        private Integer trendy;
+        private Integer likes;
+        private Boolean isEnabled;
+
+        public static Minified of(AssetPrototype entity){
+            return Minified.builder()
+                    .id(entity.getId())
+                    .name(entity.getName())
+                    .code(entity.getCode())
+                    .brand(BrandResponse.Minified.of(entity.getBrand()))
+                    .releasePrice(entity.getReleasePrice())
+                    .trendy(entity.getTrendy())
+                    .likes(entity.getLikes())
+                    .isEnabled(entity.getIsEnabled())
+                    .build();
+        }
+    }
+
+
 
 }

@@ -31,13 +31,13 @@ public class UserRepositoryImpl extends QueryDslSupport implements UserRepositor
                         checkEnabled(isEnabled)
                 );
 
-        List<Long> fetch = queryFactory.select(user.count())
-                .from(user)
-                .where(
-                        checkEnabled(isEnabled)
-                )
-                .fetch();
-        System.out.println(fetch);
+//        List<Long> fetch = queryFactory.select(user.count())
+//                .from(user)
+//                .where(
+//                        checkEnabled(isEnabled)
+//                )
+//                .fetch();
+//        System.out.println(fetch);
 
         Long count = queryFactory.select(user.count())
                 .from(user)
