@@ -68,11 +68,8 @@ public class BadgeService {
     public void deleteBadge(Long badgeId){
         Optional<Badge> optionalBadge = badgeRepository.findById(badgeId);
         optionalBadge.orElseThrow(BadgeNotExistException::new);
-        optionalBadge.ifPresentOrElse(
-                badge -> { badgeRepository.delete(badge); },
-                () -> {
-                    throw new BadgeNotExistException();
-                }
+        optionalBadge.ifPresent(
+                badge -> { badgeRepository.delete(badge);}
         );
     }
 

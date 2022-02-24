@@ -90,11 +90,9 @@ public class AssetPrototypeService {
 
     public void deleteAssetPrototype(Long assetPrototypeId){
         Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findById(assetPrototypeId);
-        optionalAssetPrototype.ifPresentOrElse(
-                assetPrototype -> { assetPrototype.setIsEnabled(false);},
-                () -> {
-                    throw new AssetPrototypeNotExistException();
-                }
-        );
+        optionalAssetPrototype.ifPresent(
+                assetPrototype -> { assetPrototype.setIsEnabled(false);}
+                    );
+        optionalAssetPrototype.orElseThrow(AssetPrototypeNotExistException::new);
     }
 }

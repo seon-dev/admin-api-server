@@ -56,7 +56,7 @@ public class UserService {
         request.getBadges().forEach(badgeId -> {
             Badge badge = badgeRepository.findBadgeById(badgeId);
             Optional<UserBadge> userBadgeOptional = userBadgeRepository.findByBadge(badge);
-            if(userBadgeOptional.isEmpty() ){
+            if( !userBadgeOptional.isPresent() ){
                 UserBadge userBadge = new UserBadge();
                 userBadge.setBadge(badge);
                 userBadge.setUser(singleUser);

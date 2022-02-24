@@ -52,12 +52,12 @@ public class BrandService {
 
     public void deleteBrand(Long brandId) {
         Optional<Brand> brand = brandRepository.findById(brandId);
-        brand.ifPresentOrElse(
-                singleBrand -> { singleBrand.setIsEnabled(false);},
-                () -> {
-                    throw new BrandNotExistException();
-                }
+        brand.ifPresent(
+                singleBrand -> { singleBrand.setIsEnabled(false);}
         );
+        if( !brand.isPresent()) {
+            throw new BrandNotExistException();
+        }
     }
 
     public BrandResponse updateBrand(Long brandId, BrandUpdateRequest brandUpdateDto) throws IOException {
