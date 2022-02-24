@@ -12,7 +12,7 @@ repositories {
 
 bootJar {
     enabled = true
-    archiveFileName = 'admin-server-application.jar'
+    archiveFileName = 'admin-api-server.jar'
     mainClass = 'server.admin.AdminApplication'
 }
 
