@@ -2,8 +2,12 @@ plugins {
 	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'application'
 }
 
+bootJar	{
+	mainClass = 'server.admin.AdminApplication'
+}
 group = 'server.admin'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -13,6 +17,8 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+
+
 
 dependencies {
 	implementation "org.springframework.boot:spring-boot-gradle-plugin:2.6.2"
@@ -62,13 +68,15 @@ subprojects {
 project(':application') {
 	dependencies {
 		implementation(project(":domain"))
-		compileOnly(project(":domain"))
+//		compileOnly(project(":domain"))
 	}
 }
 
 project(':domain') {
 
 }
+
+
 
 repositories {
 	mavenCentral()
