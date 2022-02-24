@@ -35,3 +35,5 @@ JAR_NAME=$(ls $REPOSITORY/ |grep 'admin-api-server' | tail -n 1)
 echo "> JAR Name: $JAR_NAME"
 
 nohup java -jar $REPOSITORY/$JAR_NAME &
+
+sudo service codedeploy-agent restart
