@@ -14,10 +14,10 @@ on:
   workflow_dispatch:
   
 env:
-  S3_BUCKET_NAME: "admin.plav.io"
-  CODE_DEPLOY_APP_NAME: "plav-admin-api-server-deploy"
-  CODE_DEPLOY_GROUP_NAME: "plav-admin-api-dev"
-  PROJECT_NAME: "admin.plav.io"
+  S3_BUCKET_NAME: admin.plav.io
+  CODE_DEPLOY_APP_NAME: plav-admin-api-server-deploy
+  CODE_DEPLOY_GROUP_NAME: plav-admin-api-dev
+  PROJECT_NAME: admin.plav.io
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
