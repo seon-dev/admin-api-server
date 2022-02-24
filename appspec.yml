@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/app/git/plav-admin-api-server-deploy/ # 프로젝트 이름
+    destination: /home/ec2-user/app/git/admin-api-server/ # 프로젝트 이름
     overwrite: yes
 
 permissions:
