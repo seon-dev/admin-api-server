@@ -8,7 +8,7 @@ git pull
 
 echo "> 프로젝트 Build 시작"
 
-./gradlew build
+./gradlew clean build -x test
 
 echo "> Build 파일 복사"
 
