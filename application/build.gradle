@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'application'
 }
 
 group 'server'
@@ -13,8 +12,8 @@ repositories {
 bootJar {
     enabled = true
     archiveFileName = 'admin-api-server.jar'
-    mainClass = 'server.admin.AdminApplication'
 }
+
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'

@@ -9,11 +9,7 @@ application	{
 	mainClass = 'server.admin.AdminApplication'
 }
 
-bootJar {
-	manifest {
-		attributes 'Main-Class': 'org.springframework.boot.loader.JarLauncher'
-	}
-}
+
 
 group = 'server.admin'
 version = '0.0.1-SNAPSHOT'
@@ -64,6 +60,7 @@ subprojects {
 		implementation 'net.nurigo:javaSDK:2.2'
 		implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 		implementation 'com.amazonaws:aws-java-sdk-s3:1.12.162'
+		implementation 'org.springframework.boot:spring-boot-starter-parent:2.5.9'
 
 	}
 
@@ -74,13 +71,23 @@ subprojects {
 
 project(':application') {
 	dependencies {
-		implementation(project(":domain"))
-//		compileOnly(project(":domain"))
+		implementation project(":domain")
+	}
+
+	tasks.named('bootJar') {
+		manifest {
+			attributes('Automatic-Module-Name': 'server.admin.AdminApplication')
+		}
 	}
 }
 
 project(':domain') {
 
+	tasks.named('jar') {
+		manifest {
+			attributes('Automatic-Module-Name': 'server.admin.domain')
+		}
+	}
 }
 
 

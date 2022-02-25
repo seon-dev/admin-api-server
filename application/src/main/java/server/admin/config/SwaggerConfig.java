@@ -36,6 +36,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .version("1.0")
                 .build();
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry

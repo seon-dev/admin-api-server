@@ -39,6 +39,7 @@ import java.io.IOException;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthService authService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         //rest api
@@ -50,8 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // authenticated path 인가
         http.authorizeRequests()
-                .antMatchers("/swagger-ui.html", "/swagger-ui/**")
-                .permitAll()
+//                .antMatchers("/swagger-resources/**","/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/health-check").anonymous()
                 .antMatchers(HttpMethod.POST, "/admin/auth/sign-in/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/admin/auth/verify").permitAll()
@@ -82,15 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().mvcMatchers(HttpMethod.POST,"/admin/auth/sign-in")
                 .mvcMatchers(HttpMethod.GET,"/admin/auth/refresh-token")
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**")
                 .mvcMatchers(HttpMethod.POST, "/admin/auth/verify");
 
     }
-
-//    @Override
-//    @Bean
-//    public AuthenticationManager authenticationManagerBean() throws Exception{
-//        return super.authenticationManagerBean();
-//    }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
