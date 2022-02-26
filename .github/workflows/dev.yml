@@ -1,14 +1,14 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: dev
 
 # Controls when the workflow will run
 on:
-# release branch, push 시에는 CICD.yml 실행
+# release branch, push 시에는 main.yml 실행
   push:
     branches: [ develop ]
   pull_request:
-    branches: [ develop, release ]
+    branches: [ release ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -39,3 +39,10 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
         shell: bash
+
+      - name: Actions Status Discord
+        uses: sarisia/actions-status-discord@v1.8.6
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+

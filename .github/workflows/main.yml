@@ -1,14 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CICD
+name: main
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the release branch
   push:
     branches: [ release ]
-#   pull_request:
-#     branches: [ release ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -63,5 +61,9 @@ jobs:
 
       - name: Code Deploy
         run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODE_DEPLOY_GROUP_NAME --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-        
-#       - name: Discord Webhook
+
+      - name: Actions Status Discord
+        uses: sarisia/actions-status-discord@v1.8.6
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}

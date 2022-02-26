@@ -48,7 +48,7 @@ public class UserAssetApplicationController {
 
           return RestSuccessResponse.newInstance(
                 userAssetApplicationService.getAllUserAssetApplication(
-                        decodeCursor(encodedCursor), size, isVerified, checkOrderBy(desc, sortBy)
+                        decodeCursor(encodedCursor), size, isVerified, checkOrderByAndSort(desc, sortBy)
                 )
         );
     }
@@ -74,7 +74,7 @@ public class UserAssetApplicationController {
         } else return null;
     }
 
-    private Sort checkOrderBy(Boolean desc, String sortBy ){
+    private Sort checkOrderByAndSort(Boolean desc, String sortBy ){
         return desc ? Sort.by(Sort.Direction.DESC, sortBy) : Sort.by(Sort.Direction.ASC, sortBy) ;
     }
 }
