@@ -25,11 +25,12 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
 //1//TODO: 회원가입부분 createUser로 네이밍변경 후 UserController로 이동하기
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "관리자 가입", notes = "관리자에 가입합니다.")
-    @ApiResponse(code = 200, message = "관리자 가입이 성공했습니다.")
+    @ApiOperation(value = "관리자 등록", notes = "관리자를 등록합니다.")
+//    @ApiResponse(code = 200, message = "관리자 가입이 성공했습니다.")
     public RestResponse signUp(
             @RequestBody SignUpRequest request
     ){
@@ -69,7 +70,7 @@ public class AuthController {
         );
     }
 
-    @DeleteMapping("/log-out")
+    @DeleteMapping("/logout")
     @ApiOperation(value = "로그아웃", notes = "로그아웃합니다.")
     public RestResponse<String> logout(
             @ApiParam(hidden = true) @AuthenticationPrincipal User user

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import server.admin.model.badge.dto.request.BadgeCreateUpdateRequest;
 import server.admin.model.common.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -28,13 +27,4 @@ public class Badge extends BaseTimeEntity implements Serializable {
     private String resource;
     @Column(name = "is_enabled")
     private Boolean isEnabled = true;
-
-    public static Badge toEntity(BadgeCreateUpdateRequest dto){
-        final Badge entity = new Badge();
-        entity.setResource(dto.getResource());
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        return entity;
-    }
-
 }

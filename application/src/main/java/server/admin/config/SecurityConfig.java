@@ -52,9 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // authenticated path 인가
         http.authorizeRequests()
 //                .antMatchers("/swagger-resources/**","/swagger-ui.html", "/swagger-ui/**").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/health-check").anonymous()
+//                .mvcMatchers(HttpMethod.GET, "/health-check").anonymous()
                 .antMatchers(HttpMethod.POST, "/admin/auth/sign-in/**").permitAll()
-                .mvcMatchers(HttpMethod.POST, "/admin/auth/verify").permitAll()
+//                .mvcMatchers(HttpMethod.POST, "/admin/auth/verify").permitAll()
 //                .mvcMatchers(HttpMethod.GET,"/admin/auth/refresh-token").permitAll()
                 .mvcMatchers(HttpMethod.POST,"/admin/auth/sign-up").hasAnyRole("ADMIN","MODERATOR")//유저생성: 어드민,모더레이터만 가능
                 .mvcMatchers(HttpMethod.PUT, "/admin/user/**").hasRole("ADMIN")
@@ -80,11 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //jwtAuthenticationFilter 필터 안 타도록 설정해주기
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().mvcMatchers(HttpMethod.POST,"/admin/auth/sign-in")
-                .mvcMatchers(HttpMethod.GET,"/admin/auth/refresh-token")
-                .antMatchers("/swagger-ui.html", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**")
-                .mvcMatchers(HttpMethod.POST, "/admin/auth/verify");
-
+        web.ignoring().antMatchers("/admin/auth/sign-in","/admin/auth/refresh-token","/admin/auth/verify","/admin/health-check")
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**");
     }
 
     @Bean
