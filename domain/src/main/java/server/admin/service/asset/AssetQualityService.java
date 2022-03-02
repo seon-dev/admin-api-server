@@ -52,4 +52,9 @@ public class AssetQualityService {
                 request.setEntity(optionalAssetQuality.orElseThrow(AssetQualityException.AssetQualityNotExistException::new))
         );
     }
+
+    public void deleteAssetQuality(Long assetQualityId){
+        Optional<AssetQuality> optionalAssetQuality = assetQualityRepository.findById(assetQualityId);
+        optionalAssetQuality.orElseThrow(AssetQualityException.AssetQualityNotExistException::new).setIsEnabled(false);
+    }
 }

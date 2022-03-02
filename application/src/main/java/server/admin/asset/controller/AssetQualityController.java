@@ -64,4 +64,14 @@ public class AssetQualityController {
             assetQualityService.updateAssetQuality(id , request)
         );
     }
+
+    @DeleteMapping("/{assetQualityId}")
+    @ApiOperation(notes = "에셋 등급 삭제", value = "해당 에셋 등급을 비활성화 합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAssetQuality(
+          @PathVariable("assetQualityId") Long id
+    ){
+        assetQualityService.deleteAssetQuality(id);
+    }
+
 }
