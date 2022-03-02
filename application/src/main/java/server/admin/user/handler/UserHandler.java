@@ -24,7 +24,7 @@ public class UserHandler {
     }
 
     @ExceptionHandler(UserNotExistException.class)
-    public ErrorResponse UserNotExistHandler(UserNotExistException exception){
+    public ErrorResponse userNotExistHandler(UserNotExistException exception){
         return new ErrorResponse(UserErrorCode.USER_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 

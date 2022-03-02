@@ -1,4 +1,4 @@
-package server.admin.model.asset.repository;
+package server.admin.model.asset.repository.assetPrototype;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

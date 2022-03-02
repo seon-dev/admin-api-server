@@ -30,32 +30,32 @@ public class AuthHandler {
     }
 
     @ExceptionHandler(InvalidEmailAddressException.class)
-    public ErrorResponse InvalidEmailAddressHandler(InvalidEmailAddressException exception){
+    public ErrorResponse invalidEmailAddressHandler(InvalidEmailAddressException exception){
         return new ErrorResponse(AuthErrorCode.INVALID_EMAIL_ADDRESS_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);//코드 수정하기
     }
 
     @ExceptionHandler(InvalidEmailVerificationCodeException.class)
-    public ErrorResponse InvalidEmailVerificationHandler(InvalidEmailVerificationCodeException exception){
+    public ErrorResponse invalidEmailVerificationHandler(InvalidEmailVerificationCodeException exception){
         return new ErrorResponse(AuthErrorCode.INVALID_EMAIL_VERIFICATION_CODE.getStatusCode(), exception.getMessage(),HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidNameException.class)
-    public ErrorResponse InvalidNameHandler(InvalidNameException exception){
+    public ErrorResponse invalidNameHandler(InvalidNameException exception){
         return new ErrorResponse(AuthErrorCode.INVALID_NAME_CODE.getStatusCode(), exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ErrorResponse InvalidPasswordHandler(InvalidPasswordException exception){
+    public ErrorResponse invalidPasswordHandler(InvalidPasswordException exception){
         return new ErrorResponse(AuthErrorCode.INVALID_PASSWORD_CODE.getStatusCode(), exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(SignInFailException.class)
-    public RestFailResponse SignInFailHandler(SignInFailException exception){
+    public RestFailResponse signInFailHandler(SignInFailException exception){
         return new RestFailResponse(AuthErrorCode.SIGN_IN_FAIL_CODE.getStatusCode(), exception.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public RestFailResponse AccessDeniedHandler(AccessDeniedException exception){
+    public RestFailResponse accessDeniedHandler(AccessDeniedException exception){
         return new RestFailResponse(AuthErrorCode.ACCESS_DENIED_CODE.getStatusCode(), exception.getMessage());
     }
 }

@@ -1,7 +1,5 @@
-package server.admin.model.asset.repository;
+package server.admin.model.asset.repository.userAssetApplication;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import server.admin.model.asset.entity.UserAssetApplication;
 

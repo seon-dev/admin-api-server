@@ -1,4 +1,4 @@
-package server.admin.model.asset.repository;
+package server.admin.model.asset.repository.assetPrototype;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +12,6 @@ import java.util.Optional;
 
 public interface AssetPrototypeRepositoryCustom {
     Optional<AssetPrototype> findByIdWithFetchJoin(Long id);
-    Page<AssetPrototypeResponse> getAllAssetPrototype(Pageable pageable, Boolean isEnabled);
+    Page<AssetPrototypeResponse> getAllAssetPrototype(Pageable pageable);
 
 }

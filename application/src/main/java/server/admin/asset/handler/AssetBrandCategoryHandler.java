@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.admin.common.exception.dto.ErrorResponse;
 import server.admin.model.asset.exception.AssetBrandCategoryException;
 import server.admin.model.asset.exception.AssetCollectionException;
+import server.admin.model.common.rest.RestFailResponse;
 
 import java.time.LocalDateTime;
 @RestControllerAdvice
@@ -21,7 +22,7 @@ public class AssetBrandCategoryHandler {
     }
 
     @ExceptionHandler(AssetBrandCategoryException.AssetBrandCategoryNotExistException.class)
-    public ErrorResponse assetBrandCategoryNotExistHandler(AssetBrandCategoryException.AssetBrandCategoryNotExistException exception){
-        return new ErrorResponse(AssetBrandCategoryErrorCode.ASSET_BRAND_CATEGORY_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+    public RestFailResponse assetBrandCategoryNotExistHandler(AssetBrandCategoryException.AssetBrandCategoryNotExistException exception){
+        return new RestFailResponse(AssetBrandCategoryErrorCode.ASSET_BRAND_CATEGORY_NOT_EXIST_CODE.getStatusCode(), exception.getMessage());
     }
 }

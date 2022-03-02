@@ -3,6 +3,7 @@ package server.admin.model.asset.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import server.admin.model.asset.entity.AssetBrandCategory;
 import server.admin.model.asset.entity.AssetCategory;
 import server.admin.model.asset.entity.AssetLine;
@@ -10,6 +11,7 @@ import server.admin.model.brand.dto.response.BrandResponse;
 
 import java.util.List;
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 public class AssetBrandCategoryResponse {
@@ -17,8 +19,7 @@ public class AssetBrandCategoryResponse {
     private BrandResponse.Minified brand;
     private AssetCategoryResponse category;
     private List<AssetLineResponse> lines;
-    //repositoryDI하고 set하기불러오기
-    private String name;
+    private String name;//categoryName
     private Boolean isEnabled;
 
     public static AssetBrandCategoryResponse toResponseWithoutAssetLine(AssetBrandCategory entity){
@@ -37,7 +38,7 @@ public class AssetBrandCategoryResponse {
         private Long id;
         private Long brandId;
         private Long categoryId;
-        private String name;
+        private String name;//categoryName
         private Boolean isEnabled;
 
         public static  Minified of(AssetBrandCategory entity){

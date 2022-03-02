@@ -4,10 +4,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import server.admin.model.asset.entity.Asset;
-import server.admin.model.asset.entity.AssetPrototype;
-import server.admin.model.asset.repository.UserAssetApplicationRepository;
-import server.admin.model.user.entity.User;
+import server.admin.model.asset.repository.userAssetApplication.UserAssetApplicationRepository;
 import server.admin.service.asset.UserAssetApplicationService;
 
 @ExtendWith(MockitoExtension.class)
