@@ -1,8 +1,7 @@
 package server.admin.service.brand;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
-import server.admin.model.asset.repository.AssetBrandCategoryRepository;
+import server.admin.model.asset.repository.assetBrandCategory.AssetBrandCategoryRepository;
 import server.admin.model.brand.dto.request.BrandCreateRequest;
 import server.admin.model.brand.dto.response.BrandResponse;
 import server.admin.model.brand.dto.request.BrandUpdateRequest;

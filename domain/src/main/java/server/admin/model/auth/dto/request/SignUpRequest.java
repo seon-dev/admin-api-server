@@ -31,7 +31,7 @@ public class SignUpRequest {
         entity.setIsEnabled(isEnabled);
         entity.setRole(role);
         entity.setIsEnabled(true);
-        entity.setPhoneNumberVerifierValidAt(new Timestamp(System.currentTimeMillis() + + 60000));
+        entity.setPhoneNumberVerifierValidAt(new Timestamp(System.currentTimeMillis() + 60000));
         return entity;
     }
 }

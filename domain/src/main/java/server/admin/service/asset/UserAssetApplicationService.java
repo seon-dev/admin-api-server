@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
 import server.admin.model.asset.entity.UserAssetApplication;
-import server.admin.model.asset.repository.UserAssetApplicationRepository;
+import server.admin.model.asset.repository.userAssetApplication.UserAssetApplicationRepository;
 import server.admin.utils.cursor.CursorResult;
 
 import java.util.List;

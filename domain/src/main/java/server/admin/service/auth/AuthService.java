@@ -18,6 +18,7 @@ import server.admin.model.auth.dto.request.SignInRequest;
 import server.admin.model.auth.dto.request.SignUpRequest;
 import server.admin.model.auth.dto.response.RefreshTokenResponse;
 import server.admin.model.auth.dto.response.SignInResponse;
+import server.admin.model.auth.dto.response.VerificationResponse;
 import server.admin.model.common.rest.RestFailResponse;
 import server.admin.model.common.rest.RestResponse;
 import server.admin.model.common.rest.RestSuccessResponse;
@@ -52,17 +53,18 @@ public class AuthService implements UserDetailsService {
     private final TextMessageProvider textMessageProvider;
 //    private final AuthenticationManager authenticationManager;
 
-    private void validateNameAndPassword(String name,String password){
-        String namePattern = "^[ㄱ-ㅎ|가-힣]+$";//한글만 가능
-        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?`~])[A-Za-z\\d!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?`~]{8,}$";//총8자 이상, 영문자, 숫자, 특수문자 각각 하나이상
-        if (!Pattern.matches(namePattern, name)){ throw new InvalidNameException(); }
-        if (!Pattern.matches(passwordPattern, password)){ throw new InvalidPasswordException(); }
-    }
+//    private void validateNameAndPassword(String name,String password){
+//        String namePattern = "^[ㄱ-ㅎ|가-힣]+$";//한글만 가능
+//        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?`~])[A-Za-z\\d!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?`~]{8,}$";//총8자 이상, 영문자, 숫자, 특수문자 각각 하나이상
+//        if (!Pattern.matches(namePattern, name)){ throw new InvalidNameException(); }
+//        if (!Pattern.matches(passwordPattern, password)){ throw new InvalidPasswordException(); }
+//    }
 
     private Boolean duplicatePhoneNumber( String phoneNumber ){
         Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
         return optionalUser.isPresent();
     }
+
     private Authentication toAuthentication(Long userId, UserRole role){
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(role.toString().split(","))
@@ -156,16 +158,17 @@ public class AuthService implements UserDetailsService {
                     String.format("인증번호는 %d 입니다.", verificationCode)
             );
 
+            return RestSuccessResponse.newInstance(
+                    VerificationResponse.newInstance("발급된 인증번호를 입력해주세요.", expiredAt )
+            );
+        } else {
             return RestFailResponse.newInstance(
-                    HttpStatus.OK,
-                    "발급된 인증번호를 입력해주세요."
+                    HttpStatus.NOT_FOUND,
+                    "해당 핸드폰 번호를 사용하는 계정을 찾을 수 없습니다."
             );
         }
 
-        return RestFailResponse.newInstance(
-                HttpStatus.NOT_FOUND,
-                "해당 핸드폰 번호를 사용하는 계정을 찾을 수 없습니다."
-        );
+
     }
 
     public RestResponse signUp(SignUpRequest request){

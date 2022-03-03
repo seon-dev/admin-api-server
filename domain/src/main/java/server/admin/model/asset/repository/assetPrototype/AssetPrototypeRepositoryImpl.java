@@ -1,28 +1,21 @@
-package server.admin.model.asset.repository;
+package server.admin.model.asset.repository.assetPrototype;
 
-import com.querydsl.core.types.ConstructorExpression;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import server.admin.model.asset.dto.response.*;
 import server.admin.model.asset.entity.*;
-import server.admin.model.brand.dto.response.BrandResponse;
 import server.admin.model.brand.entity.QBrand;
 import server.admin.model.common.QueryDslSupport;
 
 import javax.persistence.EntityManager;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static server.admin.model.asset.entity.QAssetPrototype.*;
-import static server.admin.model.user.entity.QUser.user;
 
 public class AssetPrototypeRepositoryImpl
         extends QueryDslSupport
@@ -45,11 +38,11 @@ public class AssetPrototypeRepositoryImpl
     }
 
     @Override
-    public Page<AssetPrototypeResponse> getAllAssetPrototype(Pageable pageable, Boolean isEnabled){
+    public Page<AssetPrototypeResponse> getAllAssetPrototype(Pageable pageable){
         List<AssetPrototype> assetPrototypeList = queryFactory.selectFrom(assetPrototype)
-                .where(
-                        checkEnabled(isEnabled)
-                )
+//                .where(
+//                        checkEnabled(isEnabled)
+//                )
                 .leftJoin(assetPrototype.brand, QBrand.brand)
                 .leftJoin(assetPrototype.line, QAssetLine.assetLine)
                 .leftJoin(assetPrototype.brandCategory, QAssetBrandCategory.assetBrandCategory)
@@ -60,10 +53,10 @@ public class AssetPrototypeRepositoryImpl
 
         Long count = queryFactory.select(assetPrototype.count())
                 .from(assetPrototype)
-                .where(
-                        checkEnabled(isEnabled)
-
-                )
+//                .where(
+//                        checkEnabled(isEnabled)
+//
+//                )
                 .fetchOne();
 
         List<AssetPrototypeResponse> assetPrototypeResponseList = new ArrayList<>();

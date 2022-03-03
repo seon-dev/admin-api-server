@@ -1,4 +1,4 @@
-package server.admin.model.asset.repository;
+package server.admin.model.asset.repository.userAssetApplication;
 
 import org.springframework.data.domain.Sort;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;

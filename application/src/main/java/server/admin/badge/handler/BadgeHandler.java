@@ -22,7 +22,7 @@ public class BadgeHandler {
     }
 
     @ExceptionHandler(BadgeNotExistException.class)
-    public ErrorResponse BadgeNotExistHandler(BadgeNotExistException exception){
+    public ErrorResponse badgeNotExistHandler(BadgeNotExistException exception){
         return new ErrorResponse(BadgeErrorCode.BADGE_NOT_EXIST_CODE.getStatusCode(),exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

@@ -1,4 +1,4 @@
-package server.admin.model.asset.repository;
+package server.admin.model.asset.repository.userAssetApplication;
 
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;

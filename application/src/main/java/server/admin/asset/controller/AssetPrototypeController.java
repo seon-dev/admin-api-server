@@ -38,14 +38,14 @@ public class AssetPrototypeController {
     }
 
     @GetMapping()
-    @ApiOperation(value= "에셋 프로토타입 조회", notes = "오프셋 페이지네이션에 맞는 에셋 프로토타입을 조회합니다.")
+    @ApiOperation(value= "에셋 프로토타입 조회", notes = "전체 에셋 프로토타입 리스트를 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     public RestResponse<PageResult<AssetPrototypeResponse>> getAllAssetPrototype(
-            @PageableDefault(size = DEFAULT_SIZE, page = 0, sort = "id") final Pageable pageable,
-            @RequestParam(value = "enabled", required = false) Boolean isEnabled
+            @PageableDefault(size = DEFAULT_SIZE, page = 0, sort = "id") final Pageable pageable
+//            @RequestParam(value = "enabled", required = false) Boolean isEnabled
     ){
         return RestSuccessResponse.newInstance(
-                assetPrototypeService.getAllAssetPrototype(Pageable.unpaged(), isEnabled)
+                assetPrototypeService.getAllAssetPrototype(Pageable.unpaged())
         );
     }
 

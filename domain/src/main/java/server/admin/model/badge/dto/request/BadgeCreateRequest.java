@@ -1,21 +1,24 @@
-package server.admin.model.asset.dto.request;
+package server.admin.model.badge.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import server.admin.model.asset.entity.AssetCategory;
+import lombok.Setter;
+import server.admin.model.badge.entity.Badge;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
+@Setter
 @NoArgsConstructor
-public class AssetCategoryCreateRequest {
-    @NotBlank
+public class BadgeCreateRequest {
+    @NotNull
     private String name;
+    private String description;
     @NotBlank
     private String resourceUploaded;
+    @NotBlank
     private String resourceExtension;
     @NotNull
     private Boolean isEnabled;
@@ -25,10 +28,11 @@ public class AssetCategoryCreateRequest {
         return uid + resourceExtension;
     }
 
-    public AssetCategory toEntityExceptResource(){
-        AssetCategory assetCategory = new AssetCategory();
-        assetCategory.setName(this.name);
-        assetCategory.setIsEnabled(this.isEnabled);
-        return assetCategory;
+    public Badge toEntityExcept(){
+        Badge badge = new Badge();
+        badge.setName(name);
+        badge.setDescription(description);
+        badge.setIsEnabled(isEnabled);
+        return badge;
     }
 }

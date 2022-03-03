@@ -23,7 +23,7 @@ public class BrandHandler {
     }
 
     @ExceptionHandler(BrandNotExistException.class)
-    public ErrorResponse BrandNotExistHandler(BrandNotExistException exception){
+    public ErrorResponse brandNotExistHandler(BrandNotExistException exception){
         return new ErrorResponse(BrandErrorCode.BRAND_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

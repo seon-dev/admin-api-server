@@ -9,6 +9,9 @@ import server.admin.model.asset.dto.request.AssetPrototypeUpdateRequest;
 import server.admin.model.asset.dto.response.AssetPrototypeResponse;
 import server.admin.model.asset.entity.*;
 import server.admin.model.asset.repository.*;
+import server.admin.model.asset.repository.assetBrandCategory.AssetBrandCategoryRepository;
+import server.admin.model.asset.repository.assetLine.AssetLineRepository;
+import server.admin.model.asset.repository.assetPrototype.AssetPrototypeRepository;
 import server.admin.model.brand.repository.BrandRepository;
 import server.admin.utils.S3Service;
 import server.admin.utils.page.PageResult;
@@ -51,12 +54,11 @@ public class AssetPrototypeService {
     public AssetPrototypeResponse getAssetPrototype(Long assetPrototypeId){
         Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findByIdWithFetchJoin(assetPrototypeId);
         return AssetPrototypeResponse.toResponse(optionalAssetPrototype.orElseThrow(AssetPrototypeNotExistException::new));
-        //fetchjoin으로 겟한다음, response에 담기
     }
 
     @Transactional(readOnly = true)
-    public PageResult<AssetPrototypeResponse> getAllAssetPrototype(Pageable pageable, Boolean isEnabled){
-        return new PageResult<>(assetPrototypeRepository.getAllAssetPrototype(pageable, isEnabled));
+    public PageResult<AssetPrototypeResponse> getAllAssetPrototype(Pageable pageable){
+        return new PageResult<>(assetPrototypeRepository.getAllAssetPrototype(pageable));
     }
 
     public AssetPrototypeResponse updateAssetPrototype(Long id, AssetPrototypeUpdateRequest request) throws IOException {
@@ -82,9 +84,9 @@ public class AssetPrototypeService {
 
     public void deleteAssetPrototype(Long assetPrototypeId){
         Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findById(assetPrototypeId);
+        optionalAssetPrototype.orElseThrow(AssetPrototypeNotExistException::new);
         optionalAssetPrototype.ifPresent(
                 assetPrototype -> { assetPrototype.setIsEnabled(false);}
                     );
-        optionalAssetPrototype.orElseThrow(AssetPrototypeNotExistException::new);
     }
 }

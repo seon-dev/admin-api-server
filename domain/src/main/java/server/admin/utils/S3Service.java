@@ -12,11 +12,15 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.xml.bind.DatatypeConverter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @Component
@@ -46,11 +50,29 @@ public class S3Service {
                 .build();
     }
 
+    public String upload(String base64Image, String fileName) throws Exception {
+        String[] strings = base64Image.split(",");
+        // convert base64 string to binary data
+        byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length)) {
+            outputStream.write(data, 0, data.length);
+
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            MultipartFile multipartFile = new MockMultipartFile(fileName, inputStream);
+
+            return upload(multipartFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public String upload(MultipartFile file) throws IOException {
-        return upload(file, file.getOriginalFilename());
+        return upload(file, file.getName());
     }
 
     public String upload(MultipartFile file, String fileName) throws IOException {
+        System.out.println(file+" "+fileName);
         delete(fileName);
 
         ObjectMetadata metadata = new ObjectMetadata();
