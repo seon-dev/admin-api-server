@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.badge.dto.request.BadgeCreateRequest;
-//import server.admin.model.badge.dto.request.BadgeCreateUpdateRequest;
 import server.admin.model.badge.dto.request.BadgeUpdateRequest;
 import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.common.rest.RestResponse;
 import server.admin.model.common.rest.RestSuccessResponse;
 import server.admin.service.badge.BadgeService;
+import server.admin.utils.page.PageResult;
 
 import javax.validation.Valid;
 
@@ -21,15 +21,14 @@ public class BadgeController {
     private final BadgeService badgeService;
 //    private final String DEFAULT_SIZE = "5";
 
-//    @GetMapping()
-//    @ResponseStatus(HttpStatus.OK)
-//    @ApiOperation("뱃지 전체 항목 조회")
-//    public CursorResult<BadgeResponse> getBadges(
-//            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
-//            @RequestParam("cursorId") Long cursorId
-//    ) {
-//        return this.badgeService.getAllBadge(cursorId, PageRequest.of(0, size));
-//    }
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("뱃지 전체 항목 조회")
+    public PageResult<BadgeResponse> getBadges(
+
+    ) {
+        return this.badgeService.getAllBadge();
+    }
 
     @GetMapping("/{badgeId}")
     @ResponseStatus(HttpStatus.OK)

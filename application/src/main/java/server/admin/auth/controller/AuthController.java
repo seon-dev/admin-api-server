@@ -60,7 +60,7 @@ public class AuthController {
         );
     }
 
-    @GetMapping("/refresh-token")
+    @PostMapping("/refresh-token")
     @ApiOperation(value = "엑세스 토큰 재발급", notes = "엑세스 토큰을 재발급합니다.")
     public RestResponse<RefreshTokenResponse> regenerateAccessToken(
             @ApiParam(hidden = true) @AuthenticationPrincipal User user
@@ -70,7 +70,7 @@ public class AuthController {
         );
     }
 
-    @DeleteMapping("/logout")
+    @PostMapping("/logout")
     @ApiOperation(value = "로그아웃", notes = "로그아웃합니다.")
     public RestResponse<String> logout(
             @ApiParam(hidden = true) @AuthenticationPrincipal User user
