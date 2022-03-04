@@ -40,14 +40,14 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "role";
 
     public String createToken(Long userId, String nickname, Authentication authentication) {
-        return generateToken(userId,nickname, authentication,tokenValidTime);
+        return generateToken(userId, authentication,tokenValidTime);
     }
 
     public String createRefreshToken(Long userId, String nickname, Authentication authentication){
-        return generateToken(userId, nickname, authentication, refreshTokenValidTime);
+        return generateToken(userId, authentication, refreshTokenValidTime);
     }
 
-    public String generateToken(Long userId, String nickname, Authentication authentication, long expireTime){
+    public String generateToken(Long userId, Authentication authentication, long expireTime){
         System.out.println(authentication.getCredentials());
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -59,7 +59,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(userId.toString())
                 .claim(AUTHORITIES_KEY,authorities)
-                .claim("nickname", nickname)
+//                .claim("nickname", nickname)
                 .setExpiration(new Date(now.getTime() + expireTime))//유닉스타임으로 변경
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
@@ -79,13 +79,13 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String getNickname(String token){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("nickname").toString();
-    }
+//    public String getNickname(String token){
+//        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("nickname").toString();
+//    }
 
     //토큰 안에 있는 authorities를 가져온 뒤, "new UserDetails(userId, authorities)" 객체를 만들고, 이 두개로 UsernamepasswordAuthenticationToken(Authentication객체)을 만듦.
     public Authentication getAuthentication(String token){
-
+        System.out.println("getAuthentication "+ token);
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 
         if(claims.get(AUTHORITIES_KEY) == null){
@@ -141,8 +141,8 @@ public class JwtTokenProvider {
         }
     }
 
-    public boolean validateToken(String token, server.admin.model.user.entity.User user) {
-        final String tokenUserId = getUserId(token);
-        return (tokenUserId.equals(user.getId().toString()) && isTokenNonExpired(token));
-    }
+//    public boolean validateToken(String token, server.admin.model.user.entity.User user) {
+//        final String tokenUserId = getUserId(token);
+//        return (tokenUserId.equals(user.getId().toString()) && isTokenNonExpired(token));
+//    }
 }

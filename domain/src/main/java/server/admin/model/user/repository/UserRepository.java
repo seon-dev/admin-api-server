@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     Optional<User> findByPhoneNumberAndIsEnabledTrue(String phoneNumber);
     Optional<User> findByPhoneNumberAndLoginVerificationCodeAndLoginVerificationExpiredAtIsAfterAndIsEnabledTrue(String phoneNumber, Integer verificationCode, Timestamp timestamp);
     Optional<User> findByIdAndIsEnabledTrue(Long id);
-    Optional<User> findByNicknameAndId(String nickname, Long id);
+    Optional<User> findByIdAndRefreshToken(Long id, String refreshToken);
     Optional<User> findByPhoneNumber(String phoneNumber);
 }

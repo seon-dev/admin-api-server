@@ -189,9 +189,9 @@ public class AuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(userId));
     }
 
-    public User loadUserByNickname(String nickname, Long userId){
-        return userRepository.findByNicknameAndId(nickname, userId).orElseThrow(() -> new UsernameNotFoundException(nickname));
-    }
+//    public User loadUserByNickname(String nickname, Long userId){
+//        return userRepository.findByNicknameAndId(nickname, userId).orElseThrow(() -> new UsernameNotFoundException(nickname));
+//    }
 
     public RefreshTokenResponse regenerateToken(User user){
         final String accessToken = jwtTokenProvider.createToken(user.getId(),user.getNickname(), toAuthentication(user.getId(), user.getRole()));
@@ -202,9 +202,9 @@ public class AuthService implements UserDetailsService {
 //        redisService.setValues(user.getNickname(), refreshToken);
     }
 
-    public Boolean existsRefreshToken(String refreshNickname, Long userId){
-        Optional<User> optionalUser= userRepository.findByNicknameAndId(refreshNickname, userId);
-        return optionalUser.isPresent();
+    public Boolean existsRefreshToken(Long userId, String refreshToken){
+        Optional<User> optionalUser= userRepository.findByIdAndRefreshToken(userId, refreshToken);
+        return !optionalUser.orElseThrow(UserNotExistException::new).getRefreshToken().isEmpty();
     }
 
     public String logout(User user){

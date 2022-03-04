@@ -1,14 +1,12 @@
 package server.admin.auth.controller;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.auth.dto.request.SignInRequest;
-import server.admin.model.auth.dto.request.SignUpRequest;
 import server.admin.model.auth.dto.request.VerifyRequest;
 import server.admin.model.auth.dto.response.RefreshTokenResponse;
 import server.admin.model.auth.dto.response.SignInResponse;
