@@ -5,13 +5,11 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import server.admin.model.asset.dto.response.AssetPrototypeResponse;
-import server.admin.model.asset.dto.response.AssetResponse;
-import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
-import server.admin.model.asset.entity.QAsset;
-import server.admin.model.asset.entity.QAssetPrototype;
-import server.admin.model.asset.entity.UserAssetApplication;
+import server.admin.model.asset.dto.response.*;
+import server.admin.model.asset.entity.*;
+import server.admin.model.brand.dto.response.BrandResponse;
 import server.admin.model.brand.entity.QBrand;
 import server.admin.model.common.QueryDslSupport;
 import server.admin.model.user.dto.response.UserProfileResponse;
@@ -19,6 +17,7 @@ import server.admin.model.user.entity.QUser;
 
 import javax.persistence.EntityManager;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,24 +47,37 @@ public class UserAssetApplicationRepositoryImpl
     }
 
     @Override
-    public List<UserAssetApplicationResponse> getUserAssetApplications(Long cursorId, Integer size, Boolean isVerified, Sort sort){
-        JPAQuery<?> query = queryFactory.from(userAssetApplication)
-                .where(
-                        checkIsVerified(isVerified),
-                        checkCursor(cursorId)
-                )
-                .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
-                .leftJoin(userAssetApplication.user, QUser.user)
-                .leftJoin(userAssetApplication.asset, QAsset.asset)
-                .leftJoin(userAssetApplication.assetPrototype.brand, QBrand.brand)
-                .limit(size);
+    public List<UserAssetApplication> getUserAssetApplications(
+//            Long cursorId, Integer size, Boolean isVerified, Sort sort
+    ){
+        List<UserAssetApplication> userAssetApplicationList = queryFactory.selectFrom(userAssetApplication)
+//                .where(
+//                        checkIsVerified(isVerified),
+//                        checkCursor(cursorId)
+//                )
+//                .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
+                .leftJoin(userAssetApplication.assetPrototype,QAssetPrototype.assetPrototype).fetchJoin()
+                .leftJoin(userAssetApplication.user, QUser.user).fetchJoin()
+                .leftJoin(userAssetApplication.asset, QAsset.asset).fetchJoin()
+//                .leftJoin(userAssetApplication.assetPrototype.brand, QBrand.brand).fetchJoin()
+//                .leftJoin(userAssetApplication.assetPrototype.season, QAssetSeason.assetSeason).fetchJoin()
+//                .leftJoin(userAssetApplication.assetPrototype.brandCategory, QAssetBrandCategory.assetBrandCategory).fetchJoin()
+//                .leftJoin(userAssetApplication.assetPrototype.line, QAssetLine.assetLine).fetchJoin()
+                .fetch()
+                ;
 
-        List<UserAssetApplicationResponse> userAssetApplicationResponses = Objects.requireNonNull(getQuerydsl())
-                .applySorting(sort, query)
-                .select(projectUserAssetApplication())
-                .fetch();
+//                .leftJoin(QAssetLine.assetLine).on(QAssetLine.assetLine.brand.eq(QBrand.brand));
+//                .limit(size);
 
-        return userAssetApplicationResponses;
+//        List<UserAssetApplicationResponse> userAssetApplicationResponses = Objects.requireNonNull(getQuerydsl())
+////                .applySorting(sort, query)
+//                .applyPagination(Pageable.unpaged(), query)
+//                .select(projectUserAssetApplication())
+//                .fetch();
+
+
+        return userAssetApplicationList;
+
     }
 
     private BooleanExpression checkCursor(Long cursorId){
@@ -88,13 +100,14 @@ public class UserAssetApplicationRepositoryImpl
 
     private ConstructorExpression<AssetResponse> projectAssetResponse(){
         return Projections.constructor(AssetResponse.class,
-                QAsset.asset.id, QAsset.asset.assetQuality.id,
+                QAsset.asset.id,
+                QAsset.asset.assetQuality.id,
                 Projections.constructor(AssetPrototypeResponse.class,
                         userAssetApplication.assetPrototype.id,
-                        userAssetApplication.assetPrototype.brand.id,
-                        userAssetApplication.assetPrototype.line.id,
-                        userAssetApplication.assetPrototype.season.id,
-                        userAssetApplication.assetPrototype.brandCategory.id,
+                        projectBrand(),
+                        projectAssetLine(),
+                        projectAssetSeason(),
+                        projectAssetBrandCategory(),
                         userAssetApplication.assetPrototype.name,
                         userAssetApplication.assetPrototype.decorator,
                         userAssetApplication.assetPrototype.code,
@@ -102,6 +115,7 @@ public class UserAssetApplicationRepositoryImpl
                         userAssetApplication.assetPrototype.releasePrice,
                         userAssetApplication.assetPrototype.additional,
                         userAssetApplication.assetPrototype.trendy,
+                        userAssetApplication.assetPrototype.likes,
                         userAssetApplication.assetPrototype.keywords,
                         userAssetApplication.assetPrototype.resourceFront,
                         userAssetApplication.assetPrototype.resourceAdditional,
@@ -135,6 +149,45 @@ public class UserAssetApplicationRepositoryImpl
                 userAssetApplication.verifiedAt,
                 userAssetApplication.createdAt
         );
+    }
+
+    private ConstructorExpression<BrandResponse.Minified> projectBrand(){
+        return Projections.constructor(BrandResponse.Minified.class,
+                QBrand.brand.id,
+                QBrand.brand.name,
+                QBrand.brand.originalName,
+                QBrand.brand.resource
+        );
+    }
+
+    private ConstructorExpression<AssetLineResponse.Minified> projectAssetLine(){
+        return Projections.constructor(AssetLineResponse.Minified.class,
+                QAssetLine.assetLine.id,
+                QAssetLine.assetLine.brand.id,
+                QAssetLine.assetLine.brandCategory.id,
+                QAssetLine.assetLine.name,
+                QAssetLine.assetLine.resource,
+                QAssetLine.assetLine.isEnabled
+                );
+    }
+
+    private ConstructorExpression<AssetSeasonResponse> projectAssetSeason(){
+        return Projections.constructor(AssetSeasonResponse.class,
+                userAssetApplication.assetPrototype.season.id,
+                userAssetApplication.assetPrototype.season.name,
+                userAssetApplication.assetPrototype.season.resource,
+                userAssetApplication.assetPrototype.season.isEnabled
+                );
+    }
+
+    private ConstructorExpression<AssetBrandCategoryResponse.Minified> projectAssetBrandCategory(){
+        return Projections.constructor(AssetBrandCategoryResponse.Minified.class,
+                QAssetBrandCategory.assetBrandCategory.id,
+                QAssetBrandCategory.assetBrandCategory.brand.id,
+                QAssetBrandCategory.assetBrandCategory.category.id,
+                QAssetBrandCategory.assetBrandCategory.category.name,
+                QAssetBrandCategory.assetBrandCategory.isEnabled
+                );
     }
 
 }

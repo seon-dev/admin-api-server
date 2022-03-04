@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
 import server.admin.model.common.BaseTimeEntity;
 import server.admin.model.user.entity.User;
@@ -76,6 +77,7 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     @Column(name = "verifier_comment", length = 100)
     private String verifierComment;
 
+    @UpdateTimestamp
     @Column(name = "verified_at")
     private Timestamp verifiedAt;
 
@@ -84,7 +86,6 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
         verifierId = request.getVerifierId();
         verifiedAssetId = request.getVerifiedAssetId();
         verifierComment = request.getVerifierComment();
-        verifiedAt = request.getVerifiedAt();
         return this;
     }
 }

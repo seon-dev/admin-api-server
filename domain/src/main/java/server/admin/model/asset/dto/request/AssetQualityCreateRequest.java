@@ -16,11 +16,11 @@ public class AssetQualityCreateRequest {
     @NotNull
     private Boolean isEnabled;
 
-    public AssetQuality toEntity(){
+    public static AssetQuality toEntity(AssetQualityCreateRequest request){
         AssetQuality assetQuality = new AssetQuality();
-        assetQuality.setName(this.name);
-        assetQuality.setDescription(this.description);
-        assetQuality.setIsEnabled(this.isEnabled);
+        assetQuality.setName(request.name);
+        assetQuality.setDescription(request.description);
+        assetQuality.setIsEnabled(request.isEnabled);
         return assetQuality;
     }
 }

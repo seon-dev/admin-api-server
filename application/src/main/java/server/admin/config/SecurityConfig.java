@@ -80,7 +80,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //jwtAuthenticationFilter 필터 안 타도록 설정해주기
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/admin/auth/sign-in","/admin/auth/refresh-token","/admin/auth/verify","/admin/health-check")
+        web.ignoring().antMatchers("/admin/auth/sign-in")
+                .antMatchers("/admin/auth/refresh-token")
+                .antMatchers("/admin/auth/verify")
+                .antMatchers("/admin/health-check")
                 .antMatchers("/swagger-ui.html", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**");
     }
 

@@ -49,7 +49,9 @@ public class BrandController {
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 생성", notes = "브랜드 정보를 생성합니다.")
-    public void createBrand(@Valid BrandCreateRequest request) throws IOException {
+    public void createBrand(
+            @RequestBody @Valid BrandCreateRequest request
+    ) throws Exception {
             brandService.createBrand(request);
     }
 
@@ -65,9 +67,8 @@ public class BrandController {
     @ApiOperation(value = "브랜드 업데이트", notes = "브랜드 정보를 업데이트 합니다.")
     public RestResponse<BrandResponse> updateBrand(
             @PathVariable("brandId") Long brandId,
-            @Valid BrandUpdateRequest brand
-    ) throws IOException {
-
+            @RequestBody @Valid BrandUpdateRequest brand
+    ) throws Exception {
         return RestSuccessResponse.newInstance(
                 this.brandService.updateBrand(brandId,brand)
         );

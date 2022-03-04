@@ -42,7 +42,7 @@ public class AssetCategoryService {
     }
 
     public AssetCategoryResponse createAssetCategory(AssetCategoryCreateRequest request) throws Exception {
-        AssetCategory assetCategory = request.toEntityExceptResource();
+        AssetCategory assetCategory = request.toEntityExceptResource(request);
         s3Service.upload(request.getResourceUploaded(), request.getResourceFileName());
         assetCategory.setResource(request.getResourceFileName());
         assetCategoryRepository.save(assetCategory);

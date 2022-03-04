@@ -1,9 +1,12 @@
 package server.admin.model.brand.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 import server.admin.model.brand.entity.Brand;
+
+import java.util.UUID;
 
 @Getter
 public class BrandUpdateRequest {
@@ -14,16 +17,28 @@ public class BrandUpdateRequest {
     private String description;
 //    private String recommendation;
 //    private int likes;
-    private MultipartFile resource;
-    private MultipartFile resourceWallpaper;
-    private MultipartFile resourceCard;
-    private String color;
+    private String resourceUploaded;
+    private String resourceExtension;
 
-    public Brand toEntityExcept(Brand entity){
-        if(getColor() != null) entity.setColor(this.getColor());
-        if(getDescription() != null) entity.setDescription(this.getDescription());
-        if(getName() != null) entity.setName(this.getName());
-        if(getOriginalName() != null) entity.setOriginalName(this.getOriginalName());
+    private String resourceWallpaperUploaded;
+    private String resourceWallpaperExtension;
+
+    private String resourceCardUploaded;
+    private String resourceCardExtension;
+
+    private String color;
+    @JsonIgnore
+    private UUID uid = UUID.randomUUID();
+    @JsonIgnore
+    public String getResourceFileName(String postfix) {
+        return uid + "_" + postfix + resourceExtension;
+    }
+
+    public static Brand setEntityExcept(Brand entity, BrandUpdateRequest request){
+        if(request.getColor() != null) entity.setColor(request.getColor());
+        if(request.getDescription() != null) entity.setDescription(request.getDescription());
+        if(request.getName() != null) entity.setName(request.getName());
+        if(request.getOriginalName() != null) entity.setOriginalName(request.getOriginalName());
         return entity;
     }
 }

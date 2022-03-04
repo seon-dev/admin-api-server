@@ -1,5 +1,6 @@
 package server.admin.model.badge.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,15 +16,16 @@ public class BadgeUpdateRequest {
     private String description;
     private String resourceUploaded;
     private String resourceExtension;
+    @JsonIgnore
     private UUID uid = UUID.randomUUID();
-
+    @JsonIgnore
     public String getResourceFileName() {
         return uid + resourceExtension;
     }
 
-    public Badge setEntityExcept(Badge entity){
-        entity.setName(name);
-        entity.setDescription(description);
+    public static Badge setEntityExcept(Badge entity, BadgeUpdateRequest request){
+        entity.setName(request.name);
+        entity.setDescription(request.description);
         return entity;
     }
 }

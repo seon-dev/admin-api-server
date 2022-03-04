@@ -32,8 +32,8 @@ public class UserAssetApplicationUpdateRequest {
     private String verifierComment;
     @NotNull
     private Boolean isVerified;
-    @NotNull
-    private Timestamp verifiedAt;
+//    @NotNull
+//    private Timestamp verifiedAt;
 
 //    @NotNull
 //    private Long assetPrototypeId;

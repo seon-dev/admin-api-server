@@ -1,5 +1,6 @@
 package server.admin.model.asset.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,16 +20,17 @@ public class AssetCategoryCreateRequest {
     private String resourceExtension;
     @NotNull
     private Boolean isEnabled;
+    @JsonIgnore
     private UUID uid = UUID.randomUUID();
-
+    @JsonIgnore
     public String getResourceFileName() {
         return uid + resourceExtension;
     }
 
-    public AssetCategory toEntityExceptResource(){
+    public static AssetCategory toEntityExceptResource(AssetCategoryCreateRequest request){
         AssetCategory assetCategory = new AssetCategory();
-        assetCategory.setName(this.name);
-        assetCategory.setIsEnabled(this.isEnabled);
+        assetCategory.setName(request.name);
+        assetCategory.setIsEnabled(request.isEnabled);
         return assetCategory;
     }
 }

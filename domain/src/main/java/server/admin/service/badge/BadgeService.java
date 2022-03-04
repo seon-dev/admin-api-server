@@ -46,7 +46,7 @@ public class BadgeService {
 
     public BadgeResponse updateBadge(Long id, BadgeUpdateRequest request) throws Exception {
         Optional<Badge> optionalBadge = badgeRepository.findById(id);
-        Badge badge = request.setEntityExcept(optionalBadge.orElseThrow(BadgeNotExistException::new));
+        Badge badge = request.setEntityExcept(optionalBadge.orElseThrow(BadgeNotExistException::new), request);
         if( request.getResourceExtension() != null && request.getResourceUploaded() != null ){
             s3Service.upload(request.getResourceUploaded(),request.getResourceFileName());
             badge.setResource(request.getResourceFileName());

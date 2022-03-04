@@ -41,7 +41,7 @@ public class AssetQualityService {
 
     public AssetQualityResponse createAssetQuality(AssetQualityCreateRequest request){
         return AssetQualityResponse.toResponse(
-                assetQualityRepository.save(request.toEntity())
+                assetQualityRepository.save(request.toEntity(request))
         );
     }
 
@@ -49,7 +49,7 @@ public class AssetQualityService {
         Optional<AssetQuality> optionalAssetQuality = assetQualityRepository.findById(assetQualityId);
 
         return AssetQualityResponse.toResponse(
-                request.setEntity(optionalAssetQuality.orElseThrow(AssetQualityException.AssetQualityNotExistException::new))
+                request.setEntity(optionalAssetQuality.orElseThrow(AssetQualityException.AssetQualityNotExistException::new), request)
         );
     }
 

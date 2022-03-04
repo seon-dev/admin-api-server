@@ -7,7 +7,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.admin.common.exception.dto.ErrorResponse;
-import server.admin.model.admin.exception.AdminException;
 import server.admin.model.auth.exception.AuthException;
 import server.admin.model.common.rest.RestFailResponse;
 

@@ -10,5 +10,7 @@ import java.util.Optional;
 
 public interface UserAssetApplicationRepositoryCustom {
     Optional<UserAssetApplicationResponse> findResponseById(Long id);
-    List<UserAssetApplicationResponse> getUserAssetApplications(Long cursorId, Integer size, Boolean isVerified, Sort sort);
+    List<UserAssetApplication> getUserAssetApplications(
+//            Long cursorId, Integer size, Boolean isVerified, Sort sort
+    );
 }

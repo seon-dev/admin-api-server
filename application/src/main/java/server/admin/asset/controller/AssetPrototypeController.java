@@ -32,7 +32,7 @@ public class AssetPrototypeController {
     @ApiOperation(value= "에셋 프로토타입 생성", notes = "에셋 프로토타입을 생성합니다.")
     @ResponseStatus(HttpStatus.OK)
     public AssetPrototypeResponse createAssetPrototype(
-            @Valid AssetPrototypeCreateRequest request
+            @RequestBody @Valid AssetPrototypeCreateRequest request
     ) throws IOException {
         return assetPrototypeService.createAssetPrototype(request);
     }
@@ -63,8 +63,8 @@ public class AssetPrototypeController {
     @ResponseStatus(HttpStatus.OK)
     public RestResponse<AssetPrototypeResponse> updateAssetPrototype(
             @PathVariable("assetPrototypeId") Long assetPrototypeId,
-            @Valid AssetPrototypeUpdateRequest request
-    ) throws IOException {
+            @RequestBody @Valid AssetPrototypeUpdateRequest request
+    ) throws Exception {
         return RestSuccessResponse.newInstance(
                 assetPrototypeService.updateAssetPrototype(assetPrototypeId, request)
         );

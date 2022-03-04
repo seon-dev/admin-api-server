@@ -1,5 +1,6 @@
 package server.admin.model.asset.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,8 +19,9 @@ public class AssetSeasonCreateRequest {
     private String resourceExtension;
     @NotNull
     private Boolean isEnabled;
+    @JsonIgnore
     private UUID uid = UUID.randomUUID();
-
+    @JsonIgnore
     public String getResourceFileName() { return uid + resourceExtension; }
 
 

@@ -2,11 +2,16 @@ package server.admin.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.admin.model.auth.dto.request.SignUpRequest;
 import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.badge.entity.Badge;
 import server.admin.model.badge.repository.BadgeRepository;
+import server.admin.model.common.rest.RestFailResponse;
+import server.admin.model.common.rest.RestResponse;
+import server.admin.model.common.rest.RestSuccessResponse;
 import server.admin.model.user.dto.request.UserUpdateRequest;
 import server.admin.model.user.entity.UserBadge;
 import server.admin.model.user.entity.UserPolicyAgreement;
@@ -32,12 +37,33 @@ public class UserService {
     private final UserPolicyAgreementRepository userPolicyAgreementRepository;
     private final BadgeRepository badgeRepository;
 
+    private Boolean duplicatePhoneNumber( String phoneNumber ){
+        Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
+        return optionalUser.isPresent();
+    }
+
     public PageResult<UserProfileResponse.Minified> getAllUser(Pageable pageable, Boolean isEnabled){
         return new PageResult<>(userRepository.getAllUser(pageable, isEnabled));
     }
 
     public PageResult<UserProfileResponse.Minified> searchUser(Pageable pageable, String nickname, Boolean isEnabled){
         return new PageResult<>(userRepository.searchUser(pageable, nickname, isEnabled));
+    }
+
+    public RestResponse createUser(SignUpRequest request){
+        if(duplicatePhoneNumber(request.getPhoneNumber())){
+            return RestFailResponse.newInstance(
+                    HttpStatus.CONFLICT,
+                    "해당 핸드폰 번호가 이미 존재합니다."
+            );
+        } else{
+            User user = request.toEntity(request);
+            userRepository.save(user);
+            String message = "어드민 회원가입이 완료되었습니다.";
+            return RestSuccessResponse.newInstance(
+                    message
+            );
+        }
     }
 
     public UserProfileResponse getUser(Long userId){
@@ -51,7 +77,7 @@ public class UserService {
     public UserProfileResponse updateUser(Long userId, UserUpdateRequest request) {
         Optional<User> optionalUser = userRepository.findById(userId);
         //존재하는 유저 엔티티 set하기
-        User singleUser = request.setEntityExceptBadge(optionalUser.orElseThrow(UserNotExistException::new));
+        User singleUser = request.setEntityExceptBadge(optionalUser.orElseThrow(UserNotExistException::new),request);
         //badge정보 업데이트하기
         request.getBadges().forEach(badgeId -> {
             Badge badge = badgeRepository.findBadgeById(badgeId);

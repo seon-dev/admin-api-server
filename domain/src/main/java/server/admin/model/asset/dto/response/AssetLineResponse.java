@@ -1,12 +1,10 @@
 package server.admin.model.asset.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import server.admin.model.asset.entity.AssetLine;
 import server.admin.model.brand.dto.response.BrandResponse;
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +29,7 @@ public class AssetLineResponse {
     }
 
     @Getter
+    @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor

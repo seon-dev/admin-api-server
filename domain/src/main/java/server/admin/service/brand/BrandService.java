@@ -31,12 +31,17 @@ public class BrandService {
         return new PageResult<>(brandRepository.getAllBrand(pageable,isEnabled));
     }
 
-    public void createBrand(BrandCreateRequest brandCreateDto) throws IOException {
-        Brand brand = BrandCreateRequest.toEntity(brandCreateDto);
-        brand.setResource(s3Service.upload(brandCreateDto.getResource()));
-        brand.setResourceCard(s3Service.upload(brandCreateDto.getResourceCard()));
-        brand.setResourceWallpaper(s3Service.upload(brandCreateDto.getResourceWallpaper()));
-        brandRepository.save(brand);
+    public void createBrand(BrandCreateRequest request) throws Exception {
+        Brand brand = BrandCreateRequest.toEntity(request);
+        final String filename = request.getResourceFileName(null);
+        s3Service.upload(request.getResourceUploaded(), filename);
+        brand.setResource(filename);
+        final String wallpapaerFilename = request.getResourceFileName("wallpapaer");
+        s3Service.upload(request.getResourceWallpaperUploaded(), filename);
+        brand.setResourceWallpaper(filename);
+        final String cardFilename = request.getResourceFileName("card");
+        s3Service.upload(request.getResourceCardUploaded(), filename);
+        brand.setResourceCard(filename);        brandRepository.save(brand);
     }
 
     @Transactional(readOnly = true)
@@ -59,14 +64,25 @@ public class BrandService {
         }
     }
 
-    public BrandResponse updateBrand(Long brandId, BrandUpdateRequest brandUpdateDto) throws IOException {
+    public BrandResponse updateBrand(Long brandId, BrandUpdateRequest request) throws Exception {
         Optional<Brand> optionalBrand = this.brandRepository.findById(brandId);
         optionalBrand.orElseThrow(BrandNotExistException::new);
-        Brand brand = optionalBrand.get();
-        brandUpdateDto.toEntityExcept(brand);
-        if(brandUpdateDto.getResource() != null) brand.setResource(s3Service.upload(brandUpdateDto.getResource()));
-        if(brandUpdateDto.getResourceCard() != null) brand.setResourceCard(s3Service.upload(brandUpdateDto.getResourceCard()));
-        if(brandUpdateDto.getResourceWallpaper() != null) brand.setResourceWallpaper(s3Service.upload(brandUpdateDto.getResourceWallpaper()));
+        Brand brand = request.setEntityExcept(optionalBrand.get(), request);
+        if(request.getResourceUploaded() != null && request.getResourceExtension() != null) {
+            final String filename = request.getResourceFileName(null);
+            s3Service.upload(request.getResourceUploaded(), filename);
+            brand.setResource(filename);
+        }
+        if(request.getResourceCardUploaded() != null && request.getResourceCardExtension() != null) {
+            final String filename = request.getResourceFileName("card");
+            s3Service.upload(request.getResourceCardUploaded(), filename);
+            brand.setResourceCard(filename);
+        }
+        if(request.getResourceWallpaperUploaded() != null && request.getResourceWallpaperExtension() != null) {
+            final String filename = request.getResourceFileName("wallpaper");
+            s3Service.upload(request.getResourceWallpaperUploaded(), filename);
+            brand.setResourceWallpaper(filename);
+        }
 
         BrandResponse brandResponse = BrandResponse.toResponseWithoutBrandCategory(brand);
         brandResponse.setBrandCategories(assetBrandCategoryRepository.findMinifiedById(brandId));

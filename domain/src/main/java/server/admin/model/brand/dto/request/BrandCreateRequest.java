@@ -1,5 +1,6 @@
 package server.admin.model.brand.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import server.admin.model.brand.entity.Brand;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,14 +19,29 @@ public class BrandCreateRequest {
     @NotBlank
     private String originalName;
     @NotNull
-    private MultipartFile resource;
-    private MultipartFile resourceWallpaper;
-    private MultipartFile resourceCard;
+    private String resourceUploaded;
+    @NotNull
+    private String resourceExtension;
+    @NotNull
+    private String resourceWallpaperUploaded;
+    @NotNull
+    private String resourceWallpaperExtension;
+    @NotNull
+    private String resourceCardUploaded;
+    @NotNull
+    private String resourceCardExtension;
     @NotBlank
     private String description;
+    @NotNull
     private String color;
     @NotNull
     private Boolean isEnabled;
+    @JsonIgnore
+    private UUID uid = UUID.randomUUID();
+    @JsonIgnore
+    public String getResourceFileName(String postfix) {
+        return uid + "_" + postfix + resourceExtension;
+    }
 
 
     public static Brand toEntity(final BrandCreateRequest request){

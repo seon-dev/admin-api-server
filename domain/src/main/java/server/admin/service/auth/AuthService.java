@@ -39,7 +39,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static server.admin.model.admin.exception.AdminException.*;
 import static server.admin.model.auth.exception.AuthException.*;
 import static server.admin.model.user.exception.UserException.*;
 
@@ -59,11 +58,6 @@ public class AuthService implements UserDetailsService {
 //        if (!Pattern.matches(namePattern, name)){ throw new InvalidNameException(); }
 //        if (!Pattern.matches(passwordPattern, password)){ throw new InvalidPasswordException(); }
 //    }
-
-    private Boolean duplicatePhoneNumber( String phoneNumber ){
-        Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
-        return optionalUser.isPresent();
-    }
 
     private Authentication toAuthentication(Long userId, UserRole role){
         Collection<? extends GrantedAuthority> authorities =
@@ -171,22 +165,6 @@ public class AuthService implements UserDetailsService {
 
     }
 
-    public RestResponse signUp(SignUpRequest request){
-        if(duplicatePhoneNumber(request.getPhoneNumber())){
-            return RestFailResponse.newInstance(
-                    HttpStatus.CONFLICT,
-                    "해당 핸드폰 번호가 이미 존재합니다."
-            );
-        } else{
-            User user = request.toEntity(request);
-            userRepository.save(user);
-            String message = "어드민 회원가입이 완료되었습니다.";
-            return RestSuccessResponse.newInstance(
-                    message
-            );
-        }
-    }
-
     public SignInResponse signIn(
             final String phoneNumber,
             final Integer verificationCode
@@ -218,8 +196,8 @@ public class AuthService implements UserDetailsService {
     public RefreshTokenResponse regenerateToken(User user){
         final String accessToken = jwtTokenProvider.createToken(user.getId(),user.getNickname(), toAuthentication(user.getId(), user.getRole()));
         final String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(),user.getNickname(), toAuthentication(user.getId(), user.getRole()));
-        Optional<User> optionalAdmin = userRepository.findById(user.getId());
-        optionalAdmin.orElseThrow(AdminNotExistException::new).setRefreshToken(refreshToken);
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+        optionalUser.orElseThrow(UserNotExistException::new).setRefreshToken(refreshToken);
         return new RefreshTokenResponse(accessToken, refreshToken);
 //        redisService.setValues(user.getNickname(), refreshToken);
     }
@@ -230,8 +208,8 @@ public class AuthService implements UserDetailsService {
     }
 
     public String logout(User user){
-        Optional<User> optionalAdmin = userRepository.findById(user.getId());
-        optionalAdmin.orElseThrow(AdminNotExistException::new).setRefreshToken(null);
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+        optionalUser.orElseThrow(UserNotExistException::new).setRefreshToken(null);
         return "로그아웃에 성공하였습니다.";
     }
 

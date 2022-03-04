@@ -36,16 +36,11 @@ public class AssetPrototypeService {
 
     public AssetPrototypeResponse createAssetPrototype(AssetPrototypeCreateRequest request) throws IOException {
         AssetPrototype assetPrototype = AssetPrototypeCreateRequest.toEntityExcept(request);
-        //resource upload
-        assetPrototype.setResourceFront(s3Service.upload(request.getResourceFront()));
-        if(request.getResourceRear() != null) assetPrototype.setResourceRear(s3Service.upload(request.getResourceRear()));
-        assetPrototype.setResourceAdditional(s3Service.upload(request.getResourceAdditional()));
-        if(request.getResourceSide() != null) assetPrototype.setResourceSide(s3Service.upload(request.getResourceSide()));
         //ManyToOne relation
         assetPrototype.setBrand(brandRepository.findBrandById(request.getBrandId()));
-        assetPrototype.setLine(assetLineRepository.findLineById(request.getAssetLineId()));
-        assetPrototype.setSeason(assetSeasonRepository.findSeasonById(request.getAssetSeasonId()));
-        assetPrototype.setBrandCategory(assetBrandCategoryRepository.findBrandCategoryById(request.getAssetBrandCategoryId()));
+        if(request.getAssetLineId() != null) assetPrototype.setLine(assetLineRepository.findLineById(request.getAssetLineId()));
+        if(request.getAssetSeasonId() != null) assetPrototype.setSeason(assetSeasonRepository.findSeasonById(request.getAssetSeasonId()));
+        if(request.getAssetBrandCategoryId() != null) assetPrototype.setBrandCategory(assetBrandCategoryRepository.findBrandCategoryById(request.getAssetBrandCategoryId()));
 
         return AssetPrototypeResponse.toResponse(assetPrototypeRepository.save(assetPrototype));//여기는 잘 나옴
     }
@@ -61,20 +56,32 @@ public class AssetPrototypeService {
         return new PageResult<>(assetPrototypeRepository.getAllAssetPrototype(pageable));
     }
 
-    public AssetPrototypeResponse updateAssetPrototype(Long id, AssetPrototypeUpdateRequest request) throws IOException {
+    public AssetPrototypeResponse updateAssetPrototype(Long id, AssetPrototypeUpdateRequest request) throws Exception {
         Optional<AssetPrototype> optionalAssetPrototype = assetPrototypeRepository.findByIdWithFetchJoin(id);
         if( optionalAssetPrototype.isPresent()) {
-            AssetPrototype assetPrototype = request.toEntityExcept(optionalAssetPrototype.get());
-            if(request.getResourceFront() != null) assetPrototype.setResourceFront(s3Service.upload(request.getResourceFront()));
-            if(request.getResourceAdditional() != null) assetPrototype.setResourceAdditional(s3Service.upload(request.getResourceAdditional()));
-            if(request.getResourceRear() != null) assetPrototype.setResourceRear(s3Service.upload(request.getResourceRear()));
-            if(request.getResourceSide() != null) assetPrototype.setResourceSide(s3Service.upload(request.getResourceSide()));
+            AssetPrototype assetPrototype = request.setEntityExcept(optionalAssetPrototype.get(), request);
+            if(request.getResourceAdditionalUploaded() != null && request.getResourceAdditionalExtension() != null) {
+                final String filename = request.getResourceFileName("additional");
+                s3Service.upload(request.getResourceAdditionalUploaded(), filename);
+                assetPrototype.setResourceAdditional(filename);
+            }
+            if(request.getResourceFrontUploaded() != null && request.getResourceFrontExtension() != null) {
+                final String filename = request.getResourceFileName("front");
+                s3Service.upload(request.getResourceFrontUploaded(), filename);
+                assetPrototype.setResourceFront(filename);            }
+            if(request.getResourceRearUploaded() != null && request.getResourceRearExtension() != null ) {
+                final String filename = request.getResourceFileName("rear");
+                s3Service.upload(request.getResourceRearUploaded(), filename);
+                assetPrototype.setResourceRear(filename);            }
+            if(request.getResourceSideUploaded() != null && request.getResourceSideExtension() != null) {
+                final String filename = request.getResourceFileName("side");
+                s3Service.upload(request.getResourceSideUploaded(), filename);
+                assetPrototype.setResourceSide(filename);            }
 
-
-            assetPrototype.setBrand(brandRepository.findBrandById(request.getBrandId()));
-            assetPrototype.setLine(assetLineRepository.findLineById(request.getAssetLineId()));
-            assetPrototype.setSeason(assetSeasonRepository.findSeasonById(request.getAssetSeasonId()));
-            assetPrototype.setBrandCategory(assetBrandCategoryRepository.findBrandCategoryById(request.getAssetBrandCategoryId()));
+            if(request.getBrandId() != null) assetPrototype.setBrand(brandRepository.findBrandById(request.getBrandId()));
+            if(request.getAssetLineId() != null)assetPrototype.setLine(assetLineRepository.findLineById(request.getAssetLineId()));
+            if(request.getAssetSeasonId() != null)assetPrototype.setSeason(assetSeasonRepository.findSeasonById(request.getAssetSeasonId()));
+            if(request.getAssetBrandCategoryId() != null)assetPrototype.setBrandCategory(assetBrandCategoryRepository.findBrandCategoryById(request.getAssetBrandCategoryId()));
             return AssetPrototypeResponse.toResponse(assetPrototype);
         } else throw new AssetPrototypeNotExistException();
 

@@ -1,5 +1,6 @@
 package server.admin.model.asset.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.admin.model.asset.entity.AssetLine;
@@ -23,14 +24,11 @@ public class AssetLineCreateRequest {
     private String resourceExtension;
     @NotNull
     private Boolean isEnabled;
+    @JsonIgnore
     private UUID uid = UUID.randomUUID();
-
+    @JsonIgnore
     public String getResourceFileName() { return uid + resourceExtension; }
 
-//    public AssetLine toEntityExcept(){
-//        AssetLine assetLine = new AssetLine();
-//        assetLine.setName(name);
-//        assetLine.setIsEnabled(isEnabled);
-//    }
+
 
 }

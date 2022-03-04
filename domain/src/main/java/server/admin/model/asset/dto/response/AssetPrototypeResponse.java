@@ -36,33 +36,6 @@ public class AssetPrototypeResponse {
     private Boolean isEnabled;
 
 
-//    @QueryProjection
-//    public AssetPrototypeResponse(Long id,BrandResponse.Minified brand, AssetLineResponse.Minified line, AssetSeasonResponse season, AssetBrandCategoryResponse.Minified category,String name,
-//                                  String decorator,String code, String description, Long releasePrice, String additional, Integer trendy, Integer likes,
-//                                  String keywords, String resourceFront, String resourceAdditional, String resourceRear, String resourceSide,
-//                                  Boolean isEnabled
-//    ){
-//        this.id= id;
-//        this.brand = brand;
-//        this.line = line;
-//        this.season = season;
-//        this.category = category;
-//        this.name = name;
-//        this.decorator = decorator;
-//        this.code = code;
-//        this.description = description;
-//        this.releasePrice = releasePrice;
-//        this.additional = additional;
-//        this.trendy = trendy;
-//        this.likes = likes;
-//        this.keywords = keywords;
-//        this.resourceFront = resourceFront;
-//        this.resourceAdditional = resourceAdditional;
-//        this.resourceRear = resourceRear;
-//        this.resourceSide = resourceSide;
-//        this.isEnabled = isEnabled;
-//    }
-
     public static AssetPrototypeResponse toResponse(AssetPrototype entity) {
         final BrandResponse.Minified brand = entity.getBrand() != null ? BrandResponse.Minified.of(entity.getBrand()) : null;
         final AssetLineResponse.Minified assetLine = entity.getLine() != null ? AssetLineResponse.Minified.of(entity.getLine()) : null;

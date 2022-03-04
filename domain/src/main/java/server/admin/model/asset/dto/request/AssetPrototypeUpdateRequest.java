@@ -1,5 +1,6 @@
 package server.admin.model.asset.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +10,7 @@ import server.admin.model.brand.entity.Brand;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,26 +25,40 @@ public class AssetPrototypeUpdateRequest {
     private String additional;
     //    private Integer trendy;
     private String keywords;
-    private MultipartFile resourceFront;
-    private MultipartFile resourceRear;
-    private MultipartFile resourceSide;
-    private MultipartFile resourceAdditional;
+    private String resourceFrontUploaded;
+    private String resourceFrontExtension;
+    private String resourceRearUploaded;
+    private String resourceRearExtension;
+    private String resourceSideUploaded;
+    private String resourceSideExtension;
+    private String resourceAdditionalUploaded;
+    private String resourceAdditionalExtension;
     private Boolean isEnabled;
     private Long brandId;
     private Long assetLineId;
     private Long assetSeasonId;
     //    private Long assetCollectionId;
     private Long assetBrandCategoryId;
+    @JsonIgnore
+    private UUID uid = UUID.randomUUID();
+    @JsonIgnore
+    public String getResourceFileName(String postfix) {
+        return uid + "_" + postfix + resourceFrontExtension;
+    }
 
-    public AssetPrototype toEntityExcept(AssetPrototype entity){
-        if(getName()!=null) entity.setName(this.getName());
-        if(getDecorator()!=null) entity.setDecorator(this.getDecorator());
-        if(getCode()!=null) entity.setCode(this.getCode());
-        if(getDescription()!=null) entity.setDescription(this.getDescription());
-        if(getReleasePrice()!=null) entity.setReleasePrice(this.getReleasePrice());
-        if(getAdditional()!=null) entity.setAdditional(this.getAdditional());
-        if(getKeywords()!=null) entity.setKeywords(this.getKeywords());
-        if(getIsEnabled()!=null) entity.setIsEnabled(this.getIsEnabled());
+    public static AssetPrototype setEntityExcept(AssetPrototype entity, AssetPrototypeUpdateRequest request){
+        if(request.getName()!=null) entity.setName(request.getName());
+        if(request.getDecorator()!=null) entity.setDecorator(request.getDecorator());
+        if(request.getCode()!=null) entity.setCode(request.getCode());
+        if(request.getDescription()!=null) entity.setDescription(request.getDescription());
+        if(request.getReleasePrice()!=null) entity.setReleasePrice(request.getReleasePrice());
+        if(request.getAdditional()!=null) entity.setAdditional(request.getAdditional());
+        if(request.getKeywords()!=null) entity.setKeywords(request.getKeywords());
+        if(request.getIsEnabled()!=null) entity.setIsEnabled(request.getIsEnabled());
+        if(request.getResourceAdditionalUploaded() != null && request.getResourceAdditionalExtension() != null) entity.setResourceAdditional(request.getResourceFileName("additional"));
+        if(request.getResourceFrontUploaded() != null && request.getResourceFrontExtension() != null) entity.setResourceFront(request.getResourceFileName("front"));
+        if(request.getResourceRearUploaded() != null && request.getResourceRearExtension() != null ) entity.setResourceRear(request.getResourceFileName("rear"));
+        if(request.getResourceSideUploaded() != null && request.getResourceSideExtension() != null) entity.setResourceSide(request.getResourceFileName("side"));
         return entity;
     }
 }

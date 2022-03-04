@@ -1,6 +1,8 @@
 package server.admin.service.asset;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +11,9 @@ import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
 import server.admin.model.asset.entity.UserAssetApplication;
 import server.admin.model.asset.repository.userAssetApplication.UserAssetApplicationRepository;
 import server.admin.utils.cursor.CursorResult;
+import server.admin.utils.page.PageResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,13 +38,23 @@ public class UserAssetApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public CursorResult<List<UserAssetApplicationResponse>> getAllUserAssetApplication(Long cursorId, Integer size, Boolean isVerified, Sort sort){
-        final List<UserAssetApplicationResponse> userAssetApplicationResponseList = userAssetApplicationRepository.getUserAssetApplications(cursorId, size, isVerified, sort);
-        if (userAssetApplicationResponseList.isEmpty()) throw new UserAssetApplicationNotExistException();
-        final int sizeOfPage  = userAssetApplicationResponseList.size();
-        final Long lastIdOfList = userAssetApplicationResponseList.get(userAssetApplicationResponseList.size()-1).getId();
+    public PageResult<UserAssetApplicationResponse> getAllUserAssetApplication(
+//            Long cursorId, Integer size, Boolean isVerified, Sort sort
+    ){
+        final List<UserAssetApplication> userAssetApplicationList = userAssetApplicationRepository.getUserAssetApplications(
+//                cursorId, size, isVerified, sort
+        );
 
-        return new CursorResult<>(userAssetApplicationResponseList, hasNext(lastIdOfList), lastIdOfList, sizeOfPage);
+        List<UserAssetApplicationResponse> userAssetApplicationResponseList = new ArrayList<>();
+        userAssetApplicationList.forEach(userAssetApplication -> {
+            userAssetApplicationResponseList.add(UserAssetApplicationResponse.toResponse(userAssetApplication));
+        });
+//        if (userAssetApplicationResponseList.isEmpty()) throw new UserAssetApplicationNotExistException();
+//        final int sizeOfPage  = userAssetApplicationResponseList.size();
+//        final Long lastIdOfList = userAssetApplicationResponseList.get(userAssetApplicationResponseList.size()-1).getId();
+        PageImpl<UserAssetApplicationResponse> pageResult = new PageImpl<>(userAssetApplicationResponseList, Pageable.unpaged(), userAssetApplicationResponseList.size());
+//        return new CursorResult<>(userAssetApplicationResponseList, hasNext(lastIdOfList), lastIdOfList, sizeOfPage);
+        return new PageResult<>(pageResult);
     }
 
     public UserAssetApplicationResponse updateUserAssetApplication(Long userAssetApplicationId, UserAssetApplicationUpdateRequest request){

@@ -10,9 +10,9 @@ public class AssetQualityUpdateRequest {
     private String name;
     private String description;
 
-    public AssetQuality setEntity(AssetQuality entity){
-        entity.setName(this.name);
-        entity.setDescription(this.description);
+    public static AssetQuality setEntity(AssetQuality entity, AssetQualityUpdateRequest request){
+        entity.setName(request.name);
+        entity.setDescription(request.description);
         return entity;
     }
 }

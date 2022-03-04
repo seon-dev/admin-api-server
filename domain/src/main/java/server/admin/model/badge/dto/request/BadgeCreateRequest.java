@@ -1,5 +1,6 @@
 package server.admin.model.badge.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,8 +23,9 @@ public class BadgeCreateRequest {
     private String resourceExtension;
     @NotNull
     private Boolean isEnabled;
+    @JsonIgnore
     private UUID uid = UUID.randomUUID();
-
+    @JsonIgnore
     public String getResourceFileName() {
         return uid + resourceExtension;
     }
