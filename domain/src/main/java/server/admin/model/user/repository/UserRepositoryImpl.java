@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import server.admin.model.common.QueryDslSupport;
 import server.admin.model.user.dto.response.UserProfileResponse;
+import server.admin.model.user.entity.QUser;
 import server.admin.model.user.entity.User;
+import server.admin.utils.page.PageResult;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -25,11 +27,11 @@ public class UserRepositoryImpl extends QueryDslSupport implements UserRepositor
         super(User.class, entityManager);
     }
     @Override
-    public Page<UserProfileResponse.Minified> getAllUser(Pageable pageable, Boolean isEnabled) {
-        JPAQuery<?> query = queryFactory.selectFrom(user)
-                .where(
-                        checkEnabled(isEnabled)
-                );
+    public List<User> getAllUser(Pageable pageable) {
+        JPAQuery<?> query = queryFactory.selectFrom(user);
+//                .where(
+//                        checkEnabled(isEnabled)
+//                );
 
 //        List<Long> fetch = queryFactory.select(user.count())
 //                .from(user)
@@ -41,21 +43,17 @@ public class UserRepositoryImpl extends QueryDslSupport implements UserRepositor
 
         Long count = queryFactory.select(user.count())
                 .from(user)
-                .where(
-                        checkEnabled(isEnabled)
-                )
+//                .where(
+//                        checkEnabled(isEnabled)
+//                )
                 .fetchOne();
 
-        List<UserProfileResponse.Minified> userProfileResponses = Objects.requireNonNull(getQuerydsl())
+        List<User> userList = Objects.requireNonNull(getQuerydsl())
                 .applyPagination(pageable, query)
-                .select(Projections.constructor(UserProfileResponse.Minified.class,
-                        user.id,
-                        user.nickname,
-                        user.resource
-                        ))
+                .select(user)
                 .fetch();
-
-        return new PageImpl<>(userProfileResponses, pageable, count);
+        return userList;
+//        return new PageImpl<>(userProfileResponses, pageable, count);
 
     }
 

@@ -1,6 +1,8 @@
 package server.admin.service.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import server.admin.model.user.entity.User;
 import server.admin.model.user.repository.UserBadgeRepository;
 import server.admin.model.user.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,13 +45,24 @@ public class UserService {
         return optionalUser.isPresent();
     }
 
-    public PageResult<UserProfileResponse.Minified> getAllUser(Pageable pageable, Boolean isEnabled){
-        return new PageResult<>(userRepository.getAllUser(pageable, isEnabled));
+    public PageResult<UserProfileResponse> getAllUser(Pageable pageable){
+        List<User> userList = userRepository.getAllUser(pageable);
+        List<UserProfileResponse> userProfileResponses = new ArrayList<>();
+        userList.forEach(user -> {
+            UserProfileResponse userProfileResponse = UserProfileResponse.toBasicResponse(user);
+            Optional<UserPolicyAgreement> optionalUserPolicyAgreement = userPolicyAgreementRepository.findByUserId(user.getId());
+            List<BadgeResponse> badgeResponseList = userBadgeRepository.findByUser(user);
+            userProfileResponse.setBadges(badgeResponseList);
+            userProfileResponse.setPolicyAgreement(optionalUserPolicyAgreement.orElseThrow(UserPolicyAgreementNotExistException::new));
+            userProfileResponses.add(userProfileResponse);
+        });
+        PageImpl<UserProfileResponse> pageResult = new PageImpl<>(userProfileResponses, Pageable.unpaged(), userProfileResponses.size());
+        return new PageResult<>(pageResult);
     }
 
-    public PageResult<UserProfileResponse.Minified> searchUser(Pageable pageable, String nickname, Boolean isEnabled){
-        return new PageResult<>(userRepository.searchUser(pageable, nickname, isEnabled));
-    }
+//    public PageResult<UserProfileResponse.Minified> searchUser(Pageable pageable, String nickname, Boolean isEnabled){
+//        return new PageResult<>(userRepository.searchUser(pageable, nickname, isEnabled));
+//    }
 
     public RestResponse createUser(SignUpRequest request){
         if(duplicatePhoneNumber(request.getPhoneNumber())){

@@ -1,6 +1,9 @@
 package server.admin.service.brand;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import server.admin.model.asset.dto.response.AssetBrandCategoryResponse;
 import server.admin.model.asset.repository.assetBrandCategory.AssetBrandCategoryRepository;
 import server.admin.model.brand.dto.request.BrandCreateRequest;
 import server.admin.model.brand.dto.response.BrandResponse;
@@ -14,6 +17,8 @@ import server.admin.utils.S3Service;
 import server.admin.utils.page.PageResult;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static server.admin.model.brand.exception.BrandException.*;
@@ -27,8 +32,17 @@ public class BrandService {
     private final S3Service s3Service;
 
     @Transactional(readOnly = true)
-    public PageResult<BrandResponse.Minified> getAllBrand(Pageable pageable, Boolean isEnabled){
-        return new PageResult<>(brandRepository.getAllBrand(pageable,isEnabled));
+    public PageResult<BrandResponse> getAllBrand(Pageable pageable){
+        List<Brand> brandList = brandRepository.getAllBrand(pageable);
+        List<BrandResponse> brandResponseList = new ArrayList<>();
+        brandList.forEach(brand -> {
+            BrandResponse brandResponse = BrandResponse.toResponseWithoutBrandCategory(brand);
+            List<AssetBrandCategoryResponse.Minified> minifiedList = assetBrandCategoryRepository.findMinifiedByBrandId(brand.getId());
+            brandResponse.setBrandCategories(minifiedList);
+            brandResponseList.add(brandResponse);
+        });
+        PageImpl<BrandResponse> pageResult = new PageImpl<>(brandResponseList, Pageable.unpaged(), brandResponseList.size());
+        return new PageResult<>(pageResult);
     }
 
     public void createBrand(BrandCreateRequest request) throws Exception {
@@ -41,7 +55,8 @@ public class BrandService {
         brand.setResourceWallpaper(filename);
         final String cardFilename = request.getResourceFileName("card");
         s3Service.upload(request.getResourceCardUploaded(), filename);
-        brand.setResourceCard(filename);        brandRepository.save(brand);
+        brand.setResourceCard(filename);
+        brandRepository.save(brand);
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +64,7 @@ public class BrandService {
         Optional<Brand> brand = this.brandRepository.findById(brandId);
         brand.orElseThrow(BrandNotExistException::new);
         BrandResponse brandResponse = BrandResponse.toResponseWithoutBrandCategory(brand.get());
-        brandResponse.setBrandCategories(assetBrandCategoryRepository.findMinifiedById(brandId));
+        brandResponse.setBrandCategories(assetBrandCategoryRepository.findMinifiedByBrandId(brandId));
         return brandResponse;
 
     }
@@ -85,7 +100,7 @@ public class BrandService {
         }
 
         BrandResponse brandResponse = BrandResponse.toResponseWithoutBrandCategory(brand);
-        brandResponse.setBrandCategories(assetBrandCategoryRepository.findMinifiedById(brandId));
+        brandResponse.setBrandCategories(assetBrandCategoryRepository.findMinifiedByBrandId(brandId));
         return brandResponse;
     }
 

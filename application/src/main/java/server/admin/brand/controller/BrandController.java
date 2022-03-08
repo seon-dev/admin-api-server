@@ -27,13 +27,13 @@ public class BrandController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "브랜드 조회", notes = "오프셋 페이지네이션에 맞게, 브랜드 미리보기 정보를 조회합니다. 디폴트 사이즈:25 디폴트 정렬기준:id,asc 디폴트 페이지:첫번째(0) enabled 디폴트:전체조회")
-    public RestResponse<PageResult<BrandResponse.Minified>> getAllBrand(
-            @PageableDefault(size = DEFAULT_SIZE, page = 0, sort = "id") final Pageable pageable,
-            @RequestParam(value = "enabled", required = false) Boolean isEnabled
+    @ApiOperation(value = "브랜드 조회", notes = "전체 브랜드 정보를 조회합니다.")
+    public RestResponse<PageResult<BrandResponse>> getAllBrand(
+//            @PageableDefault(size = DEFAULT_SIZE, page = 0, sort = "id") final Pageable pageable,
+//            @RequestParam(value = "enabled", required = false) Boolean isEnabled
     ) {
         return RestSuccessResponse.newInstance(
-                this.brandService.getAllBrand(pageable, isEnabled)
+                this.brandService.getAllBrand(Pageable.unpaged())
         );
     }
 

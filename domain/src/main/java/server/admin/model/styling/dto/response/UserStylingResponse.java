@@ -1,12 +1,11 @@
-package server.admin.model.user.dto.response;
+package server.admin.model.styling.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.User;
 import server.admin.model.asset.dto.response.AssetPrototypeResponse;
 import server.admin.model.styling.entity.UserStyling;
+import server.admin.model.user.dto.response.UserProfileResponse;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,13 +24,16 @@ public class UserStylingResponse {
     private Boolean isArchived;
     private Boolean isEnabled;
 
-    public UserStylingResponse toResponse(UserStyling entity){
+    public static UserStylingResponse toResponse(UserStyling entity){
         return UserStylingResponse.builder()
                 .id(entity.getId())
                 .user(UserProfileResponse.Minified.of(entity.getUser()))
                 .text(entity.getText())
                 .likes(entity.getLikes())
                 .comments(entity.getComments())
+                .createdAt(entity.getCreatedAt())
+                .isEnabled(entity.getIsEnabled())
+                .isArchived(entity.getIsArchived())
                 .build();
     }
 

@@ -13,5 +13,4 @@ import java.util.Optional;
 public interface AssetPrototypeRepositoryCustom {
     Optional<AssetPrototype> findByIdWithFetchJoin(Long id);
     Page<AssetPrototypeResponse> getAllAssetPrototype(Pageable pageable);
-
 }

@@ -31,16 +31,16 @@ public class UserController {
     ){
         return userService.createUser(request);
     }
-
+    //유저 조회 전체 로 변경
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "유저 조회",notes = "오프셋 페이지네이션에 맞게, 유저 미리보기 정보를 조회합니다. 정렬 기준 디폴트:id,desc  사이즈 디폴트:25 페이지 디폴트:첫번째(0) enabled 디폴트:전체조회")
-    public RestResponse<PageResult<UserProfileResponse.Minified>> getAllUser(
-            @PageableDefault(size = 25, page = 0, sort = "id") final Pageable pageable,
-            @RequestParam(value = "enabled", required = false) Boolean isEnabled
+    @ApiOperation(value = "유저 조회",notes = "전체 유저 정보를 조회합니다.")
+    public RestResponse<PageResult<UserProfileResponse>> getAllUser(
+//            @PageableDefault(size = 25, page = 0, sort = "id") final Pageable pageable,
+//            @RequestParam(value = "enabled", required = false) Boolean isEnabled
     ){
         return RestSuccessResponse.newInstance(
-                userService.getAllUser(pageable, isEnabled)
+                userService.getAllUser(Pageable.unpaged())
         );
 
     }

@@ -28,30 +28,25 @@ public class BrandRepositoryImpl extends QueryDslSupport implements BrandReposit
     }
 
     @Override
-    public Page<BrandResponse.Minified> getAllBrand(Pageable pageable, Boolean isEnabled){
-        JPAQuery<?> query = queryFactory.from(brand)
-                .where(
-                        checkEnabled(isEnabled)
-                );
+    public List<Brand> getAllBrand(Pageable pageable){
+        JPAQuery<?> query = queryFactory.from(brand);
+//                .where(
+//                        checkEnabled(isEnabled)
+//                );
 
         final Long count = queryFactory.select(brand.count())
                 .from(brand)
-                .where(
-                        checkEnabled(isEnabled)
-                )
+//                .where(
+//                        checkEnabled(isEnabled)
+//                )
                 .fetchOne();
 
-        List<BrandResponse.Minified> brandResponseMinifiedList = Objects.requireNonNull(getQuerydsl())
+        List<Brand> brandList = Objects.requireNonNull(getQuerydsl())
                 .applyPagination(pageable, query)
-                .select(Projections.constructor(BrandResponse.Minified.class,
-                        brand.id,
-                        brand.name,
-                        brand.originalName,
-                        brand.resource
-                ))
+                .select(brand)
                 .fetch();
 
-        return new PageImpl<>(brandResponseMinifiedList, pageable, count);
+        return brandList;
 
     }
 

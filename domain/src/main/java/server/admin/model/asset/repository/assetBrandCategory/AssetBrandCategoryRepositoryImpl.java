@@ -23,7 +23,7 @@ public class AssetBrandCategoryRepositoryImpl extends QueryDslSupport implements
     }
 
     @Override
-    public List<AssetBrandCategoryResponse.Minified> findMinifiedById(Long id) {
+    public List<AssetBrandCategoryResponse.Minified> findMinifiedByBrandId(Long id) {
             return queryFactory.from(assetBrandCategory)
                     .where(assetBrandCategory.id.eq(id))
                     .select(Projections.constructor(AssetBrandCategoryResponse.Minified.class,

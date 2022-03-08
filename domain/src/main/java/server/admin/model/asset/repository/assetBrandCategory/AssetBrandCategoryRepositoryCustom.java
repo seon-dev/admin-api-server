@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AssetBrandCategoryRepositoryCustom {
-    List<AssetBrandCategoryResponse.Minified> findMinifiedById(Long id);
+    List<AssetBrandCategoryResponse.Minified> findMinifiedByBrandId(Long id);
     Optional<AssetBrandCategory> findByIdFetchJoin(Long id);
     List<AssetBrandCategory> findAllFetchJoin();
 }

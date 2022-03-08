@@ -7,6 +7,7 @@ import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.user.entity.User;
 import server.admin.model.user.entity.UserPolicyAgreement;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 

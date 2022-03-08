@@ -30,7 +30,7 @@ public class UserStylingComment extends BaseTimeEntity implements Serializable {
     @Column
     private String text;
     @Column
-    private int likes;
+    private Integer likes;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "styling_comment_id")
     private UserStylingComment userStylingComment;
