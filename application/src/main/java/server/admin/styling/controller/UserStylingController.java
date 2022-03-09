@@ -17,7 +17,7 @@ public class UserStylingController {
     private final UserStylingService userStylingService;
 
     @GetMapping()
-    @ApiOperation(notes = "전체 유저 스타일링 조회", value = "전체 유저 스타일링을 조회합니다.")
+    @ApiOperation(value = "전체 유저 스타일링 조회", notes = "전체 유저 스타일링을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     public RestResponse<PageResult<UserStylingResponse>> getAllUserStyling(
 
@@ -28,7 +28,7 @@ public class UserStylingController {
     }
 
     @GetMapping("/{userStylingId}")
-    @ApiOperation(notes = "단일 유저 스타일링 조회", value = "해당 유저 스타일링 항목을 조회합니다.")
+    @ApiOperation(value = "단일 유저 스타일링 조회", notes = "해당 유저 스타일링 항목을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     public RestResponse<UserStylingResponse> getUserStyling(
         @PathVariable("userStylingId") Long userStylingId
