@@ -6,6 +6,7 @@ import lombok.Data;
 import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.user.entity.User;
 import server.admin.model.user.entity.UserPolicyAgreement;
+import server.admin.model.user.role.UserRole;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -16,8 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 public class UserProfileResponse {
     private Long id;
-    private String username;
+//    private String username;
     private Date birthday;
+    private UserRole role;
 //    private Integer follower;
 //    private Integer following;
     private String instagram;
@@ -33,7 +35,7 @@ public class UserProfileResponse {
     public static UserProfileResponse toBasicResponse(User entity){
         return UserProfileResponse.builder()
                 .id(entity.getId())
-                .username(entity.getName())
+//                .username(entity.getName())
                 .birthday(entity.getBirthday())
                 .instagram(entity.getInstagram())
                 .introduce(entity.getIntroduce())
@@ -41,6 +43,7 @@ public class UserProfileResponse {
                 .phoneNumber(entity.getPhoneNumber())
                 .resource(entity.getResource())
                 .isEnabled(entity.isEnabled())
+                .role(entity.getRole())
                 .build();
     }
 

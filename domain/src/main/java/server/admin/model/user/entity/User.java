@@ -77,7 +77,7 @@ public class User extends BaseTimeEntity implements Serializable, UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "refresh_token")
+    @Column(name = "refresh_token", length = 300)
     private String refreshToken;
 
     @Override

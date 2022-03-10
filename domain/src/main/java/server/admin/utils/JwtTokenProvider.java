@@ -53,7 +53,6 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        System.out.println(authorities);
         Date now = new Date();
 
         return Jwts.builder()

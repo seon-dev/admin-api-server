@@ -32,9 +32,9 @@ public class UserAssetApplicationService {
 
     @Transactional(readOnly = true)
     public UserAssetApplicationResponse getUserAssetApplication(Long userAssetApplicationId){
-        final Optional<UserAssetApplicationResponse> optionalUserAssetApplication = userAssetApplicationRepository.findResponseById(userAssetApplicationId);//이부분 페치조인사용해서 가져오기로 수정하기->ok
-        optionalUserAssetApplication.orElseThrow(UserAssetApplicationNotExistException::new);
-        return optionalUserAssetApplication.get();
+        final Optional<UserAssetApplication> optionalUserAssetApplication = userAssetApplicationRepository.findUserAssetApplicationById(userAssetApplicationId);//이부분 페치조인사용해서 가져오기로 수정하기->ok
+        return UserAssetApplicationResponse.toResponse(optionalUserAssetApplication.orElseThrow(UserAssetApplicationNotExistException::new));
+
     }
 
     @Transactional(readOnly = true)
