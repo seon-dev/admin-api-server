@@ -1,5 +1,6 @@
 package server.admin.utils;
 
+import antlr.MismatchedTokenException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -36,19 +38,19 @@ public class JwtTokenProvider {
     private long refreshTokenValidTime;
 
     private final String TOKEN_HEADER_NAME = "X-AUTH-TOKEN";
-    private final String REFRESHTOKEN_HEADER_NAME = "REFRESH-TOKEN";
+//    private final String REFRESHTOKEN_HEADER_NAME = "REFRESH-TOKEN";
     private static final String AUTHORITIES_KEY = "role";
 
-    public String createToken(Long userId, String nickname, Authentication authentication) {
+    public String createToken(Long userId, Authentication authentication) {
         return generateToken(userId, authentication,tokenValidTime);
     }
 
-    public String createRefreshToken(Long userId, String nickname, Authentication authentication){
+    public String createRefreshToken(Long userId, Authentication authentication){
         return generateToken(userId, authentication, refreshTokenValidTime);
     }
 
     public String generateToken(Long userId, Authentication authentication, long expireTime){
-        System.out.println(authentication.getCredentials());
+//        System.out.println(authentication.getCredentials());
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -105,15 +107,20 @@ public class JwtTokenProvider {
         if (request.getHeader(TOKEN_HEADER_NAME) == null) {
             return null;
         }
-        return request.getHeader(TOKEN_HEADER_NAME);
+        String authorization = request.getHeader(TOKEN_HEADER_NAME);
+        if(Pattern.matches("^Bearer .*", authorization)){
+            authorization = authorization.replaceAll("^Bearer( )*", "");
+            return authorization;
+        } else throw new RuntimeException("Invalid token");
+
     }
 
-    public String resolveRefreshToken(HttpServletRequest request){
-        if(request.getHeader(REFRESHTOKEN_HEADER_NAME) == null){
-            return null;
-        }
-        return request.getHeader(REFRESHTOKEN_HEADER_NAME);
-    }
+//    public String resolveRefreshToken(HttpServletRequest request){
+//        if(request.getHeader(REFRESHTOKEN_HEADER_NAME) == null){
+//            return null;
+//        }
+//        return request.getHeader(REFRESHTOKEN_HEADER_NAME);
+//    }
 
     public boolean isTokenNonExpired(String jwtToken) {
         try {

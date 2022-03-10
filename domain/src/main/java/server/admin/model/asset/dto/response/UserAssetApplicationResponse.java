@@ -36,8 +36,8 @@ public class UserAssetApplicationResponse {
     private Timestamp createAt;
 
     public static UserAssetApplicationResponse toResponse(UserAssetApplication entity){
-        final UserProfileResponse.Minified user = entity.getUser() != null ? UserProfileResponse.Minified.of(entity.getUser()) : null;
-        final AssetResponse asset = entity.getAsset() != null ? AssetResponse.toResponse(entity.getAsset()) : null;
+        final UserProfileResponse.Minified user = entity.checkUser() != null ? UserProfileResponse.Minified.of(entity.getUser()) : null;
+        final AssetResponse asset = entity.checkAsset() != null ? AssetResponse.toResponse(entity.getAsset()) : null;
         return UserAssetApplicationResponse.builder()
                 .id(entity.getId())
                 .offer(entity.getOffer())
