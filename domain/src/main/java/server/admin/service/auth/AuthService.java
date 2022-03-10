@@ -175,7 +175,7 @@ public class AuthService implements UserDetailsService {
                 verificationCode,
                 new Timestamp(System.currentTimeMillis())
         );
-        User user = optionalUser.orElseThrow(RuntimeException::new);
+        User user = optionalUser.orElseThrow(UserNotExistException::new);
 
         String accessToken = jwtTokenProvider.createToken(user.getId(), toAuthentication(user.getId(), user.getRole()));
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), toAuthentication(user.getId(), user.getRole()));
