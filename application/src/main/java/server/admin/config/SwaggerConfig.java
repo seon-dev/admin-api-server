@@ -61,7 +61,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("Authorization", "X-AUTH-TOKEN", "header");
+        return new ApiKey("Authorization", "Authorization", "header");
     }
 
 

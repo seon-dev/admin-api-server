@@ -37,7 +37,7 @@ public class JwtTokenProvider {
     @Value("${jwt.refreshToken-valid-time}")
     private long refreshTokenValidTime;
 
-    private final String TOKEN_HEADER_NAME = "X-AUTH-TOKEN";
+    private final String TOKEN_HEADER_NAME = "Authorization";
 //    private final String REFRESHTOKEN_HEADER_NAME = "REFRESH-TOKEN";
     private static final String AUTHORITIES_KEY = "role";
 

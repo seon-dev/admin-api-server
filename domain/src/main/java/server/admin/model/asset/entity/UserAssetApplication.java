@@ -89,15 +89,5 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
         return this;
     }
 
-    public Asset checkAsset(){
-        return asset != null ? asset : null;
-    }
 
-    public User checkUser(){
-        return user != null ? user : null;
-    }
-
-    public AssetPrototype checkAssetPrototype(){
-        return assetPrototype != null ? assetPrototype : null;
-    }
 }
