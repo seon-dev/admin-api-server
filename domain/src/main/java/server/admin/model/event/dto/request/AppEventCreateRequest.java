@@ -1,6 +1,5 @@
 package server.admin.model.event.dto.request;
 
-import com.apple.eawt.AppEvent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import server.admin.model.event.entity.AppEventEntity;
