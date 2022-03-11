@@ -21,10 +21,10 @@ public class UserPolicyAgreement extends BaseTimeEntity implements Serializable 
     private Long id;
 
     @Column(name = "personal_info_agreement", nullable = false)
-    private Boolean personalInfoAgreement;
+    private Boolean personalInfoAgreement = false;
 
     @Column(name = "advertisement_marketing_agreement", nullable = false)
-    private Boolean advertisementMarketingAgreement;
+    private Boolean advertisementMarketingAgreement = false;
 
     @Column(name = "user_id")
     private Long userId;

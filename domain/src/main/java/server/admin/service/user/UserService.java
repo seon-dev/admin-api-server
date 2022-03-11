@@ -84,7 +84,7 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
         UserProfileResponse userProfileResponse = UserProfileResponse.toBasicResponse(user);
         userProfileResponse.setBadges(userBadgeRepository.findByUser(user));
-        userProfileResponse.setPolicyAgreement(userPolicyAgreementRepository.findByUserId(userId).orElseThrow(UserPolicyAgreementNotExistException::new));
+        userProfileResponse.setPolicyAgreement(userPolicyAgreementRepository.findByUserId(userId).orElse(null));
         return userProfileResponse;
     }
 

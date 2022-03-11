@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,8 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Authentication authentication = getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (UsernameNotFoundException e) {
-                log.info("username not found exception" + e.getMessage());
+            } catch (AuthenticationException e) {
+                log.info("Authentication not found exception. " + e.getMessage());
                 // response.addCookie(CookieUtils.removeCookie("X-AUTH-TOKEN"));
             }
         } else if( !jwtTokenProvider.isTokenNonExpired(token) ){

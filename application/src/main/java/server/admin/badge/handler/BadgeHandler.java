@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.admin.common.exception.dto.ErrorResponse;
 import server.admin.model.badge.exception.BadgeException;
 
 import java.time.LocalDateTime;
 
 import static server.admin.model.badge.exception.BadgeException.*;
-
+@RestControllerAdvice
 public class BadgeHandler {
     @Getter
     @RequiredArgsConstructor

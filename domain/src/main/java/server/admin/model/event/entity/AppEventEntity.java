@@ -1,4 +1,4 @@
-package server.admin.model.event.model.entity;
+package server.admin.model.event.entity;
 
 import lombok.Getter;
 import lombok.Setter;

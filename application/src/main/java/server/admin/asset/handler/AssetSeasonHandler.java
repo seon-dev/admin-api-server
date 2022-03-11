@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.admin.common.exception.dto.ErrorResponse;
+import server.admin.model.common.rest.RestFailResponse;
 
 
 import static server.admin.model.asset.exception.AssetSeasonException.*;
@@ -22,8 +23,8 @@ public class AssetSeasonHandler {
     }
 
     @ExceptionHandler(AssetSeasonNotExistException.class)
-    public ErrorResponse assetSeasonNotExistExceptionHandler(AssetSeasonNotExistException exception){
-        return new ErrorResponse(AssetErrorCode.ASSET_SEASON_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.BAD_REQUEST);
+    public RestFailResponse assetSeasonNotExistExceptionHandler(AssetSeasonNotExistException exception){
+        return new RestFailResponse<>(AssetErrorCode.ASSET_SEASON_NOT_EXIST_CODE.getStatusCode(), exception.getMessage());
     }
 
 }
