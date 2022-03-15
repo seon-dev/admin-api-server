@@ -85,12 +85,12 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     @Column(name = "verified_at")
     private Timestamp verifiedAt;
 
-    public UserAssetApplication setBasicEntity(UserAssetApplicationUpdateRequest request){
-        isVerified = request.getIsVerified();
-        verifierId = request.getVerifierId();
-        verifiedAssetId = request.getVerifiedAssetId();
-        verifierComment = request.getVerifierComment();
-        return this;
+    public static UserAssetApplication setBasicEntity(UserAssetApplication entity,UserAssetApplicationUpdateRequest request){
+        entity.isVerified = request.getIsVerified();
+        entity.verifierId = request.getVerifierId();
+        entity.verifiedAssetId = request.getVerifiedAssetId();
+        entity.verifierComment = request.getVerifierComment();
+        return entity;
     }
 
 
