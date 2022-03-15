@@ -53,7 +53,7 @@ public class UserService {
             Optional<UserPolicyAgreement> optionalUserPolicyAgreement = userPolicyAgreementRepository.findByUserId(user.getId());
             List<BadgeResponse> badgeResponseList = userBadgeRepository.findByUser(user);
             userProfileResponse.setBadges(badgeResponseList);
-            userProfileResponse.setPolicyAgreement(optionalUserPolicyAgreement.orElseThrow(UserPolicyAgreementNotExistException::new));
+            userProfileResponse.setPolicyAgreement(optionalUserPolicyAgreement.orElse(null));
             userProfileResponses.add(userProfileResponse);
         });
         PageImpl<UserProfileResponse> pageResult = new PageImpl<>(userProfileResponses, Pageable.unpaged(), userProfileResponses.size());
