@@ -94,6 +94,7 @@ public class UserProfileResponse {
             return Verifier.builder()
                     .id(entity.getId())
                     .name(entity.getUsername())
+                    .nickname(entity.getNickname())
                     .phoneNumber(entity.getPhoneNumber())
                     .build();
         }
