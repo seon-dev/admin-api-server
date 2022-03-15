@@ -70,11 +70,13 @@ public class UserAssetApplicationService {
 
     public UserAssetApplicationResponse updateUserAssetApplication(Long userAssetApplicationId, UserAssetApplicationUpdateRequest request){
         final Optional<UserAssetApplication> optional = userAssetApplicationRepository.findById(userAssetApplicationId);
-        if (optional.isPresent()){
-            final UserAssetApplication userAssetApplication = optional.get();
-            userAssetApplication.setBasicEntity(request);
-            return UserAssetApplicationResponse.toResponseExceptVerifier(userAssetApplication);
-        } else throw new UserAssetApplicationNotExistException();
+            final UserAssetApplication userAssetApplication = UserAssetApplication.setBasicEntity(optional.orElseThrow(UserAssetApplicationNotExistException::new), request);
+            UserAssetApplicationResponse userAssetApplicationResponse = UserAssetApplicationResponse.toResponseExceptVerifier(userAssetApplication);
+            final UserProfileResponse.Verifier verifier = userAssetApplication.getVerifierId() != null ? UserProfileResponse.Verifier.of(userRepository.findById(userAssetApplication.getVerifierId()).orElseThrow(UserException.UserNotExistException::new)) : null;
+
+            userAssetApplicationResponse.setVerifier(verifier);
+            return userAssetApplicationResponse;
+
     }
 
 
