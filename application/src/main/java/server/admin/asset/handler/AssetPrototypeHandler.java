@@ -5,12 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import server.admin.common.exception.dto.ErrorResponse;
 import server.admin.model.asset.exception.AssetPrototypeException;
-import server.admin.model.asset.exception.AssetSeasonException;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import server.admin.model.common.rest.RestFailResponse;
 
 @RestControllerAdvice
 public class AssetPrototypeHandler {
@@ -24,7 +20,7 @@ public class AssetPrototypeHandler {
     }
 
     @ExceptionHandler(AssetPrototypeException.AssetPrototypeNotExistException.class)
-    public ErrorResponse assetPrototypeNotExistHandler(AssetPrototypeException.AssetPrototypeNotExistException exception){
-        return new ErrorResponse(AssetPrototypeErrorCode.ASSET_PROTOTYPE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+    public RestFailResponse assetPrototypeNotExistHandler(AssetPrototypeException.AssetPrototypeNotExistException exception){
+        return new RestFailResponse(AssetPrototypeErrorCode.ASSET_PROTOTYPE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage());
     }
 }

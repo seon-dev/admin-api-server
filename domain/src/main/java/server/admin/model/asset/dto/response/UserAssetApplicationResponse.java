@@ -27,7 +27,7 @@ public class UserAssetApplicationResponse {
     private String resourceReceipt;
     private Timestamp purchaseDate;
     private Integer offer;
-    private Long verifierId;
+    private UserProfileResponse.Verifier verifier;
     private Long verifiedAssetId;
     private String userComment;
     private String verifierComment;
@@ -35,7 +35,7 @@ public class UserAssetApplicationResponse {
     private Timestamp verifiedAt;
     private Timestamp createAt;
 
-    public static UserAssetApplicationResponse toResponse(UserAssetApplication entity){
+    public static UserAssetApplicationResponse toResponseExceptVerifier(UserAssetApplication entity){
         return UserAssetApplicationResponse.builder()
                 .id(entity.getId())
                 .offer(entity.getOffer())
@@ -47,7 +47,7 @@ public class UserAssetApplicationResponse {
                 .resourceCertification(entity.getResourceCertification())
                 .resourceReceipt(entity.getResourceReceipt())
                 .purchaseDate(entity.getPurchaseDate())
-                .verifierId(entity.getVerifierId())
+//                .verifier(entity.getVerifierId())
                 .verifiedAssetId(entity.getVerifiedAssetId())
                 .verifierComment(entity.getVerifierComment())
                 .userComment(entity.getUserComment())

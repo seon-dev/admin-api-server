@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import server.admin.common.exception.dto.ErrorResponse;
 import server.admin.model.asset.exception.AssetCollectionException;
-import server.admin.model.asset.exception.AssetPrototypeException;
+import server.admin.model.common.rest.RestFailResponse;
 
-import java.time.LocalDateTime;
 @RestControllerAdvice
 public class AssetCollectionHandler {
     @Getter
@@ -21,7 +19,7 @@ public class AssetCollectionHandler {
     }
 
     @ExceptionHandler(AssetCollectionException.AssetCollectionNotExistException.class)
-    public ErrorResponse assetCollectionNotExistHandler(AssetCollectionException.AssetCollectionNotExistException exception){
-        return new ErrorResponse(AssetCollectionErrorCode.ASSET_COLLECTION_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+    public RestFailResponse assetCollectionNotExistHandler(AssetCollectionException.AssetCollectionNotExistException exception){
+        return new RestFailResponse(AssetCollectionErrorCode.ASSET_COLLECTION_NOT_EXIST_CODE.getStatusCode(), exception.getMessage());
     }
 }

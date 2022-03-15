@@ -2,13 +2,9 @@ package server.admin.user.handler;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import server.admin.common.exception.dto.ErrorResponse;
-import server.admin.model.brand.exception.BrandException;
 import server.admin.model.common.rest.RestFailResponse;
-import server.admin.model.user.exception.UserException;
 
 import static server.admin.model.user.exception.UserException.*;
 

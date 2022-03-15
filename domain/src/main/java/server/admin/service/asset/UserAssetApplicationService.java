@@ -10,6 +10,9 @@ import server.admin.model.asset.dto.request.UserAssetApplicationUpdateRequest;
 import server.admin.model.asset.dto.response.UserAssetApplicationResponse;
 import server.admin.model.asset.entity.UserAssetApplication;
 import server.admin.model.asset.repository.userAssetApplication.UserAssetApplicationRepository;
+import server.admin.model.user.dto.response.UserProfileResponse;
+import server.admin.model.user.exception.UserException;
+import server.admin.model.user.repository.UserRepository;
 import server.admin.utils.cursor.CursorResult;
 import server.admin.utils.page.PageResult;
 
@@ -24,16 +27,21 @@ import static server.admin.model.asset.exception.UserAssetApplicationException.*
 @Transactional
 public class UserAssetApplicationService {
     private final UserAssetApplicationRepository userAssetApplicationRepository;
+    private final UserRepository userRepository;
 
-    private Boolean hasNext(Long lastId) {
-        if (lastId == null) return false;
-        return userAssetApplicationRepository.existsByIdLessThan(lastId);
-    }
+//    private Boolean hasNext(Long lastId) {
+//        if (lastId == null) return false;
+//        return userAssetApplicationRepository.existsByIdLessThan(lastId);
+//    }
 
     @Transactional(readOnly = true)
     public UserAssetApplicationResponse getUserAssetApplication(Long userAssetApplicationId){
         final Optional<UserAssetApplication> optionalUserAssetApplication = userAssetApplicationRepository.findUserAssetApplicationById(userAssetApplicationId);//이부분 페치조인사용해서 가져오기로 수정하기->ok
-        return UserAssetApplicationResponse.toResponse(optionalUserAssetApplication.orElseThrow(UserAssetApplicationNotExistException::new));
+        UserAssetApplication userAssetApplication = optionalUserAssetApplication.orElseThrow(UserAssetApplicationNotExistException::new);
+        UserAssetApplicationResponse userAssetApplicationResponse = UserAssetApplicationResponse.toResponseExceptVerifier(userAssetApplication);
+        final UserProfileResponse.Verifier verifier = userAssetApplication.getVerifierId() != null ? UserProfileResponse.Verifier.of(userRepository.findById(userAssetApplication.getVerifierId()).orElseThrow(UserException.UserNotExistException::new)) : null;
+        userAssetApplicationResponse.setVerifier(verifier);
+        return userAssetApplicationResponse;
 
     }
 
@@ -47,7 +55,10 @@ public class UserAssetApplicationService {
 
         List<UserAssetApplicationResponse> userAssetApplicationResponseList = new ArrayList<>();
         userAssetApplicationList.forEach(userAssetApplication -> {
-            userAssetApplicationResponseList.add(UserAssetApplicationResponse.toResponse(userAssetApplication));
+            UserAssetApplicationResponse userAssetApplicationResponse = UserAssetApplicationResponse.toResponseExceptVerifier(userAssetApplication);
+            final UserProfileResponse.Verifier verifier = userAssetApplication.getVerifierId() != null ? UserProfileResponse.Verifier.of(userRepository.findById(userAssetApplication.getVerifierId()).orElseThrow(UserException.UserNotExistException::new)) : null;
+            userAssetApplicationResponse.setVerifier(verifier);
+            userAssetApplicationResponseList.add(userAssetApplicationResponse);
         });
 //        if (userAssetApplicationResponseList.isEmpty()) throw new UserAssetApplicationNotExistException();
 //        final int sizeOfPage  = userAssetApplicationResponseList.size();
@@ -62,7 +73,7 @@ public class UserAssetApplicationService {
         if (optional.isPresent()){
             final UserAssetApplication userAssetApplication = optional.get();
             userAssetApplication.setBasicEntity(request);
-            return UserAssetApplicationResponse.toResponse(userAssetApplication);
+            return UserAssetApplicationResponse.toResponseExceptVerifier(userAssetApplication);
         } else throw new UserAssetApplicationNotExistException();
     }
 

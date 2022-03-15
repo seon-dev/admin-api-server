@@ -80,6 +80,15 @@ public class User extends BaseTimeEntity implements Serializable, UserDetails {
     @Column(name = "refresh_token", length = 300)
     private String refreshToken;
 
+    @Column(name = "number_of_assets")
+    private int numberOfAssets = 0;
+
+    @Column(name = "number_of_stylings")
+    private int numberOfStylings ;
+
+    @Column(name = "number_of_bookmarks")
+    private int numberOfBookmarks;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

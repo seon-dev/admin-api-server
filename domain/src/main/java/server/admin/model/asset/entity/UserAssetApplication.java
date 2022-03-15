@@ -68,6 +68,10 @@ public class UserAssetApplication extends BaseTimeEntity implements Serializable
     @Column(name = "verifier_id", nullable = true)
     private Long verifierId;
 
+    @Transient
+    @JsonIgnore
+    private User verifier;
+
     @Column(name = "verified_asset_id", nullable = true)
     private Long verifiedAssetId;
 
