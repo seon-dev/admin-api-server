@@ -14,9 +14,10 @@ public class PermissionResponse {
     private String section;
     private Integer level;
 
-    public static PermissionResponse toResponseExceptUser(Permission entity){
+    public static PermissionResponse toResponse(Permission entity){
         return PermissionResponse.builder()
                 .id(entity.getId())
+                .userId(entity.getUser().getId())
                 .section(entity.getSection())
                 .level(entity.getLevel())
                 .build();

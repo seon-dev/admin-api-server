@@ -29,5 +29,8 @@ public class Permission extends BaseTimeEntity implements Serializable {
     private Integer level;
     @Column
     private Boolean isEnabled;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
