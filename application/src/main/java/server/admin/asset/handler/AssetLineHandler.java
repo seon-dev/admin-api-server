@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import server.admin.common.exception.dto.ErrorResponse;
-import server.admin.model.asset.exception.AssetCollectionException;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.admin.model.asset.exception.AssetLineException;
 import server.admin.model.common.rest.RestFailResponse;
 
-import java.time.LocalDateTime;
-
+@RestControllerAdvice
 public class AssetLineHandler {
     @Getter
     @RequiredArgsConstructor
@@ -22,8 +20,8 @@ public class AssetLineHandler {
     }
 
     @ExceptionHandler(AssetLineException.AssetLineNotExistException.class)
-    public ErrorResponse assetLineNotExistHandler(AssetLineException.AssetLineNotExistException exception){
-        return new ErrorResponse(AssetLineErrorCode.ASSET_LINE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+    public RestFailResponse assetLineNotExistHandler(AssetLineException.AssetLineNotExistException exception){
+        return new RestFailResponse(AssetLineErrorCode.ASSET_LINE_NOT_EXIST_CODE.getStatusCode(), exception.getMessage());
     }
 
     @ExceptionHandler(AssetLineException.AssetLineDuplicateException.class)

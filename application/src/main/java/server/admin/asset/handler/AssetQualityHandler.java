@@ -3,9 +3,10 @@ package server.admin.asset.handler;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.admin.model.asset.exception.AssetQualityException;
 import server.admin.model.common.rest.RestFailResponse;
-
+@RestControllerAdvice
 public class AssetQualityHandler {
     @Getter
     @RequiredArgsConstructor

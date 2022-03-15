@@ -36,7 +36,7 @@ public class RefreshValidateInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("RefreshValidateInterceptor");
-        String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+        String refreshToken = jwtTokenProvider.resolveToken(request);
         try {
             if (refreshToken != null) {
                 Long userId = Long.parseLong(jwtTokenProvider.getUserId(refreshToken));

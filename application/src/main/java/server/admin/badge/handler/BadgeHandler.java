@@ -2,15 +2,12 @@ package server.admin.badge.handler;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import server.admin.common.exception.dto.ErrorResponse;
-import server.admin.model.badge.exception.BadgeException;
-
-import java.time.LocalDateTime;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import server.admin.model.common.rest.RestFailResponse;
 
 import static server.admin.model.badge.exception.BadgeException.*;
-
+@RestControllerAdvice
 public class BadgeHandler {
     @Getter
     @RequiredArgsConstructor
@@ -22,7 +19,7 @@ public class BadgeHandler {
     }
 
     @ExceptionHandler(BadgeNotExistException.class)
-    public ErrorResponse badgeNotExistHandler(BadgeNotExistException exception){
-        return new ErrorResponse(BadgeErrorCode.BADGE_NOT_EXIST_CODE.getStatusCode(),exception.getMessage(), HttpStatus.NOT_FOUND);
+    public RestFailResponse badgeNotExistHandler(BadgeNotExistException exception){
+        return new RestFailResponse<>(BadgeErrorCode.BADGE_NOT_EXIST_CODE.getStatusCode(),exception.getMessage());
     }
 }

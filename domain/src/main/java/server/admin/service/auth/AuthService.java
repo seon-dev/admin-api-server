@@ -175,10 +175,10 @@ public class AuthService implements UserDetailsService {
                 verificationCode,
                 new Timestamp(System.currentTimeMillis())
         );
-        User user = optionalUser.orElseThrow(RuntimeException::new);
+        User user = optionalUser.orElseThrow(UserNotExistException::new);
 
-        String accessToken = jwtTokenProvider.createToken(user.getId(), user.getNickname(), toAuthentication(user.getId(), user.getRole()));
-        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), user.getNickname(), toAuthentication(user.getId(), user.getRole()));
+        String accessToken = jwtTokenProvider.createToken(user.getId(), toAuthentication(user.getId(), user.getRole()));
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), toAuthentication(user.getId(), user.getRole()));
         user.setRefreshToken(refreshToken);
         return new SignInResponse(accessToken, refreshToken);
     }
@@ -195,8 +195,8 @@ public class AuthService implements UserDetailsService {
 //    }
 
     public RefreshTokenResponse regenerateToken(User user){
-        final String accessToken = jwtTokenProvider.createToken(user.getId(),user.getNickname(), toAuthentication(user.getId(), user.getRole()));
-        final String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(),user.getNickname(), toAuthentication(user.getId(), user.getRole()));
+        final String accessToken = jwtTokenProvider.createToken(user.getId(), toAuthentication(user.getId(), user.getRole()));
+        final String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), toAuthentication(user.getId(), user.getRole()));
         Optional<User> optionalUser = userRepository.findById(user.getId());
         optionalUser.orElseThrow(UserNotExistException::new).setRefreshToken(refreshToken);
         return new RefreshTokenResponse(accessToken, refreshToken);

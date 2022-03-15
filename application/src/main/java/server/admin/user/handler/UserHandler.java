@@ -2,12 +2,9 @@ package server.admin.user.handler;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import server.admin.common.exception.dto.ErrorResponse;
-import server.admin.model.brand.exception.BrandException;
-import server.admin.model.user.exception.UserException;
+import server.admin.model.common.rest.RestFailResponse;
 
 import static server.admin.model.user.exception.UserException.*;
 
@@ -24,8 +21,8 @@ public class UserHandler {
     }
 
     @ExceptionHandler(UserNotExistException.class)
-    public ErrorResponse userNotExistHandler(UserNotExistException exception){
-        return new ErrorResponse(UserErrorCode.USER_NOT_EXIST_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);
+    public RestFailResponse userNotExistHandler(UserNotExistException exception){
+        return new RestFailResponse<>(UserErrorCode.USER_NOT_EXIST_CODE.getStatusCode(), exception.getMessage());
     }
 
 

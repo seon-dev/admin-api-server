@@ -2,12 +2,9 @@ package server.admin.auth.handler;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import server.admin.common.exception.dto.ErrorResponse;
-import server.admin.model.auth.exception.AuthException;
 import server.admin.model.common.rest.RestFailResponse;
 
 import static server.admin.model.auth.exception.AuthException.*;
@@ -29,23 +26,23 @@ public class AuthHandler {
     }
 
     @ExceptionHandler(InvalidEmailAddressException.class)
-    public ErrorResponse invalidEmailAddressHandler(InvalidEmailAddressException exception){
-        return new ErrorResponse(AuthErrorCode.INVALID_EMAIL_ADDRESS_CODE.getStatusCode(), exception.getMessage(), HttpStatus.NOT_FOUND);//코드 수정하기
+    public RestFailResponse invalidEmailAddressHandler(InvalidEmailAddressException exception){
+        return new RestFailResponse<>(AuthErrorCode.INVALID_EMAIL_ADDRESS_CODE.getStatusCode(), exception.getMessage());//코드 수정하기
     }
 
     @ExceptionHandler(InvalidEmailVerificationCodeException.class)
-    public ErrorResponse invalidEmailVerificationHandler(InvalidEmailVerificationCodeException exception){
-        return new ErrorResponse(AuthErrorCode.INVALID_EMAIL_VERIFICATION_CODE.getStatusCode(), exception.getMessage(),HttpStatus.NOT_FOUND);
+    public RestFailResponse invalidEmailVerificationHandler(InvalidEmailVerificationCodeException exception){
+        return new RestFailResponse<>(AuthErrorCode.INVALID_EMAIL_VERIFICATION_CODE.getStatusCode(), exception.getMessage());
     }
 
     @ExceptionHandler(InvalidNameException.class)
-    public ErrorResponse invalidNameHandler(InvalidNameException exception){
-        return new ErrorResponse(AuthErrorCode.INVALID_NAME_CODE.getStatusCode(), exception.getMessage(), HttpStatus.BAD_REQUEST);
+    public RestFailResponse invalidNameHandler(InvalidNameException exception){
+        return new RestFailResponse<>(AuthErrorCode.INVALID_NAME_CODE.getStatusCode(), exception.getMessage());
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ErrorResponse invalidPasswordHandler(InvalidPasswordException exception){
-        return new ErrorResponse(AuthErrorCode.INVALID_PASSWORD_CODE.getStatusCode(), exception.getMessage(), HttpStatus.BAD_REQUEST);
+    public RestFailResponse invalidPasswordHandler(InvalidPasswordException exception){
+        return new RestFailResponse<>(AuthErrorCode.INVALID_PASSWORD_CODE.getStatusCode(), exception.getMessage());
     }
 
     @ExceptionHandler(SignInFailException.class)

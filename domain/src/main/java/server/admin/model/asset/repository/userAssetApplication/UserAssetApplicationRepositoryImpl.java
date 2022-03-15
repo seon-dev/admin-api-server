@@ -34,15 +34,12 @@ public class UserAssetApplicationRepositoryImpl
     }
 
     @Override
-    public Optional<UserAssetApplicationResponse> findResponseById(Long id) {
-        return Optional.ofNullable(queryFactory.from(userAssetApplication)
-                        .leftJoin(userAssetApplication.asset, QAsset.asset)
-                        .leftJoin(userAssetApplication.user, QUser.user)
-                        .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
+    public Optional<UserAssetApplication> findUserAssetApplicationById(Long id) {
+        return Optional.ofNullable(queryFactory.selectFrom(userAssetApplication)
+                        .leftJoin(userAssetApplication.asset, QAsset.asset).fetchJoin()
+                        .leftJoin(userAssetApplication.user, QUser.user).fetchJoin()
+                        .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype).fetchJoin()
                 .where(userAssetApplication.id.eq(id))
-                        .select(
-                                projectUserAssetApplication()
-                        )
                 .fetchOne());
     }
 
