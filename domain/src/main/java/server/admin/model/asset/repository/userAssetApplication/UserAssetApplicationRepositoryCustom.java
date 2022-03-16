@@ -12,5 +12,6 @@ public interface UserAssetApplicationRepositoryCustom {
     Optional<UserAssetApplication> findUserAssetApplicationById(Long id);
     List<UserAssetApplication> getUserAssetApplications(
 //            Long cursorId, Integer size, Boolean isVerified, Sort sort
+            Boolean isEnabled
     );
 }

@@ -9,8 +9,10 @@ import server.admin.model.permission.dto.request.PermissionCreateRequest;
 import server.admin.model.permission.dto.response.PermissionResponse;
 import server.admin.model.permission.entity.Permission;
 import server.admin.model.permission.exception.PermissionException;
-import server.admin.model.permission.repository.ModeratorPermissionRepository;
 import server.admin.model.permission.repository.PermissionRepository;
+import server.admin.model.user.entity.User;
+import server.admin.model.user.exception.UserException;
+import server.admin.model.user.repository.UserRepository;
 import server.admin.utils.page.PageResult;
 
 import java.util.ArrayList;
@@ -22,16 +24,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PermissionService {
     private final PermissionRepository permissionRepository;
-    private final ModeratorPermissionRepository moderatorPermissionRepository;
+    private final UserRepository userRepository;
 
 
     public PageResult<PermissionResponse> getAllPermissions(){
         List<Permission> permissionList = permissionRepository.findAll();
         List<PermissionResponse> permissionResponseList = new ArrayList<>();
         permissionList.forEach(permission -> {
-            PermissionResponse permissionResponse = PermissionResponse.toResponseExceptUser(permission);
-            permissionResponse.setUserId(moderatorPermissionRepository.findByPermissionFetchJoin(permission).getModerator().getId());
-            permissionResponseList.add(permissionResponse);
+            permissionResponseList.add(PermissionResponse.toResponse(permission));
         });
         PageImpl<PermissionResponse> pageResult = new PageImpl<>(permissionResponseList, Pageable.unpaged(), permissionResponseList.size());
         return new PageResult<>(pageResult);
@@ -39,16 +39,19 @@ public class PermissionService {
 
     public PermissionResponse getPermission(Long id){
         Optional<Permission> optionalPermission = permissionRepository.findById(id);
-        PermissionResponse permissionResponse = PermissionResponse.toResponseExceptUser(optionalPermission.orElseThrow(PermissionException.PermissionNotExistException::new));
-        permissionResponse.setUserId(moderatorPermissionRepository.findByPermissionFetchJoin(optionalPermission.get()).getModerator().getId());
-        return permissionResponse;
+        return PermissionResponse.toResponse(optionalPermission.orElseThrow(PermissionException.PermissionNotExistException::new));
     }
 
     public PermissionResponse createPermission(PermissionCreateRequest request){
-        return null;
+        Permission permission = PermissionCreateRequest.toEntityExceptUser(request);
+        User user = userRepository.findById(request.getUserId()).orElseThrow(UserException.UserNotExistException::new);
+        permission.setUser(user);
+
+        return PermissionResponse.toResponse(permissionRepository.save(permission));
     }
 
     public void deletePermission(Long id){
-
+        Optional<Permission> optionalPermission = permissionRepository.findById(id);
+        permissionRepository.delete(optionalPermission.orElseThrow(PermissionException.PermissionNotExistException::new));
     }
 }

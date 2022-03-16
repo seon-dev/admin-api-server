@@ -7,10 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.common.rest.RestResponse;
 import server.admin.model.common.rest.RestSuccessResponse;
+import server.admin.model.permission.dto.request.PermissionCreateRequest;
 import server.admin.model.permission.dto.response.PermissionResponse;
 import server.admin.model.permission.repository.PermissionRepository;
 import server.admin.service.permission.PermissionService;
 import server.admin.utils.page.PageResult;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,6 +40,27 @@ public class PermissionController {
             permissionService.getPermission(id)
         );
     }
+
+    @PostMapping()
+    @ApiOperation(value = "새 권한 생성", notes = "새로운 권한과을 생성합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public RestResponse<PermissionResponse> createPermission(
+            @RequestBody @Valid PermissionCreateRequest request
+            ){
+        return RestSuccessResponse.newInstance(
+                permissionService.createPermission(request)
+        );
+    }
+
+    @DeleteMapping("/{permissionId}")
+    @ApiOperation(value = "권한 삭제", notes = "권한을 삭제하고 연관된 자식 모더레이터 데이터를 함께 삭제합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePermission(
+            @PathVariable("permissionId") Long id
+    ){
+        permissionService.deletePermission(id);
+    }
+
 
 
 

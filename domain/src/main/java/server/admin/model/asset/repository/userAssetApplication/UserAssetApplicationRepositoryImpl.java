@@ -46,12 +46,14 @@ public class UserAssetApplicationRepositoryImpl
     @Override
     public List<UserAssetApplication> getUserAssetApplications(
 //            Long cursorId, Integer size, Boolean isVerified, Sort sort
+            Boolean isEnabled
     ){
         List<UserAssetApplication> userAssetApplicationList = queryFactory.selectFrom(userAssetApplication)
-//                .where(
+                .where(
 //                        checkIsVerified(isVerified),
 //                        checkCursor(cursorId)
-//                )
+                        checkIsEnabled(isEnabled)
+                )
 //                .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
                 .leftJoin(userAssetApplication.assetPrototype,QAssetPrototype.assetPrototype).fetchJoin()
                 .leftJoin(userAssetApplication.user, QUser.user).fetchJoin()
@@ -83,6 +85,10 @@ public class UserAssetApplicationRepositoryImpl
 
     private BooleanExpression checkIsVerified(Boolean isVerified){
         return isVerified != null ? userAssetApplication.isVerified.eq(isVerified) : null;
+    }
+
+    private BooleanExpression checkIsEnabled(Boolean isEnabled){
+        return isEnabled != null ? userAssetApplication.isEnabled.eq(isEnabled) : null;
     }
 
 //    private OrderSpecifier<Long> OrderByAsc(String orderBy){
