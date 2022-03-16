@@ -43,13 +43,16 @@ public class UserAssetApplicationController {
 //            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
 //            @RequestParam(value = "cursor", required = false) String encodedCursor,
 //            @RequestParam(value = "verified", required = false) Boolean isVerified,
+            @RequestParam(value = "enabled", required = false) Boolean isEnabled
 //            @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
 //            @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc
     ){
 
           return RestSuccessResponse.newInstance(
                 userAssetApplicationService.getAllUserAssetApplication(
-//                        decodeCursor(encodedCursor), size, isVerified, checkOrderByAndSort(desc, sortBy)
+//                        decodeCursor(encodedCursor), size,isVerified
+                        isEnabled
+//                        checkOrderByAndSort(desc, sortBy)
                 )
         );
     }

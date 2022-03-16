@@ -48,9 +48,11 @@ public class UserAssetApplicationService {
     @Transactional(readOnly = true)
     public PageResult<UserAssetApplicationResponse> getAllUserAssetApplication(
 //            Long cursorId, Integer size, Boolean isVerified, Sort sort
+            Boolean isEnabled
     ){
         final List<UserAssetApplication> userAssetApplicationList = userAssetApplicationRepository.getUserAssetApplications(
 //                cursorId, size, isVerified, sort
+                isEnabled
         );
 
         List<UserAssetApplicationResponse> userAssetApplicationResponseList = new ArrayList<>();
