@@ -33,7 +33,7 @@ public class UserAssetApplicationResponse {
     private String verifierComment;
     private Boolean isVerified;
     private Timestamp verifiedAt;
-    private Timestamp createAt;
+    private Timestamp createdAt;
 
     public static UserAssetApplicationResponse toResponseExceptVerifier(UserAssetApplication entity){
         return UserAssetApplicationResponse.builder()
@@ -52,7 +52,7 @@ public class UserAssetApplicationResponse {
                 .verifierComment(entity.getVerifierComment())
                 .userComment(entity.getUserComment())
                 .verifiedAt(entity.getVerifiedAt())
-                .createAt(entity.getCreatedAt())
+                .createdAt(entity.getCreatedAt())
                 .isVerified(entity.getIsVerified())
                 .build();
     }

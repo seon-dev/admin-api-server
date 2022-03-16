@@ -96,6 +96,7 @@ public class UserProfileResponse {
                     .name(entity.getUsername())
                     .nickname(entity.getNickname())
                     .phoneNumber(entity.getPhoneNumber())
+                    .resource(entity.getResource())
                     .build();
         }
     }
