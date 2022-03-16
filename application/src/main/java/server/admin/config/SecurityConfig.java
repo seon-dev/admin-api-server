@@ -54,10 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 //                .antMatchers("/swagger-resources/**","/swagger-ui.html", "/swagger-ui/**").permitAll()
 //                .mvcMatchers(HttpMethod.GET, "/health-check").anonymous()
-                .antMatchers(HttpMethod.POST, "/admin/auth/sign-in/**").permitAll()
 //                .mvcMatchers(HttpMethod.POST, "/admin/auth/verify").permitAll()
 //                .mvcMatchers(HttpMethod.GET,"/admin/auth/refresh-token").permitAll()
-                .mvcMatchers(HttpMethod.POST,"/admin/auth/sign-up").hasAnyRole("ADMIN","MODERATOR")//유저생성: 어드민,모더레이터만 가능
+                .mvcMatchers(HttpMethod.POST,"/admin/auth/**").hasAnyRole("ADMIN","MODERATOR")//유저생성: 어드민,모더레이터만 가능
+
                 .mvcMatchers(HttpMethod.PUT, "/admin/user/**").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.DELETE,"/admin/user/**").hasRole("ADMIN")//update,delete: 어드민만 가능
                 .anyRequest().authenticated();
