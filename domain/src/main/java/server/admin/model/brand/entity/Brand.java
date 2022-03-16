@@ -48,5 +48,10 @@ public class Brand extends BaseTimeEntity implements Serializable {
     @Column(name = "is_enabled")
     @NotNull
     private Boolean isEnabled = true;
+    @Column(name = "number_of_stylings")
+    private int numberOfStylings;
+    @Column(name = "number_of_assets")
+    private int numberOfAssets;
+
 
 }

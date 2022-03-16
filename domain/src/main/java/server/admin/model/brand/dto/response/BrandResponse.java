@@ -24,6 +24,8 @@ public class BrandResponse {
     private String color;
     private List<AssetBrandCategoryResponse.Minified> brandCategories;
     private Boolean isEnabled;
+    private Integer numberOfAssets;
+    private Integer numberOfStylings;
 
 
     public static BrandResponse toResponseWithoutBrandCategory(Brand entity){
@@ -39,6 +41,8 @@ public class BrandResponse {
                 .resourceCard(entity.getResourceCard())
                 .color(entity.getColor())
                 .isEnabled(entity.getIsEnabled())
+                .numberOfAssets(entity.getNumberOfAssets())
+                .numberOfStylings(entity.getNumberOfStylings())
                 .build();
     }
 
