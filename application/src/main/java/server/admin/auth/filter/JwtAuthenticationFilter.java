@@ -36,13 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthService authService;
 //    private final AuthenticationManager authenticationManager;
 
-//set authorieis가 안된다
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("jwtauthentication");
         String token = jwtTokenProvider.resolveToken(request);
         if (token != null && jwtTokenProvider.isTokenNonExpired(token)) {
             try {
+
                 Authentication authentication = getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (AuthenticationException e) {
@@ -62,6 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Authentication getAuthentication(String token) throws UsernameNotFoundException {
         UserDetails userDetails = authService.loadUserByUsername(jwtTokenProvider.getUserId(token));
+//        jwtTokenProvider.getAuthentication(token);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         //밑에있는 주석은 잘못된 방법
 //        UserDetails principal = new org.springframework.security.core.userdetails.User(jwtTokenProvider.getUserId(token), "plavcorp", jwtTokenProvider.getAuthentication(token).getAuthorities());

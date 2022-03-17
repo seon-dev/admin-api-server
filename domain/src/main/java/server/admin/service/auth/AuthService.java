@@ -209,7 +209,6 @@ public class AuthService implements UserDetailsService {
     }
 
     public String logout(User user){
-        System.out.println(user.getId());
         Optional<User> optionalUser = userRepository.findById(user.getId());
         optionalUser.orElseThrow(UserNotExistException::new).setRefreshToken(null);
         return "로그아웃에 성공하였습니다.";

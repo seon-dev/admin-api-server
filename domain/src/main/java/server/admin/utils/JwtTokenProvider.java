@@ -42,7 +42,7 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "role";
 
     public String createToken(Long userId, Authentication authentication) {
-        return generateToken(userId, authentication,tokenValidTime);
+        return generateToken(userId, authentication, tokenValidTime);
     }
 
     public String createRefreshToken(Long userId, Authentication authentication){
@@ -85,7 +85,7 @@ public class JwtTokenProvider {
 //    }
 
     //토큰 안에 있는 authorities를 가져온 뒤, "new UserDetails(userId, authorities)" 객체를 만들고, 이 두개로 UsernamepasswordAuthenticationToken(Authentication객체)을 만듦.
-    public Authentication getAuthentication(String token){
+    public Authentication getAuthentication(String token){//role이 담긴 권한...
         System.out.println("getAuthentication "+ token);
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 

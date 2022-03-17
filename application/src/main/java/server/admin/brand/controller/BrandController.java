@@ -62,6 +62,8 @@ public class BrandController {
         this.brandService.deleteBrand(brandId);
     }
 
+
+
     @PatchMapping("/{brandId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 업데이트", notes = "브랜드 정보를 업데이트 합니다.")

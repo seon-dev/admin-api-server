@@ -1,11 +1,10 @@
 package server.admin.model.brand.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
 import server.admin.model.brand.entity.Brand;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
@@ -27,6 +26,9 @@ public class BrandUpdateRequest {
     private String resourceCardExtension;
 
     private String color;
+    @NotNull
+    private Boolean isEnabled;
+
     @JsonIgnore
     private UUID uid = UUID.randomUUID();
     @JsonIgnore
@@ -39,6 +41,7 @@ public class BrandUpdateRequest {
         if(request.getDescription() != null) entity.setDescription(request.getDescription());
         if(request.getName() != null) entity.setName(request.getName());
         if(request.getOriginalName() != null) entity.setOriginalName(request.getOriginalName());
+        entity.setIsEnabled(request.getIsEnabled());
         return entity;
     }
 }
