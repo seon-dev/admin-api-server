@@ -85,7 +85,7 @@ public class JwtTokenProvider {
 //    }
 
     //토큰 안에 있는 authorities를 가져온 뒤, "new UserDetails(userId, authorities)" 객체를 만들고, 이 두개로 UsernamepasswordAuthenticationToken(Authentication객체)을 만듦.
-    public Authentication getAuthentication(String token){//role이 담긴 권한...
+    public Collection<? extends GrantedAuthority>  getAuthentication(String token){//role이 담긴 권한...
         System.out.println("getAuthentication "+ token);
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 
@@ -97,10 +97,10 @@ public class JwtTokenProvider {
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-
+        return authorities;
         // UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails principal = new User(claims.getSubject(), "plavcorp", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "plavcorp", authorities);
+//        UserDetails principal = new User(claims.getSubject(), "plavcorp", authorities);
+//        return new UsernamePasswordAuthenticationToken(principal, "plavcorp", authorities);
     }
 
     public String resolveToken(HttpServletRequest request) {

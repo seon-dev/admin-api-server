@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST, "/admin/permission/**").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.DELETE, "/admin/permission/**").hasRole("ADMIN")
                 .antMatchers("/admin/moderator/**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.GET, "/admin/permission/**").access("hasRole('ADMIN') or hasRole('MODERATOR')")//
+                .mvcMatchers(HttpMethod.GET, "/admin/permission/**").hasAnyRole("ADMIN","MODERATOR")
                 .mvcMatchers(HttpMethod.POST,"/admin/auth/**").hasAnyRole("ADMIN","MODERATOR")//유저생성: 어드민,모더레이터만 가능
 //                .access("hasRole('ADMIN') and hasRole('MODERATOR')")
 //                .mvcMatchers(HttpMethod.PUT, "/admin/user/**").hasRole("ADMIN")

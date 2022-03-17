@@ -62,8 +62,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Authentication getAuthentication(String token) throws UsernameNotFoundException {
         UserDetails userDetails = authService.loadUserByUsername(jwtTokenProvider.getUserId(token));
-//        jwtTokenProvider.getAuthentication(token);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+//        jwtTokenProvider.getAuthentication(token) or userDetails.getAuthorities()
+        return new UsernamePasswordAuthenticationToken(userDetails, "", jwtTokenProvider.getAuthentication(token));
         //밑에있는 주석은 잘못된 방법
 //        UserDetails principal = new org.springframework.security.core.userdetails.User(jwtTokenProvider.getUserId(token), "plavcorp", jwtTokenProvider.getAuthentication(token).getAuthorities());
 //        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal,"", jwtTokenProvider.getAuthentication(token).getAuthorities());
