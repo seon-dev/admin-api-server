@@ -1,28 +1,17 @@
 package server.admin.utils;
 
-import antlr.MismatchedTokenException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.http11.filters.IdentityOutputFilter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import server.admin.model.auth.dto.JwtIdentityDto;
-import server.admin.model.user.role.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 

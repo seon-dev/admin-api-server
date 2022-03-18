@@ -6,26 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.admin.auth.filter.JwtAuthenticationFilter;
-import server.admin.auth.handler.AuthHandler;
-import server.admin.model.common.rest.RestFailResponse;
-import server.admin.model.user.role.UserRole;
 import server.admin.utils.JwtTokenProvider;
 import server.admin.service.auth.AuthService;
 
@@ -52,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // authenticated path 인가
         http.authorizeRequests()
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**", "/configuration/ui", "/configuration/security").anonymous()
                 .mvcMatchers(HttpMethod.GET, "/admin/health-check").permitAll()
 //                .mvcMatchers(HttpMethod.POST, "/admin/auth/verify").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/admin/auth/logout").permitAll()
@@ -89,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/auth/refresh-token")
                 .antMatchers("/admin/auth/verify")
                 .antMatchers("/admin/health-check")
-                .antMatchers("/swagger-ui.html", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**", "/configuration/ui", "/configuration/security");
+                .antMatchers("/swagger-ui.html/**", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**", "/configuration/ui", "/configuration/security");
     }
 
     @Bean

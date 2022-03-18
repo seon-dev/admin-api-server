@@ -17,7 +17,7 @@ public class BrandResponse {
     private String originalName;
     private String description;
 //    private String recommendation;
-    private int likes;
+    private Integer likes;
     private String resource;
     private String resourceWallpaper;
     private String resourceCard;

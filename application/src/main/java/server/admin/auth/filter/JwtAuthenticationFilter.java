@@ -49,10 +49,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 log.info("Authentication not found exception. " + e.getMessage());
                 // response.addCookie(CookieUtils.removeCookie("X-AUTH-TOKEN"));
             }
-        } else if( !jwtTokenProvider.isTokenNonExpired(token) ){
-            throw new RuntimeException("invalid token!");
         } else if( token == null){
             throw new RuntimeException("token doesn't exist!");
+        } else if( !jwtTokenProvider.isTokenNonExpired(token) ){
+            throw new RuntimeException("invalid token!");
         }
 
         filterChain.doFilter(request, response);

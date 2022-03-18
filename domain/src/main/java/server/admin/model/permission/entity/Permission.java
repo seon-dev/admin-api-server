@@ -19,7 +19,6 @@ import java.sql.Timestamp;
 @Table(name = "permission")
 @DynamicUpdate
 @DynamicInsert
-@NoArgsConstructor
 public class Permission extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
@@ -29,7 +28,7 @@ public class Permission extends BaseTimeEntity implements Serializable {
     private Integer level;
     @Column
     private Boolean isEnabled;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -3,9 +3,7 @@ package server.admin.service.auth;
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.admin.model.auth.dto.request.SignInRequest;
-import server.admin.model.auth.dto.request.SignUpRequest;
 import server.admin.model.auth.dto.response.RefreshTokenResponse;
 import server.admin.model.auth.dto.response.SignInResponse;
 import server.admin.model.auth.dto.response.VerificationResponse;
@@ -23,24 +19,17 @@ import server.admin.model.common.rest.RestFailResponse;
 import server.admin.model.common.rest.RestResponse;
 import server.admin.model.common.rest.RestSuccessResponse;
 import server.admin.model.user.entity.User;
-import server.admin.model.user.exception.UserException;
 import server.admin.model.user.repository.UserRepository;
-import server.admin.model.user.role.UserRole;
 import server.admin.utils.JwtTokenProvider;
 import server.admin.utils.TextMessageProvider;
 
-import javax.mail.MessagingException;
-import javax.naming.AuthenticationNotSupportedException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static server.admin.model.auth.exception.AuthException.*;
 import static server.admin.model.user.exception.UserException.*;
 
 @Service
@@ -60,7 +49,7 @@ public class AuthService implements UserDetailsService {
 //        if (!Pattern.matches(passwordPattern, password)){ throw new InvalidPasswordException(); }
 //    }
 
-    private Authentication toAuthentication(Long userId, UserRole role){
+    private Authentication toAuthentication(Long userId, User.UserRole role){
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(role.toString().split(","))
                         .map(SimpleGrantedAuthority::new)

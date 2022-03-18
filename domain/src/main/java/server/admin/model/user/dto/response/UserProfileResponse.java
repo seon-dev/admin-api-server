@@ -7,9 +7,7 @@ import lombok.Getter;
 import server.admin.model.badge.dto.response.BadgeResponse;
 import server.admin.model.user.entity.User;
 import server.admin.model.user.entity.UserPolicyAgreement;
-import server.admin.model.user.role.UserRole;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class UserProfileResponse {
     private Long id;
     private String name;
     private Date birthday;
-    private UserRole role;
+    private User.UserRole role;
     private Integer follower;
     private Integer following;
     private String instagram;
