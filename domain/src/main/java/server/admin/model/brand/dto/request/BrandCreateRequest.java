@@ -32,8 +32,8 @@ public class BrandCreateRequest {
     private String resourceCardExtension;
     @NotBlank
     private String description;
-    @NotNull
-    private String color;
+
+//    private String color;
     @NotNull
     private Boolean isEnabled;
     @JsonIgnore
@@ -46,7 +46,7 @@ public class BrandCreateRequest {
 
     public static Brand toEntity(final BrandCreateRequest request){
         final Brand entity = new Brand();
-        entity.setColor(request.getColor());
+//        entity.setColor(request.getColor());
         entity.setDescription(request.getDescription());
         entity.setIsEnabled(true);
         entity.setName(request.getName());

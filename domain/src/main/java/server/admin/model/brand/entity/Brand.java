@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import server.admin.model.common.BaseTimeEntity;
-import server.admin.model.brand.dto.request.BrandCreateRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
