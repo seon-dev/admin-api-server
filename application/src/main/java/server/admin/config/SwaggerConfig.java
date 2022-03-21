@@ -34,17 +34,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket api() {
-//        ParameterBuilder aParameterBuilder = new ParameterBuilder();
-//        aParameterBuilder.name("X-AUTH-TOKEN") //헤더 이름
-//                .description("Access Token") //설명
-//                .modelRef(new ModelRef("string"))
-//                .parameterType("header")
-//                .required(false)
-//                .build();
-
-
-//        List<Parameter> aParameters = new ArrayList<>();
-//        aParameters.add(aParameterBuilder.build());
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
                 .select()

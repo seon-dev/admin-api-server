@@ -3,16 +3,13 @@ package server.admin.permission.controller;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import server.admin.model.common.rest.RestResponse;
 import server.admin.model.common.rest.RestSuccessResponse;
 import server.admin.model.permission.dto.request.PermissionCreateRequest;
 import server.admin.model.permission.dto.response.PermissionResponse;
-import server.admin.model.permission.repository.PermissionRepository;
 import server.admin.service.permission.PermissionService;
 import server.admin.utils.page.PageResult;
-
 import javax.validation.Valid;
 
 @RequiredArgsConstructor

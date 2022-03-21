@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import server.admin.model.report.entity.AppUserReport;
 import server.admin.model.report.entity.ReportStatus;
+
 @Getter
 @Builder
 public class AppUserReportResponse {
