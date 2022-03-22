@@ -9,9 +9,7 @@ import java.util.UUID;
 
 @Getter
 public class BrandUpdateRequest {
-    @NotNull
     private String name;
-    @NotNull
     private String originalName;
     private String description;
 //    private String recommendation;
@@ -26,7 +24,7 @@ public class BrandUpdateRequest {
     private String resourceCardExtension;
 
 //    private String color;
-    @NotNull
+
     private Boolean isEnabled;
 
     @JsonIgnore

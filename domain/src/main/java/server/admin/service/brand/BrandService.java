@@ -51,11 +51,11 @@ public class BrandService {
         s3Service.upload(request.getResourceUploaded(), filename);
         brand.setResource(filename);
         final String wallpapaerFilename = request.getResourceFileName("wallpapaer");
-        s3Service.upload(request.getResourceWallpaperUploaded(), filename);
-        brand.setResourceWallpaper(filename);
+        s3Service.upload(request.getResourceWallpaperUploaded(), wallpapaerFilename);
+        brand.setResourceWallpaper(wallpapaerFilename);
         final String cardFilename = request.getResourceFileName("card");
-        s3Service.upload(request.getResourceCardUploaded(), filename);
-        brand.setResourceCard(filename);
+        s3Service.upload(request.getResourceCardUploaded(), cardFilename);
+        brand.setResourceCard(cardFilename);
         brandRepository.save(brand);
     }
 
