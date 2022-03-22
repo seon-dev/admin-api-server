@@ -84,19 +84,31 @@ public class BrandService {
         optionalBrand.orElseThrow(BrandNotExistException::new);
         Brand brand = request.setEntityExcept(optionalBrand.get(), request);
         if(request.getResourceUploaded() != null && request.getResourceExtension() != null) {
-            final String filename = request.getResourceFileName(null);
-            s3Service.upload(request.getResourceUploaded(), filename);
-            brand.setResource(filename);
+            if(request.getResourceUploaded().equals("")) brand.setResource(null);
+            else{
+                final String filename = request.getResourceFileName(null);
+                s3Service.upload(request.getResourceUploaded(), filename);
+                brand.setResource(filename);
+            }
+
         }
         if(request.getResourceCardUploaded() != null && request.getResourceCardExtension() != null) {
-            final String filename = request.getResourceFileName("card");
-            s3Service.upload(request.getResourceCardUploaded(), filename);
-            brand.setResourceCard(filename);
+            if(request.getResourceCardUploaded().equals("")) brand.setResourceCard(null);
+            else{
+                final String filename = request.getResourceFileName("card");
+                s3Service.upload(request.getResourceCardUploaded(), filename);
+                brand.setResourceCard(filename);
+            }
+
         }
         if(request.getResourceWallpaperUploaded() != null && request.getResourceWallpaperExtension() != null) {
-            final String filename = request.getResourceFileName("wallpaper");
-            s3Service.upload(request.getResourceWallpaperUploaded(), filename);
-            brand.setResourceWallpaper(filename);
+            if(request.getResourceWallpaperUploaded().equals("")) brand.setResourceWallpaper(null);
+            else{
+                final String filename = request.getResourceFileName("wallpaper");
+                s3Service.upload(request.getResourceWallpaperUploaded(), filename);
+                brand.setResourceWallpaper(filename);
+            }
+
         }
 
         BrandResponse brandResponse = BrandResponse.toResponseWithoutBrandCategory(brand);

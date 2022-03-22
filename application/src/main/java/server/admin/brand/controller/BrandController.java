@@ -72,7 +72,7 @@ public class BrandController {
             @RequestBody @Valid BrandUpdateRequest brand
     ) throws Exception {
         return RestSuccessResponse.newInstance(
-                this.brandService.updateBrand(brandId,brand)
+                this.brandService.updateBrand(brandId, brand)
         );
     }
 }
