@@ -40,7 +40,7 @@ public class BrandCreateRequest {
     private UUID uid = UUID.randomUUID();
     @JsonIgnore
     public String getResourceFileName(String postfix) {
-        return uid + "_" + postfix + resourceExtension;
+        return postfix == null ? uid + resourceExtension : uid + "_" + postfix + resourceExtension ;
     }
 
 

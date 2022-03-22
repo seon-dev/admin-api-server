@@ -31,7 +31,7 @@ public class BrandUpdateRequest {
     private UUID uid = UUID.randomUUID();
     @JsonIgnore
     public String getResourceFileName(String postfix) {
-        return uid + "_" + postfix + resourceExtension;
+        return postfix == null ? uid + resourceExtension : uid + "_" + postfix + resourceExtension ;
     }
 
     public static Brand setEntityExcept(Brand entity, BrandUpdateRequest request){
@@ -39,7 +39,7 @@ public class BrandUpdateRequest {
         if(request.getDescription() != null) entity.setDescription(request.getDescription());
         if(request.getName() != null) entity.setName(request.getName());
         if(request.getOriginalName() != null) entity.setOriginalName(request.getOriginalName());
-        entity.setIsEnabled(request.getIsEnabled());
+        if(request.getIsEnabled() != null) entity.setIsEnabled(request.getIsEnabled());
         return entity;
     }
 }
