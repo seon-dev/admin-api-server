@@ -25,7 +25,7 @@ public class BrandUpdateRequest {
     private String resourceCardUploaded;
     private String resourceCardExtension;
 
-    private String color;
+//    private String color;
     @NotNull
     private Boolean isEnabled;
 
@@ -37,7 +37,7 @@ public class BrandUpdateRequest {
     }
 
     public static Brand setEntityExcept(Brand entity, BrandUpdateRequest request){
-        if(request.getColor() != null) entity.setColor(request.getColor());
+//        if(request.getColor() != null) entity.setColor(request.getColor());
         if(request.getDescription() != null) entity.setDescription(request.getDescription());
         if(request.getName() != null) entity.setName(request.getName());
         if(request.getOriginalName() != null) entity.setOriginalName(request.getOriginalName());
