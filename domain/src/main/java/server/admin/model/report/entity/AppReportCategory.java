@@ -9,22 +9,20 @@ import server.admin.model.common.BaseTimeEntity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Getter
 @Setter
-@DynamicUpdate
+@Entity
 @DynamicInsert
-@Table(name = "app_user_report")
-public class AppUserReport extends BaseTimeEntity implements Serializable {
+@DynamicUpdate
+@Table(name = "app_report_type")
+public class AppReportCategory extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
     @Column
-    private String content;
-    @Column
-    private String resource;
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ReportStatus status;
+    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_report_type_id")
+    private AppReportCategory parentReportTypeId;
     @Column(name = "is_enabled")
     private Boolean isEnabled;
 
