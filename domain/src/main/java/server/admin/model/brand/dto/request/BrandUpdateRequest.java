@@ -29,8 +29,8 @@ public class BrandUpdateRequest {
     @JsonIgnore
     private UUID uid = UUID.randomUUID();
     @JsonIgnore
-    public String getResourceFileName(String postfix) {
-        return postfix == null ? uid + resourceExtension : uid + "_" + postfix + resourceExtension ;
+    public String getResourceFileName(String postfix, String extension) {
+        return postfix == null ? uid + resourceExtension : uid + "_" + postfix + extension ;
     }
 
     public static Brand setEntityExcept(Brand entity, BrandUpdateRequest request){

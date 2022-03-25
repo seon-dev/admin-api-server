@@ -86,7 +86,7 @@ public class BrandService {
         if(request.getResourceUploaded() != null && request.getResourceExtension() != null) {
             if(request.getResourceUploaded().equals("")) brand.setResource(null);
             else{
-                final String filename = request.getResourceFileName(null);
+                final String filename = request.getResourceFileName(null, request.getResourceExtension());
                 s3Service.upload(request.getResourceUploaded(), filename);
                 brand.setResource(filename);
             }
@@ -95,7 +95,7 @@ public class BrandService {
         if(request.getResourceCardUploaded() != null && request.getResourceCardExtension() != null) {
             if(request.getResourceCardUploaded().equals("")) brand.setResourceCard(null);
             else{
-                final String filename = request.getResourceFileName("card");
+                final String filename = request.getResourceFileName("card", request.getResourceCardExtension());
                 s3Service.upload(request.getResourceCardUploaded(), filename);
                 brand.setResourceCard(filename);
             }
@@ -104,7 +104,7 @@ public class BrandService {
         if(request.getResourceWallpaperUploaded() != null && request.getResourceWallpaperExtension() != null) {
             if(request.getResourceWallpaperUploaded().equals("")) brand.setResourceWallpaper(null);
             else{
-                final String filename = request.getResourceFileName("wallpaper");
+                final String filename = request.getResourceFileName("wallpaper", request.getResourceWallpaperExtension());
                 s3Service.upload(request.getResourceWallpaperUploaded(), filename);
                 brand.setResourceWallpaper(filename);
             }
