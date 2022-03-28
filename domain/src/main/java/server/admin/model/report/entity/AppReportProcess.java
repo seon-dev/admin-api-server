@@ -1,5 +1,6 @@
 package server.admin.model.report.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,14 +21,12 @@ import java.sql.Timestamp;
 public class AppReportProcess extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "app_report_id")
-    private AppReport appReportId;
+    @Column(name = "app_report_id")
+    private Long appReportId;
     @Column(name = "is_verified")
     private Boolean isVerified;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "verifier_id")
-    private User verifierId;
+    @Column(name = "verifier_id")
+    private Long verifierId;
     @Column(length = 200, name = "verifier_comment")
     private String verifierComment;
     @CreationTimestamp
@@ -37,5 +36,13 @@ public class AppReportProcess extends BaseTimeEntity implements Serializable {
     private String punishment;
     @Column(name = "is_enabled")
     private Boolean isEnabled;
+    @Transient
+    @JsonIgnore
+    private AppReport appReport;
+    @Transient
+    @JsonIgnore
+    private User verifier;
+
+
 
 }

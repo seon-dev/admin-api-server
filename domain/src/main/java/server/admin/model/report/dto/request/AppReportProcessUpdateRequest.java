@@ -1,14 +1,13 @@
 package server.admin.model.report.dto.request;
 
 import lombok.Getter;
-import server.admin.model.report.entity.AppReport;
+import lombok.Setter;
 
 @Getter
-public class AppReportUpdateRequest {
-    private AppReport.ReportStatus status;
+public class AppReportProcessUpdateRequest {
+    private Boolean verified;
     private Long verifierId;
     private String verifierComment;
+    private String punishment;
 
 }
-
-

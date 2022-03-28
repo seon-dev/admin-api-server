@@ -1,5 +1,6 @@
 package server.admin.model.report.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
@@ -20,10 +21,11 @@ public class AppReportCategory extends BaseTimeEntity implements Serializable {
     private Long id;
     @Column
     private String name;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_report_type_id")
-    private AppReportCategory parentReportTypeId;
+    @Column(name = "parent_report_category_id")
+    private Long parentReportCategoryId;
     @Column(name = "is_enabled")
     private Boolean isEnabled;
-
+    @Transient
+    @JsonIgnore
+    private AppReportCategory parentReportCategory;
 }
