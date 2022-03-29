@@ -24,6 +24,7 @@ public class AppReportService {
 
     public PageResult<AppReportResponse> getAllAppReport(){
         List<AppReport> appReportList = appReportRepository.findAll();
+        if(appReportList.isEmpty()) throw new AppReportException.AppReportNotExistException();
         List<AppReportResponse> appReportResponseList = new ArrayList<>();
         appReportList.forEach(appReport -> {
             appReportResponseList.add(AppReportResponse.toResponse(appReport));
