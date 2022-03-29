@@ -25,7 +25,7 @@ public class AppReportResponse {
     public static AppReportResponse toResponse(AppReport entity){
         return AppReportResponse.builder()
                 .id(entity.getId())
-                .code(entity.getReportCode())
+                .code(entity.getCode())
                 .reporterId(entity.getReporterId())
                 .reporteeId(entity.getReporteeId())
                 .targetType(entity.getTargetType())
