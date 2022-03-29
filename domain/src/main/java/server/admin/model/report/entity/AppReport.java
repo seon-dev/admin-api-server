@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 public class AppReport extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
-    @Column(length = 20, name = "report_code")
+    @Column(length = 20, name = "code")
     private String code;
     @Column(name = "reporter_id")
     private Long reporterId;
