@@ -12,7 +12,7 @@ public class AppReportResponse {
     private String code;
     private Long reporterId;
     private Long reporteeId;
-    private AppReport.ReportTarget reportTarget;
+    private AppReport.ReportTargetType targetType;
     private Long categoryId;
     private Long targetId;
     private AppReport.ReportStatus reportStatus;
@@ -28,7 +28,7 @@ public class AppReportResponse {
                 .code(entity.getReportCode())
                 .reporterId(entity.getReporterId())
                 .reporteeId(entity.getReporteeId())
-                .reportTarget(entity.getTarget())
+                .targetType(entity.getTargetType())
                 .categoryId(entity.getCategoryId())
                 .targetId(entity.getTargetId())
                 .reportStatus(entity.getStatus())

@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.admin.model.report.dto.request.AppReportUpdateRequest;
 import server.admin.model.report.dto.response.AppReportResponse;
 import server.admin.model.report.entity.AppReport;
 import server.admin.model.report.exception.AppReportException;
@@ -35,5 +36,14 @@ public class AppReportService {
         Optional<AppReport> optionalAppReport = appReportRepository.findById(appReportId);
         return AppReportResponse.toResponse(optionalAppReport.orElseThrow(AppReportException.AppReportNotExistException::new));
     }
+
+    public AppReportResponse updateAppReport(Long appReportId, AppReportUpdateRequest request){
+        AppReport appReport = appReportRepository.findById(appReportId).orElseThrow(AppReportException.AppReportNotExistException::new);
+        appReport.setStatus(request.getStatus());
+        appReport.setVerifierComment(request.getVerifierComment());
+        appReport.setVerifierId(request.getVerifierId());
+        return AppReportResponse.toResponse(appReportRepository.save(appReport));
+    }
+
 
 }

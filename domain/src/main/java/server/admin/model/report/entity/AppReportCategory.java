@@ -21,11 +21,11 @@ public class AppReportCategory extends BaseTimeEntity implements Serializable {
     private Long id;
     @Column
     private String name;
-    @Column(name = "parent_report_category_id")
-    private Long parentReportCategoryId;
+    @Column(name = "parent_id")
+    private Long parentId;
     @Column(name = "is_enabled")
     private Boolean isEnabled;
     @Transient
     @JsonIgnore
-    private AppReportCategory parentReportCategory;
+    private AppReportCategory parent;
 }

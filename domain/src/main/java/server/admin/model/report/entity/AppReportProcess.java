@@ -42,7 +42,4 @@ public class AppReportProcess extends BaseTimeEntity implements Serializable {
     @Transient
     @JsonIgnore
     private User verifier;
-
-
-
 }

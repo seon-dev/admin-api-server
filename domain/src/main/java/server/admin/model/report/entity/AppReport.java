@@ -22,7 +22,7 @@ public class AppReport extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
     @Column(length = 20, name = "report_code")
-    private String reportCode;
+    private String code;
     @Column(name = "reporter_id")
     private Long reporterId;
     @Column(name = "reportee_id")
@@ -38,9 +38,9 @@ public class AppReport extends BaseTimeEntity implements Serializable {
     private Long verifierId;
     @Column(length = 200, name = "verifier_comment")
     private String verifierComment; //1차검수자의 반려,승인에 대한 코멘트, (주로 반려에 대한 코멘트)
-    @Column(name = "report_target")
+    @Column(name = "target_type")
     @Enumerated(EnumType.STRING)
-    private ReportTarget target;//COMMENT USER STYLING
+    private ReportTargetType targetType;//COMMENT USER STYLING
     @Column(name = "target_id")
     private Long targetId;//신고대상ID
     @Column(name = "verified_at")
@@ -58,7 +58,7 @@ public class AppReport extends BaseTimeEntity implements Serializable {
     @JsonIgnore
     private AppReportCategory category;
 
-    public enum ReportTarget {
+    public enum ReportTargetType {
         STYLING, USER, COMMENT
     }
 
