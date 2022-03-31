@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 import server.admin.model.common.BaseTimeEntity;
 import server.admin.model.user.entity.User;
 
@@ -43,6 +44,7 @@ public class AppReport extends BaseTimeEntity implements Serializable {
     private ReportTargetType targetType;//COMMENT USER STYLING
     @Column(name = "target_id")
     private Long targetId;//신고대상ID
+    @UpdateTimestamp
     @Column(name = "verified_at")
     private Timestamp verifiedAt;
     @Transient

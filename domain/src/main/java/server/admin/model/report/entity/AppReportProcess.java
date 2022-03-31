@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 import server.admin.model.common.BaseTimeEntity;
 import server.admin.model.user.entity.User;
 
@@ -29,7 +30,7 @@ public class AppReportProcess extends BaseTimeEntity implements Serializable {
     private Long verifierId;
     @Column(length = 200, name = "verifier_comment")
     private String verifierComment;
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "verified_at")
     private Timestamp verifiedAt;
     @Column(length = 200)
