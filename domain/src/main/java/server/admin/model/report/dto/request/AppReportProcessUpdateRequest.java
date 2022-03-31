@@ -1,7 +1,6 @@
 package server.admin.model.report.dto.request;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class AppReportProcessUpdateRequest {

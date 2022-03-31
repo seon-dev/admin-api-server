@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "app_report_type")
+@Table(name = "app_report_category")
 public class AppReportCategory extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
