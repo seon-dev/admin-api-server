@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import server.admin.model.common.QueryDslSupport;
 import server.admin.model.styling.entity.QUserStylingComment;
 import server.admin.model.styling.entity.UserStylingComment;
+import server.admin.model.user.entity.QUser;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 public class UserStylingCommentRepositoryImpl extends QueryDslSupport implements UserStylingCommentRepositoryCustom {
 
@@ -36,6 +38,16 @@ public class UserStylingCommentRepositoryImpl extends QueryDslSupport implements
                         QUserStylingComment.userStylingComment1.userStylingComment.id.eq(id)
                 )
                 .fetch();
+    }
+
+    @Override
+    public Optional<UserStylingComment> findByIdFetchJoin(Long id){
+        return Optional.ofNullable(queryFactory.selectFrom(QUserStylingComment.userStylingComment1)
+                .leftJoin(QUserStylingComment.userStylingComment1.user, QUser.user).fetchJoin()
+                .where(
+                        QUserStylingComment.userStylingComment1.id.eq(id)
+                )
+                .fetchOne());
     }
 
 }

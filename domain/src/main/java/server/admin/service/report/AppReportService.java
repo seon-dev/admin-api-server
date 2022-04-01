@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AppReportService {
     private final AppReportRepository appReportRepository;
-
+    @Transactional(readOnly = true)
     public PageResult<AppReportResponse> getAllAppReport(){
         List<AppReport> appReportList = appReportRepository.findAll();
         if(appReportList.isEmpty()) throw new AppReportException.AppReportNotExistException();
@@ -32,7 +32,7 @@ public class AppReportService {
         PageImpl<AppReportResponse> pageResult = new PageImpl<>(appReportResponseList, Pageable.unpaged(), appReportResponseList.size());
         return new PageResult<>(pageResult);
     }
-
+    @Transactional(readOnly = true)
     public AppReportResponse getAppReport(Long appReportId){
         Optional<AppReport> optionalAppReport = appReportRepository.findById(appReportId);
         return AppReportResponse.toResponse(optionalAppReport.orElseThrow(AppReportException.AppReportNotExistException::new));

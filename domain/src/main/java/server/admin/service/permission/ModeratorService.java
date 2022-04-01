@@ -25,7 +25,7 @@ import java.util.Optional;
 public class ModeratorService {
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
-
+    @Transactional(readOnly = true)
     public ModeratorResponse getModeratorPermission(Long moderatorId){
         Optional<User> optionalUser = userRepository.findById(moderatorId);
         List<Permission> permissionList = permissionRepository.findByUser(optionalUser.orElseThrow(AdminException.AdminNotExistException::new));
@@ -40,7 +40,7 @@ public class ModeratorService {
 
         return moderatorResponse;
     }
-
+    @Transactional(readOnly = true)
     public PageResult<ModeratorResponse> getAllModeratorPermission(){
         List<Permission> permissionList = permissionRepository.findAllFetchJoin();
         List<ModeratorResponse> moderatorResponses = new ArrayList<>();

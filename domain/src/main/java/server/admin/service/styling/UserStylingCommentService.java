@@ -1,12 +1,15 @@
 package server.admin.service.styling;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.styling.dto.response.UserStylingCommentResponse;
 import server.admin.model.styling.entity.UserStylingComment;
 import server.admin.model.styling.exception.UserStylingCommentException;
 import server.admin.model.styling.repository.UserStylingCommentRepository;
+import server.admin.utils.page.PageResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +22,14 @@ public class UserStylingCommentService {
     private final UserStylingCommentRepository userStylingCommentRepository;
 
     @Transactional(readOnly = true)
-    public List<UserStylingCommentResponse> getUserStylingCommentByUserStyling(Long id){
+    public PageResult<UserStylingCommentResponse> getUserStylingCommentByUserStyling(Long id){
         List<UserStylingComment> userStylingCommentList = userStylingCommentRepository.findAllByStylingId(id);
         List<UserStylingCommentResponse> userStylingCommentResponses = new ArrayList<>();
         userStylingCommentList.forEach(userStylingComment -> {
             userStylingCommentResponses.add(UserStylingCommentResponse.toResponse(userStylingComment));
         });
-        return userStylingCommentResponses;
+        PageImpl<UserStylingCommentResponse> pageResult = new PageImpl<>(userStylingCommentResponses, Pageable.unpaged(), userStylingCommentResponses.size());
+        return new PageResult<>(pageResult);
     }
 
     public void deleteUserStylingComment(Long id){
@@ -36,6 +40,13 @@ public class UserStylingCommentService {
         userStylingCommentList.forEach(singleUserStylingComment -> {
             singleUserStylingComment.setIsEnabled(false);
         });
+    }
+
+    @Transactional(readOnly = true)
+    public UserStylingCommentResponse getUserStylingComment(Long userStylingCommentId){
+        UserStylingComment userStylingComment = userStylingCommentRepository.findByIdFetchJoin(userStylingCommentId).orElseThrow(UserStylingCommentException.UserStylingCommentNotExistException::new);
+        return UserStylingCommentResponse.toResponse(userStylingComment);
+
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppReportCategoryService {
     private final AppReportCategoryRepository appReportCategoryRepository;
-
+    @Transactional(readOnly = true)
     public PageResult<AppReportCategoryResponse> getAllAppReportCategory(){
         List<AppReportCategory> appReportCategoryList = appReportCategoryRepository.findAll();
 
@@ -30,7 +30,7 @@ public class AppReportCategoryService {
         PageImpl<AppReportCategoryResponse> pageResult = new PageImpl<>(appReportCategoryResponses, Pageable.unpaged(), appReportCategoryResponses.size());
         return new PageResult<>(pageResult);
     }
-
+    @Transactional(readOnly = true)
     public AppReportCategoryResponse getAppReportCategory(Long appReportCategoryId){
         AppReportCategory appReportCategory = appReportCategoryRepository.findById(appReportCategoryId).orElseThrow(AppReportCategoryException.AppReportCategoryNotExistException::new);
         return AppReportCategoryResponse.toResponse(appReportCategory);

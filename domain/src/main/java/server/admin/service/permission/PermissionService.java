@@ -26,7 +26,7 @@ public class PermissionService {
     private final PermissionRepository permissionRepository;
     private final UserRepository userRepository;
 
-
+    @Transactional(readOnly = true)
     public PageResult<PermissionResponse> getAllPermissions(){
         List<Permission> permissionList = permissionRepository.findAll();
         List<PermissionResponse> permissionResponseList = new ArrayList<>();
@@ -36,7 +36,7 @@ public class PermissionService {
         PageImpl<PermissionResponse> pageResult = new PageImpl<>(permissionResponseList, Pageable.unpaged(), permissionResponseList.size());
         return new PageResult<>(pageResult);
     }
-
+    @Transactional(readOnly = true)
     public PermissionResponse getPermission(Long id){
         Optional<Permission> optionalPermission = permissionRepository.findById(id);
         return PermissionResponse.toResponse(optionalPermission.orElseThrow(PermissionException.PermissionNotExistException::new));

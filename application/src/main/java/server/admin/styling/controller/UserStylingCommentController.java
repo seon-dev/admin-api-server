@@ -9,6 +9,7 @@ import server.admin.model.common.rest.RestSuccessResponse;
 import server.admin.model.styling.dto.response.UserStylingCommentResponse;
 import server.admin.model.styling.entity.UserStylingComment;
 import server.admin.service.styling.UserStylingCommentService;
+import server.admin.utils.page.PageResult;
 
 import java.util.List;
 
@@ -18,14 +19,25 @@ import java.util.List;
 public class UserStylingCommentController {
     private final UserStylingCommentService userStylingCommentService;
 
-    @GetMapping("/{userStylingId}")
-    @ApiOperation(value = "유저 스타일링의 댓글 조회", notes = "해당 유저 스타일링의 모든 댓글을 조회힙니다.")
+    @GetMapping("/user-styling/{userStylingId}")
+    @ApiOperation(value = "해당 유저 스타일링의 댓글 전체 조회", notes = "해당 유저 스타일링의 모든 댓글을 조회힙니다.")
     @ResponseStatus(HttpStatus.OK)
-    public RestResponse<List<UserStylingCommentResponse>> getUserStylingComment(
-            @PathVariable("userStylingId") Long userStylingId
+    public RestResponse<PageResult<UserStylingCommentResponse>> getUserStylingCommentByStylingId(
+            @PathVariable("userStylingId") Long id
     ){
         return RestSuccessResponse.newInstance(
-                userStylingCommentService.getUserStylingCommentByUserStyling(userStylingId)
+                userStylingCommentService.getUserStylingCommentByUserStyling(id)
+        );
+    }
+
+    @GetMapping("/{userStylingCommentId}")
+    @ApiOperation(value = "유저 스타일링 댓글 단일 조회", notes = "해당 유저 스타일링 댓글을 조회합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public RestSuccessResponse<UserStylingCommentResponse> getUserStylingComment(
+        @PathVariable("userStylingCommentId") Long id
+    ){
+        return RestSuccessResponse.newInstance(
+                userStylingCommentService.getUserStylingComment(id)
         );
     }
 
