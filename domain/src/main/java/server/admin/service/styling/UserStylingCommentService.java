@@ -45,8 +45,8 @@ public class UserStylingCommentService {
     @Transactional(readOnly = true)
     public UserStylingCommentResponse getUserStylingComment(Long userStylingCommentId){
         UserStylingComment userStylingComment = userStylingCommentRepository.findByIdFetchJoin(userStylingCommentId).orElseThrow(UserStylingCommentException.UserStylingCommentNotExistException::new);
-        return UserStylingCommentResponse.toResponse(userStylingComment);
 
+        return UserStylingCommentResponse.toResponse(userStylingComment);
     }
 
 }

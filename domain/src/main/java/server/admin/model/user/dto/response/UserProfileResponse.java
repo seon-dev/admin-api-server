@@ -33,7 +33,7 @@ public class UserProfileResponse {
     private UserPolicyAgreement policyAgreement;
     private Boolean isEnabled;
 
-    public static UserProfileResponse toBasicResponse(User entity){
+    public static UserProfileResponse toResponseExcept(User entity){
         return UserProfileResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -44,6 +44,8 @@ public class UserProfileResponse {
                 .phoneNumber(entity.getPhoneNumber())
                 .resource(entity.getResource())
                 .isEnabled(entity.isEnabled())
+                .following(entity.getFollowing())
+                .follower(entity.getFollower())
                 .role(entity.getRole())
                 .numberOfAssets(entity.getNumberOfAssets())
                 .numberOfStylings(entity.getNumberOfStylings())
@@ -65,6 +67,7 @@ public class UserProfileResponse {
 
 
         public static Minified of(User entity) {
+            if (entity==null) return null;
             return Minified.builder()
                     .id(entity.getId())
                     .nickname(entity.getNickname())

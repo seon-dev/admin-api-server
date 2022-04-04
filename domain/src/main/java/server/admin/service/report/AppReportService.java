@@ -6,36 +6,54 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.admin.model.report.dto.request.AppReportUpdateRequest;
+import server.admin.model.report.dto.response.AppReportCategoryResponse;
 import server.admin.model.report.dto.response.AppReportResponse;
 import server.admin.model.report.entity.AppReport;
 import server.admin.model.report.exception.AppReportException;
+import server.admin.model.report.repository.AppReportCategoryRepository;
 import server.admin.model.report.repository.AppReportRepository;
+import server.admin.model.user.dto.response.UserProfileResponse;
+import server.admin.model.user.exception.UserException;
+import server.admin.model.user.repository.UserRepository;
 import server.admin.utils.page.PageResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AppReportService {
     private final AppReportRepository appReportRepository;
+    private final UserRepository userRepository;
+    private final AppReportCategoryRepository appReportCategoryRepository;
+
     @Transactional(readOnly = true)
     public PageResult<AppReportResponse> getAllAppReport(){
-        List<AppReport> appReportList = appReportRepository.findAll();
+        List<AppReport> appReportList = appReportRepository.findAllFetchJoin();
         if(appReportList.isEmpty()) throw new AppReportException.AppReportNotExistException();
         List<AppReportResponse> appReportResponseList = new ArrayList<>();
         appReportList.forEach(appReport -> {
-            appReportResponseList.add(AppReportResponse.toResponse(appReport));
+            AppReportResponse appReportResponse = AppReportResponse.toResponseExcept(appReport);
+            appReportResponse.setReporter(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getReporterId()).orElseThrow(UserException.UserNotExistException::new))); //예외처리다시하기
+            appReportResponse.setReportee(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getReporteeId()).orElseThrow(UserException.UserNotExistException::new)));
+            appReportResponse.setVerifier(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getVerifierId()).orElse(null)));
+            appReportResponse.setCategory(AppReportCategoryResponse.toResponse(appReportCategoryRepository.findById(appReport.getCategoryId()).orElse(null)));
+            appReportResponseList.add(appReportResponse);
         });
         PageImpl<AppReportResponse> pageResult = new PageImpl<>(appReportResponseList, Pageable.unpaged(), appReportResponseList.size());
         return new PageResult<>(pageResult);
     }
+
     @Transactional(readOnly = true)
     public AppReportResponse getAppReport(Long appReportId){
-        Optional<AppReport> optionalAppReport = appReportRepository.findById(appReportId);
-        return AppReportResponse.toResponse(optionalAppReport.orElseThrow(AppReportException.AppReportNotExistException::new));
+        AppReport appReport = appReportRepository.findById(appReportId).orElseThrow(AppReportException.AppReportNotExistException::new);
+        AppReportResponse appReportResponse = AppReportResponse.toResponseExcept(appReport);
+        appReportResponse.setReporter(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getReporterId()).orElseThrow(UserException.UserNotExistException::new))); //예외처리다시하기
+        appReportResponse.setReportee(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getReporteeId()).orElseThrow(UserException.UserNotExistException::new)));
+        appReportResponse.setVerifier(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getVerifierId()).orElse(null)));
+        appReportResponse.setCategory(AppReportCategoryResponse.toResponse(appReportCategoryRepository.findById(appReport.getCategoryId()).orElse(null)));
+        return appReportResponse;
     }
 
     public AppReportResponse updateAppReport(Long appReportId, AppReportUpdateRequest request){
@@ -43,7 +61,13 @@ public class AppReportService {
         appReport.setStatus(request.getStatus());
         appReport.setVerifierComment(request.getVerifierComment());
         appReport.setVerifierId(request.getVerifierId());
-        return AppReportResponse.toResponse(appReportRepository.save(appReport));
+        AppReport savedAppReport = appReportRepository.save(appReport);
+        AppReportResponse appReportResponse = AppReportResponse.toResponseExcept(savedAppReport);
+        appReportResponse.setReporter(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getReporterId()).orElseThrow(UserException.UserNotExistException::new))); //예외처리다시하기
+        appReportResponse.setReportee(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getReporteeId()).orElseThrow(UserException.UserNotExistException::new)));
+        appReportResponse.setVerifier(UserProfileResponse.Minified.of(userRepository.findByIdAndIsEnabledTrue(appReport.getVerifierId()).orElse(null)));
+        appReportResponse.setCategory(AppReportCategoryResponse.toResponse(appReportCategoryRepository.findById(appReport.getCategoryId()).orElse(null)));
+        return appReportResponse;
     }
 
 

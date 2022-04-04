@@ -14,7 +14,8 @@ public class UserHandler {
     @RequiredArgsConstructor
     public enum UserErrorCode{
         USER_NOT_EXIST_CODE(404, "해딩하는 유저가 존재하지 않습니다."),
-        USER_DUPLICATED_CODE(409, "해당하는 유저가 이미 존재합니다.");
+        USER_DUPLICATED_CODE(409, "해당하는 유저가 이미 존재합니다."),
+        USER_WITHDRAWED_CODE(404,"해당하는 유저는 탈퇴한 유저입니다.");
 
         private final int statusCode;
         private final String description;
@@ -25,6 +26,10 @@ public class UserHandler {
         return new RestFailResponse<>(UserErrorCode.USER_NOT_EXIST_CODE.getStatusCode(), exception.getMessage());
     }
 
+    @ExceptionHandler(UserWithdrawedException.class)
+    public RestFailResponse userNotExistHandler(UserWithdrawedException exception){
+        return new RestFailResponse<>(UserErrorCode.USER_WITHDRAWED_CODE.getStatusCode(), exception.getMessage());
+    }
 
 
 }

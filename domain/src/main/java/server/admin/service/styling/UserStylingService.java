@@ -12,6 +12,7 @@ import server.admin.model.styling.exception.UserStylingException;
 import server.admin.model.styling.repository.UserStylingAssetReferenceRepository;
 import server.admin.model.styling.repository.UserStylingRepository;
 import server.admin.model.styling.repository.UserStylingResourceRepository;
+import server.admin.model.user.repository.UserRepository;
 import server.admin.utils.page.PageResult;
 
 import java.util.ArrayList;

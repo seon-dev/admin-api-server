@@ -47,7 +47,8 @@ public class UserStylingCommentRepositoryImpl extends QueryDslSupport implements
                 .where(
                         QUserStylingComment.userStylingComment1.id.eq(id)
                 )
-                .fetchOne());
+                .fetchOne()
+        );
     }
 
 }

@@ -49,7 +49,7 @@ public class UserService {
         List<User> userList = userRepository.getAllUser(pageable);
         List<UserProfileResponse> userProfileResponses = new ArrayList<>();
         userList.forEach(user -> {
-            UserProfileResponse userProfileResponse = UserProfileResponse.toBasicResponse(user);
+            UserProfileResponse userProfileResponse = UserProfileResponse.toResponseExcept(user);
             Optional<UserPolicyAgreement> optionalUserPolicyAgreement = userPolicyAgreementRepository.findByUserId(user.getId());
             List<BadgeResponse> badgeResponseList = userBadgeRepository.findByUser(user);
             userProfileResponse.setBadges(badgeResponseList);
@@ -82,7 +82,7 @@ public class UserService {
 
     public UserProfileResponse getUser(Long userId){
         User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
-        UserProfileResponse userProfileResponse = UserProfileResponse.toBasicResponse(user);
+        UserProfileResponse userProfileResponse = UserProfileResponse.toResponseExcept(user);
         userProfileResponse.setBadges(userBadgeRepository.findByUser(user));
         userProfileResponse.setPolicyAgreement(userPolicyAgreementRepository.findByUserId(userId).orElse(null));
         return userProfileResponse;
@@ -108,7 +108,7 @@ public class UserService {
             }
         });
         //response로 바꾸기
-        UserProfileResponse userProfileResponse = UserProfileResponse.toBasicResponse(singleUser);
+        UserProfileResponse userProfileResponse = UserProfileResponse.toResponseExcept(singleUser);
         List<BadgeResponse> badgeResponses = userBadgeRepository.findByUser(singleUser);
         //response에 badgeresponse set하기
         userProfileResponse.setBadges( badgeResponses );
