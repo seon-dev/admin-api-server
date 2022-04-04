@@ -57,6 +57,7 @@ public class UserProfileResponse {
     @AllArgsConstructor
     public static class Minified{
         private Long id;
+        private String name;
         private String nickname;
         private String phoneNumber;
         private String resource;
@@ -70,6 +71,7 @@ public class UserProfileResponse {
             if (entity==null) return null;
             return Minified.builder()
                     .id(entity.getId())
+                    .name(entity.getName())
                     .nickname(entity.getNickname())
                     .phoneNumber(entity.getPhoneNumber())
                     .resource(entity.getResource())
