@@ -15,7 +15,7 @@ env:
   S3_BUCKET_NAME: plav-application-resources
   CODE_DEPLOY_APP_NAME: plav-admin-api-server-deploy
   CODE_DEPLOY_GROUP_NAME: plav-admin-api-dev
-  PROJECT_NAME: admin.plav.io
+  PROJECT_NAME: admin-api-server
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
