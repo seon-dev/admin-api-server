@@ -4,7 +4,7 @@ cd $REPOSITORY/admin-api-server/
 
 echo "> Git Pull"
 
-git pull
+git pull develop
 
 echo "> 프로젝트 Build 시작"
 
@@ -12,7 +12,7 @@ echo "> 프로젝트 Build 시작"
 
 echo "> Build 파일 복사"
 
-cp ./build/libs/*.jar $REPOSITORY/
+cp ./application/build/libs/*.jar $REPOSITORY/
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 
