@@ -4,7 +4,7 @@ cd $REPOSITORY/admin-api-server/
 
 echo "> Git Pull"
 
-git pull develop
+git pull release
 
 echo "> 프로젝트 Build 시작"
 
