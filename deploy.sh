@@ -1,10 +1,18 @@
 REPOSITORY=/home/ec2-user/app/git
 
+#cd $REPOSITORY
+#
+#DIRECTORY= ls
+#
+#if [ ! -z $DIRECTORY ]; then
+#    rm -rf $REPOSITORY/*
+#fi
+
 cd $REPOSITORY/admin-api-server/
 
 echo "> Git Pull"
 
-git pull release
+git pull
 
 echo "> 프로젝트 Build 시작"
 
