@@ -46,4 +46,4 @@ sudo chmod 755 admin-api-server.jar
 
 echo "> JAR Name: $JAR_NAME"
 
-nohup java -jar $REPOSITORY/$JAR_NAME &
+nohup java -jar $REPOSITORY/$JAR_NAME /dev/null 2> /dev/null < /dev/null &
