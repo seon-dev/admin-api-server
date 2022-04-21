@@ -10,7 +10,7 @@ import server.admin.model.common.rest.RestSuccessResponse;
 
 @RestController
 @RequestMapping("/admin/health-check")
-@ApiOperation(value= "HEALTHCHECK", notes = "API 서버의 정상 작동 여부를 확인합니다.")
+@ApiOperation(value= "HEALTHCHECK자동배포확인테스트", notes = "API 서버의 정상 작동 여부를 확인합니다.")
 public class HealthCheckController {
     @GetMapping
     public RestResponse<Any> getHealth(){
