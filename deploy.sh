@@ -32,6 +32,10 @@ echo "> 새 어플리케이션 배포"
 
 JAR_NAME=$(ls $REPOSITORY/ |grep 'admin-api-server' | tail -n 1)
 
+echo "> nohup을 위한 권한 755 부여"
+
+sudo chmod 755 admin-api-server.jar
+
 echo "> JAR Name: $JAR_NAME"
 
 nohup java -jar $REPOSITORY/$JAR_NAME &
