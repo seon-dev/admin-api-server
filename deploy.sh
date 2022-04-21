@@ -1,12 +1,12 @@
 REPOSITORY=/home/ec2-user/app/git
 
-#cd $REPOSITORY
-#
-#DIRECTORY= ls
-#
-#if [ ! -z $DIRECTORY ]; then
-#    rm -rf $REPOSITORY/*
-#fi
+cd $REPOSITORY
+
+DIRECTORY= ls
+
+if [ ! -z $DIRECTORY ]; then
+    rm -rf $REPOSITORY/*
+fi
 
 cd $REPOSITORY/admin-api-server/
 
