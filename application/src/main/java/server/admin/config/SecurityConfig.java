@@ -44,15 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/swagger-ui.html", "/swagger-ui/**","/swagger-resources/**","/v2/api-docs", "/swagger/**", "/webjars/**", "/configuration/ui", "/configuration/security").anonymous()
                 .mvcMatchers(HttpMethod.GET, "/admin/health-check").permitAll()
-//                .mvcMatchers(HttpMethod.POST, "/admin/auth/verify").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/admin/auth/logout").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/admin/permission/**").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.DELETE, "/admin/permission/**").hasRole("ADMIN")
                 .antMatchers("/admin/moderator/**").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.GET, "/admin/permission/**").hasAnyRole("ADMIN","MODERATOR")
                 .mvcMatchers(HttpMethod.POST,"/admin/auth/**").hasAnyRole("ADMIN","MODERATOR")//유저생성: 어드민,모더레이터만 가능
-//                .access("hasRole('ADMIN') and hasRole('MODERATOR')")
-//                .mvcMatchers(HttpMethod.PUT, "/admin/user/**").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.DELETE,"/admin/user/**").hasRole("ADMIN")//update, delete: 어드민만 가능
                 .mvcMatchers(HttpMethod.PATCH, "/admin/user/**").hasRole("ADMIN")
                 .anyRequest().authenticated();

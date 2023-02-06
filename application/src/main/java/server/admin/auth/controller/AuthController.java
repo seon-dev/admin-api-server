@@ -25,7 +25,6 @@ import javax.validation.Valid;
 public class AuthController {
     private final AuthService authService;
 
-//2
     @PostMapping("/verify")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "핸드폰 번호 인증", notes = "핸드폰 번호를 인증합니다.")
@@ -35,7 +34,7 @@ public class AuthController {
     ) {
         return authService.verifyingPhoneNumber(request.getPhoneNumber());
     }
-//3
+
     @PostMapping("/sign-in")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "로그인", notes = "로그인합니다.")
@@ -43,7 +42,7 @@ public class AuthController {
             @RequestBody @Valid SignInRequest request
     ){
         return RestSuccessResponse.newInstance(
-                authService.signIn(request.getPhoneNumber(),request.getVerificationCode())
+                authService.signIn(request.getPhoneNumber(), request.getVerificationCode())
         );
     }
 

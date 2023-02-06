@@ -29,8 +29,8 @@ public class BrandController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "브랜드 조회", notes = "전체 브랜드 정보를 조회합니다.")
     public RestResponse<PageResult<BrandResponse>> getAllBrand(
-//            @PageableDefault(size = DEFAULT_SIZE, page = 0, sort = "id") final Pageable pageable,
-//            @RequestParam(value = "enabled", required = false) Boolean isEnabled
+            @PageableDefault(size = DEFAULT_SIZE, page = 0, sort = "id") final Pageable pageable,
+            @RequestParam(value = "enabled", required = false) Boolean isEnabled
     ) {
         return RestSuccessResponse.newInstance(
                 this.brandService.getAllBrand(Pageable.unpaged())

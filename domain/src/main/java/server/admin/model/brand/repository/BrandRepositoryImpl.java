@@ -65,4 +65,6 @@ public class BrandRepositoryImpl extends QueryDslSupport implements BrandReposit
         return fetch;
     }
 
+
+
 }

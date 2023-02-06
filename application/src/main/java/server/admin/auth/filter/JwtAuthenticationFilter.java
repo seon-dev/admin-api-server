@@ -34,20 +34,16 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthService authService;
-//    private final AuthenticationManager authenticationManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("jwtauthentication");
         String token = jwtTokenProvider.resolveToken(request);
         if (token != null && jwtTokenProvider.isTokenNonExpired(token)) {
             try {
-
                 Authentication authentication = getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (AuthenticationException e) {
                 log.info("Authentication not found exception. " + e.getMessage());
-                // response.addCookie(CookieUtils.removeCookie("X-AUTH-TOKEN"));
             }
         } else if( token == null){
             throw new RuntimeException("token doesn't exist!");
@@ -62,12 +58,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Authentication getAuthentication(String token) throws UsernameNotFoundException {
         UserDetails userDetails = authService.loadUserByUsername(jwtTokenProvider.getUserId(token));
-//        jwtTokenProvider.getAuthentication(token) or userDetails.getAuthorities()
         return new UsernamePasswordAuthenticationToken(userDetails, "", jwtTokenProvider.getAuthentication(token));
         //밑에있는 주석은 잘못된 방법
 //        UserDetails principal = new org.springframework.security.core.userdetails.User(jwtTokenProvider.getUserId(token), "plavcorp", jwtTokenProvider.getAuthentication(token).getAuthorities());
 //        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal,"", jwtTokenProvider.getAuthentication(token).getAuthorities());
-////        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
 //        return authenticationToken;
 
     }

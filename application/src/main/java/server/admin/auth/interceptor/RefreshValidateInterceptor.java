@@ -3,11 +3,9 @@ package server.admin.auth.interceptor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import server.admin.model.user.entity.User;
 import server.admin.service.auth.AuthService;
 import server.admin.utils.JwtTokenProvider;
 
@@ -29,13 +26,11 @@ import java.security.InvalidParameterException;
 public class RefreshValidateInterceptor implements HandlerInterceptor {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthService authService;
-//    @Autowired
+
 //    private final RedisService redisService;
-//set authorities가 된다.
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("RefreshValidateInterceptor");
         String refreshToken = jwtTokenProvider.resolveToken(request);
         try {
             if (refreshToken != null) {
@@ -46,7 +41,6 @@ public class RefreshValidateInterceptor implements HandlerInterceptor {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     } catch (UsernameNotFoundException e) {
                         log.info("username not found exception" + e.getMessage());
-                        // response.addCookie(CookieUtils.removeCookie("X-AUTH-TOKEN"));
                         return false;
                     }
                 } else {

@@ -55,10 +55,8 @@ public class AuthService implements UserDetailsService {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        System.out.println(authorities.toString());
         UserDetails principal = new org.springframework.security.core.userdetails.User(userId.toString(), "plavcorp", authorities);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principal, "plavcorp", authorities);
-//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
         return authenticationToken;
     }
 

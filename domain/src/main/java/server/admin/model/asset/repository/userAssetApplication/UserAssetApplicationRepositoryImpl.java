@@ -92,7 +92,7 @@ public class UserAssetApplicationRepositoryImpl
     }
 
 //    private OrderSpecifier<Long> OrderByAsc(String orderBy){
-//        //정렬조건을 동적으로 가능하게 하기
+//        //정렬 하는 조건을 동적으로 가능하게 하기 ex. 조인되어있는 벨류에 대한 정렬이라서.. 안되는거였음
 //        if(Objects.equals(orderBy, "id")) return userAssetApplication.id.asc();
 //        if(Objects.equals(orderBy, "asset")) return userAssetApplication.asset.id.asc();
 //        ...
