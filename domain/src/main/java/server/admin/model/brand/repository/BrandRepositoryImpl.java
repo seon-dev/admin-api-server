@@ -28,10 +28,10 @@ public class BrandRepositoryImpl extends QueryDslSupport implements BrandReposit
     }
 
     @Override
-    public List<Brand> getAllBrand(Pageable pageable){
+    public List<Brand> getAllBrand(Pageable pageable ){
         JPAQuery<?> query = queryFactory.from(brand);
 //                .where(
-//                        checkEnabled(isEnabled)
+//                        checkEnabled(isEnabled
 //                );
 
         final Long count = queryFactory.select(brand.count())

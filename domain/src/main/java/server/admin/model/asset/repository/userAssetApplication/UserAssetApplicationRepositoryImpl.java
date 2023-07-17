@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import server.admin.model.asset.dto.response.*;
 import server.admin.model.asset.entity.*;
@@ -45,31 +46,31 @@ public class UserAssetApplicationRepositoryImpl
 
     @Override
     public List<UserAssetApplication> getUserAssetApplications(
-//            Long cursorId, Integer size, Boolean isVerified, Sort sort
+            Long cursorId, Integer size, Boolean isVerified, Sort sort,
             Boolean isEnabled
     ){
         List<UserAssetApplication> userAssetApplicationList = queryFactory.selectFrom(userAssetApplication)
                 .where(
-//                        checkIsVerified(isVerified),
-//                        checkCursor(cursorId)
+                        checkIsVerified(isVerified),
+                        checkCursor(cursorId),
                         checkIsEnabled(isEnabled)
                 )
-//                .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
+                .leftJoin(userAssetApplication.assetPrototype, QAssetPrototype.assetPrototype)
                 .leftJoin(userAssetApplication.assetPrototype,QAssetPrototype.assetPrototype).fetchJoin()
                 .leftJoin(userAssetApplication.user, QUser.user).fetchJoin()
                 .leftJoin(userAssetApplication.asset, QAsset.asset).fetchJoin()
-//                .leftJoin(userAssetApplication.assetPrototype.brand, QBrand.brand).fetchJoin()
-//                .leftJoin(userAssetApplication.assetPrototype.season, QAssetSeason.assetSeason).fetchJoin()
-//                .leftJoin(userAssetApplication.assetPrototype.brandCategory, QAssetBrandCategory.assetBrandCategory).fetchJoin()
-//                .leftJoin(userAssetApplication.assetPrototype.line, QAssetLine.assetLine).fetchJoin()
-                .fetch()
-                ;
+                .leftJoin(userAssetApplication.assetPrototype.brand, QBrand.brand).fetchJoin()
+                .leftJoin(userAssetApplication.assetPrototype.season, QAssetSeason.assetSeason).fetchJoin()
+                .leftJoin(userAssetApplication.assetPrototype.brandCategory, QAssetBrandCategory.assetBrandCategory).fetchJoin()
+                .leftJoin(userAssetApplication.assetPrototype.line, QAssetLine.assetLine).fetchJoin()
 
-//                .leftJoin(QAssetLine.assetLine).on(QAssetLine.assetLine.brand.eq(QBrand.brand));
-//                .limit(size);
+
+
+                .leftJoin(QAssetLine.assetLine).on(QAssetLine.assetLine.brand.eq(QBrand.brand))
+                .limit(size).fetch();
 
 //        List<UserAssetApplicationResponse> userAssetApplicationResponses = Objects.requireNonNull(getQuerydsl())
-////                .applySorting(sort, query)
+//                .applySorting(sort, query)
 //                .applyPagination(Pageable.unpaged(), query)
 //                .select(projectUserAssetApplication())
 //                .fetch();

@@ -39,20 +39,18 @@ public class UserAssetApplicationController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "유저 에셋 신청 정보 조회", notes = "커서 페이지네이션에 맞는 유저 에셋 신청 정보를 조회합니다.")
-    public RestResponse<PageResult<UserAssetApplicationResponse>> getAllUserAssetApplication(
-//            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
-//            @RequestParam(value = "cursor", required = false) String encodedCursor,
-//            @RequestParam(value = "verified", required = false) Boolean isVerified,
-            @RequestParam(value = "enabled", required = false) Boolean isEnabled
-//            @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
-//            @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc
+    public RestResponse<CursorResult<List<UserAssetApplicationResponse>>> getAllUserAssetApplication(
+            @RequestParam(value = "size", defaultValue = DEFAULT_SIZE) Integer size,
+            @RequestParam(value = "cursor", required = false) String encodedCursor,
+            @RequestParam(value = "verified", required = false) Boolean isVerified,
+            @RequestParam(value = "enabled", required = false) Boolean isEnabled,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
+            @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc
     ){
-
           return RestSuccessResponse.newInstance(
                 userAssetApplicationService.getAllUserAssetApplication(
-//                        decodeCursor(encodedCursor), size,isVerified
-                        isEnabled
-//                        checkOrderByAndSort(desc, sortBy)
+                        decodeCursor(encodedCursor), size, isVerified,
+                        checkOrderByAndSort(desc, sortBy),isEnabled
                 )
         );
     }
@@ -71,14 +69,14 @@ public class UserAssetApplicationController {
         );
     }
 
-//    private Long decodeCursor(String encodedCursor){
-//        if(encodedCursor != null){
-//            byte[] decodedCursor = Base64.getDecoder().decode(encodedCursor);
-//            return Long.parseLong(new String(decodedCursor));
-//        } else return null;
-//    }
-//
-//    private Sort checkOrderByAndSort(Boolean desc, String sortBy ){
-//        return desc ? Sort.by(Sort.Direction.DESC, sortBy) : Sort.by(Sort.Direction.ASC, sortBy) ;
-//    }
+    private Long decodeCursor(String encodedCursor){
+        if(encodedCursor != null){
+            byte[] decodedCursor = Base64.getDecoder().decode(encodedCursor);
+            return Long.parseLong(new String(decodedCursor));
+        } else return null;
+    }
+
+    private Sort checkOrderByAndSort(Boolean desc, String sortBy ){
+        return desc ? Sort.by(Sort.Direction.DESC, sortBy) : Sort.by(Sort.Direction.ASC, sortBy) ;
+    }
 }

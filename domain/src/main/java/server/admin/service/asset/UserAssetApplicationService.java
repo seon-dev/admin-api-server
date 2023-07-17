@@ -29,10 +29,10 @@ public class UserAssetApplicationService {
     private final UserAssetApplicationRepository userAssetApplicationRepository;
     private final UserRepository userRepository;
 
-//    private Boolean hasNext(Long lastId) {
-//        if (lastId == null) return false;
-//        return userAssetApplicationRepository.existsByIdLessThan(lastId);
-//    }
+    private Boolean hasNext(Long lastId) {
+        if (lastId == null) return false;
+        return userAssetApplicationRepository.existsByIdLessThan(lastId);
+    }
 
     @Transactional(readOnly = true)
     public UserAssetApplicationResponse getUserAssetApplication(Long userAssetApplicationId){
@@ -46,28 +46,32 @@ public class UserAssetApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public PageResult<UserAssetApplicationResponse> getAllUserAssetApplication(
-//            Long cursorId, Integer size, Boolean isVerified, Sort sort
+    public CursorResult<List<UserAssetApplicationResponse>> getAllUserAssetApplication(
+            Long cursorId, Integer size, Boolean isVerified, Sort sort,
             Boolean isEnabled
     ){
         final List<UserAssetApplication> userAssetApplicationList = userAssetApplicationRepository.getUserAssetApplications(
-//                cursorId, size, isVerified, sort
+                cursorId,
+                size,
+                isVerified,
+                sort,
                 isEnabled
         );
 
         List<UserAssetApplicationResponse> userAssetApplicationResponseList = new ArrayList<>();
+
         userAssetApplicationList.forEach(userAssetApplication -> {
             UserAssetApplicationResponse userAssetApplicationResponse = UserAssetApplicationResponse.toResponseExceptVerifier(userAssetApplication);
             final UserProfileResponse.Verifier verifier = userAssetApplication.getVerifierId() != null ? UserProfileResponse.Verifier.of(userRepository.findById(userAssetApplication.getVerifierId()).orElseThrow(UserException.UserNotExistException::new)) : null;
             userAssetApplicationResponse.setVerifier(verifier);
             userAssetApplicationResponseList.add(userAssetApplicationResponse);
         });
-//        if (userAssetApplicationResponseList.isEmpty()) throw new UserAssetApplicationNotExistException();
-//        final int sizeOfPage  = userAssetApplicationResponseList.size();
-//        final Long lastIdOfList = userAssetApplicationResponseList.get(userAssetApplicationResponseList.size()-1).getId();
+        if (userAssetApplicationResponseList.isEmpty()) throw new UserAssetApplicationNotExistException();
+        final int sizeOfPage  = userAssetApplicationResponseList.size();
+        final Long lastIdOfList = userAssetApplicationResponseList.get(userAssetApplicationResponseList.size()-1).getId();
         PageImpl<UserAssetApplicationResponse> pageResult = new PageImpl<>(userAssetApplicationResponseList, Pageable.unpaged(), userAssetApplicationResponseList.size());
-//        return new CursorResult<>(userAssetApplicationResponseList, hasNext(lastIdOfList), lastIdOfList, sizeOfPage);
-        return new PageResult<>(pageResult);
+        return new CursorResult<>(userAssetApplicationResponseList, hasNext(lastIdOfList), lastIdOfList, sizeOfPage);
+//        return new PageResult<>(pageResult);
     }
 
     public UserAssetApplicationResponse updateUserAssetApplication(Long userAssetApplicationId, UserAssetApplicationUpdateRequest request){
