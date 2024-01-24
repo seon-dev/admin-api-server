@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
   
 env:
-  S3_BUCKET_NAME: admin.plav.io-deploy
+  S3_BUCKET_NAME: 
   CODE_DEPLOY_APP_NAME: plav-admin-api-server-deploy
   CODE_DEPLOY_GROUP_NAME: plav-admin-api-dev
   PROJECT_NAME: admin-api-server
